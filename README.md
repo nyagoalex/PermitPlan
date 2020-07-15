@@ -1,24 +1,7 @@
-# permit-plan-frontend
+# permit-plan
 
-## Project setup
+## Contains 2 branches 
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+frontend and banckend
 ```
 
-### Compiles and minifies for production
-```
-npm run build 
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
