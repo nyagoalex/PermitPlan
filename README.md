@@ -1,4 +1,4 @@
-# lacel-project
+# permit-plan-frontend
 
 ## Project setup
 ```
