@@ -4,6 +4,8 @@ import Home from '@/views/Home.vue'
 import About from '@/views/About.vue'
 import Login from '@/views/Login/Login.vue'
 import Register from '@/views/Login/Register.vue'
+import Bookings from '@/views/Booking/BookingsList.vue'
+import Settings from '@/views/Settings/Settings.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/bookings',
+    name: 'Bookings',
+    component: Bookings
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   },
   // otherwise redirect to home
   { path: '*', redirect: '/' }

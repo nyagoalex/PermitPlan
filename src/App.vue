@@ -1,14 +1,18 @@
 <template>
-    <div id="app" class="jumbotron" fluid=true>
-        <div class="container">
-          <router-view></router-view>
-        </div>
+    <div id="app">
+      <navComponent/>
+      <router-view></router-view>
     </div>
 </template>
 
 <script>
+import navComponent from '@/components/nav.vue'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    navComponent
+  }
 }
 </script>
 <style src="./assets/css/tailwind.css"></style>
@@ -19,13 +23,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color:#fafbfe;
+  background-color:#e2e8f0;
 }
 
 // #nav {
 //   padding: 30px;
 
-//   a {
+//   &.a {
 //     font-weight: bold;
 //     color: #2c3e50;
 

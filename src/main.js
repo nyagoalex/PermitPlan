@@ -11,11 +11,10 @@ import Vuelidate from 'vuelidate'
 import axios from 'axios'
 import { authHeader } from '@/services'
 
-// import '@fortawesome/fontawesome-free/css/all.css'
-// import '@fortawesome/fontawesome-free/js/all.js'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Install BootstrapVue
 Vue.use(BootstrapVue)
-
+// Vue.component('font-awesome-icon', FontAwesomeIcon)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 Vue.use(Vuelidate)
