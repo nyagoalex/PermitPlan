@@ -1,6 +1,6 @@
 <template>
       <b-container fluid="md">
-      <b-label class="float-left"> <strong> USERS </strong></b-label>
+      <label class="float-left"> <strong> USERS </strong></label>
       <b-button pill variant="outline-success" class="float-right"><b-icon icon="person-plus-fill"></b-icon> add user</b-button>
       <br><hr>
         <div class="row pl-3" >
@@ -8,7 +8,7 @@
             <b-row class="mb-2">
                 <b-col md='4' class="usericon"> <b-icon icon="person-circle"></b-icon></b-col>
                 <b-col class="pt-3 px-0">
-                <b-label class="user-name">{{user.name}} </b-label><br>
+                <label class="user-name">{{user.name}} </label><br>
                 <small> {{user.role}}</small><br>
                 <b-badge pill variant="success" v-if="user.active">Active</b-badge>
                 <b-badge pill variant="danger" v-else>Inactive</b-badge>
@@ -28,9 +28,13 @@
 <script>
 const faker = require('faker')
 export default {
+  name: 'users',
   data () {
     return {
-      users: this.getUsers()
+      users: this.getUsers(),
+      perPage: 10,
+      currentPage: 1,
+      rows: 10
     }
   },
   methods: {

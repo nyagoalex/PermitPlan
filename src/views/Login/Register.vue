@@ -16,7 +16,7 @@
 
           <div class="col-md-7 col-sm-12 text-center signup-form">
             <form @submit.prevent="handleSubmit" class="inner-form">
-                <img class="" src="../../assets/pplanw.png" alt="" width="150" height="55">
+                <img class="" src="@/assets/image/pplanw.png" alt="" width="150" height="55">
                 <h2 class="">Create Account</h2>
                  <b-input-group class="mt-5 mb-3">
                     <template v-slot:prepend>

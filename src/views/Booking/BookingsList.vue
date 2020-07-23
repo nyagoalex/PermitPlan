@@ -32,8 +32,8 @@
       </template>
     </b-table>
     <div>
-      <b-label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-      <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></b-label>
+      <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
+      <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
       <b-pagination class="float-right"
         v-model="currentPage"
         :total-rows="rows"

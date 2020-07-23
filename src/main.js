@@ -24,6 +24,55 @@ Vue.config.productionTip = false
 // axios.defaults.baseURL = process.env.VUE_APP_APIURL
 axios.defaults.headers.common.Authorization = authHeader()
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded'
+
+axios.interceptors.response.use(
+  response => {
+    if (response.status === 200 || response.status === 201) {
+      return Promise.resolve(response)
+    } else {
+      return Promise.reject(response)
+    }
+  },
+  error => {
+    if (error.response.status) {
+      alert(error.response.status)
+      switch (error.response.status) {
+        case 400:
+          // do something
+          break
+        case 401:
+          alert('session expired')
+          router.replace({
+            path: '/login',
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
+          })
+          break
+        case 403:
+          router.replace({
+            path: '/login',
+            query: { redirect: router.currentRoute.fullPath }
+          })
+          break
+        case 404:
+          alert('page not exist')
+          break
+        case 502:
+          setTimeout(() => {
+            router.replace({
+              path: '/login',
+              query: {
+                redirect: router.currentRoute.fullPath
+              }
+            })
+          }, 1000)
+      }
+      return Promise.reject(error.response)
+    }
+  }
+)
 
 new Vue({
   created () {

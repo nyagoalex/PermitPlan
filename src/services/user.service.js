@@ -10,7 +10,7 @@ export const userService = {
 }
 const apiUrl = process.env.VUE_APP_APIURL
 function login (username, password) {
-  axios.post('http://localhost:8084/api/auth/token', {
+  axios.post(apiUrl + '/auth/token', {
     username: username,
     password: password
   })

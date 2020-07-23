@@ -16,7 +16,7 @@
 
           <div class="col-md-5 col-sm-12 text-center signup-form">
             <form @submit.prevent="handleSubmit" class="inner-form">
-                <img class="" src="../../assets/pplanw.png" alt="" width="150" height="55">
+                <img class="" src="@/assets/image/pplanw.png" alt="" width="150" height="55">
                 <h2 class="">sign in to your Account</h2>
                  <b-input-group class="mt-5">
                     <template v-slot:prepend>
@@ -51,7 +51,8 @@
 
 <script>
 import router from '@/router'
-import { authHeader, userService } from '@/services'
+import { authHeader } from '@/services'
+import Logout from '@/components/Logout.vue'
 import axios from 'axios'
 const apiUrl = process.env.VUE_APP_APIURL
 
@@ -68,7 +69,8 @@ export default {
   },
   created () {
     // reset login status
-    userService.logout()
+    console.log('login created')
+    Logout.logout()
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.$route.query.returnUrl || '/about'
@@ -79,7 +81,7 @@ export default {
       const { username, password } = this
 
       this.loading = true
-      axios.post(apiUrl + '/api/auth/token', {
+      axios.post(apiUrl + '/auth/token', {
         username: username,
         password: password
       })

@@ -6,6 +6,7 @@ import Login from '@/views/Login/Login.vue'
 import Register from '@/views/Login/Register.vue'
 import Bookings from '@/views/Booking/BookingsList.vue'
 import Settings from '@/views/Settings/Settings.vue'
+import Profile from '@/views/Login/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile
   },
   // otherwise redirect to home
   { path: '*', redirect: '/' }

@@ -1,10 +1,10 @@
 <template>
-<b-container fluid="md">
-  <b-label class="float-left text-uppercase"> <strong> PERMITS EXPIRY </strong></b-label>
+<b-container fluid="md" id='deposit-expiry'>
+  <label class="float-left text-uppercase"> <strong> PERMITS EXPIRY </strong></label>
   <br><hr>
   <b-row class="bg-light py-5 pl-5 pr-3">
     <b-col md='7' class="bg-white pr-3 py-4">
-      <b-label ><b>Update deposit expiry</b></b-label>
+      <label ><b>Update deposit expiry</b></label>
 
       <b-form-group class="mt-5 text-left"  label="Maximum Period Allowed (In Days)"  label-for="expiry_period" >
         <b-form-input id="expiry_period" type="number" v-model='expiry_period' size="lg"></b-form-input>
@@ -28,10 +28,12 @@
 <script>
 
 export default {
+  name: 'deposit-expiry',
   data () {
     return {
       expiry_period: 9,
-      loading: false
+      loading: false,
+      error: false
     }
   },
   methods: {
