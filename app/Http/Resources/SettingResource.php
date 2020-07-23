@@ -23,8 +23,8 @@ class SettingResource extends JsonResource
             "phone" => $this->phone,
             "website" => $this->website,
             "logo" => $this->logo,
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
+            "created_at" => $this->created_at->format('D, d M Y'),
+            "updated_at" => $this->updated_at->format('D, d M Y'),
         ];
     }
 }

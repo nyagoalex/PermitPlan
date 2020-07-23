@@ -17,7 +17,7 @@ class PermitTypeController extends Controller
     public function index()
     {
         $type = PermitType::all();
-        return PermitTypeResource::collection($type);
+        return PermitTypeResource::collection($type->keyBy('name'));
     }
 
     /**

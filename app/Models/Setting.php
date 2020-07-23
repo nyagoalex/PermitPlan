@@ -29,4 +29,14 @@ class Setting extends Model
     protected $fillable = [
         'company_name','physical_address','registration_no', 'email', 'website', 'logo', 'phone', 'permit_expiry_in_days'
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:D, d M Y',
+        'updated_at' => 'datetime:D, d M Y',
+    ];
 }
