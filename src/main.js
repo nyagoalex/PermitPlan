@@ -11,6 +11,8 @@ import Vuelidate from 'vuelidate'
 import axios from 'axios'
 import { authHeader } from '@/services'
 
+import 'vue-search-select/dist/VueSearchSelect.css'
+
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Install BootstrapVue
 Vue.use(BootstrapVue)

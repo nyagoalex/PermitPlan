@@ -5,8 +5,16 @@ import About from '@/views/About.vue'
 import Login from '@/views/Login/Login.vue'
 import Register from '@/views/Login/Register.vue'
 import Bookings from '@/views/Booking/BookingsList.vue'
+import BookingDetails from '@/views/Booking/Details.vue'
 import Settings from '@/views/Settings/Settings.vue'
 import Profile from '@/views/Login/Profile.vue'
+import Agents from '@/views/Agents.vue'
+import GroupPermits from '@/views/GroupPermits.vue'
+import Accommodation from '@/views/Accommodation.vue'
+import AccommodationDetails from '@/views/AccommodationDetails.vue'
+import Transfers from '@/views/Transfers.vue'
+import Vehicles from '@/views/Vehicles.vue'
+import Guides from '@/views/Guides.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +22,11 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    component: Home
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
     component: Home
   },
   {
@@ -37,17 +50,60 @@ const routes = [
     component: Bookings
   },
   {
+    path: '/bookings/:id',
+    name: 'BookingDetails',
+    component: BookingDetails
+  },
+  {
     path: '/settings',
     name: 'Settings',
     component: Settings
   },
   {
     path: '/profile',
-    name: 'profile',
+    name: 'Profile',
     component: Profile
   },
-  // otherwise redirect to home
-  { path: '*', redirect: '/' }
+  {
+    path: '/agents',
+    name: 'Agents',
+    component: Agents
+  },
+  {
+    path: '/group-permits',
+    name: 'GroupPermits',
+    component: GroupPermits
+  },
+  {
+    path: '/accommodation',
+    name: 'Accommodation',
+    component: Accommodation
+  },
+  {
+    path: '/accommodation/:id',
+    name: 'AccommodationDetails',
+    component: AccommodationDetails
+  },
+  {
+    path: '/transfers',
+    name: 'Transfers',
+    component: Transfers
+  },
+  {
+    path: '/vehicles',
+    name: 'Vehicles',
+    component: Vehicles
+  },
+  {
+    path: '/guides',
+    name: 'Guides',
+    component: Guides
+  },
+  { // catch all 404 - define at the very end
+    path: '*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue')
+  }
 ]
 
 const router = new VueRouter({
@@ -57,8 +113,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login', '/register']
-  const authRequired = !publicPages.includes(to.path)
+  const publicPages = ['Login', 'Register']
+  const authRequired = !publicPages.includes(to.name)
   const loggedIn = localStorage.getItem('user')
 
   if (authRequired && !loggedIn) {

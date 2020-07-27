@@ -52,7 +52,7 @@
 <script>
 import router from '@/router'
 import { authHeader } from '@/services'
-import Logout from '@/components/Logout.vue'
+import { Logout } from '@/components/Logout.vue'
 import axios from 'axios'
 const apiUrl = process.env.VUE_APP_APIURL
 
@@ -70,7 +70,10 @@ export default {
   created () {
     // reset login status
     console.log('login created')
-    Logout.logout()
+    const loggedIn = localStorage.getItem('user')
+    if (loggedIn) {
+      Logout()
+    }
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.$route.query.returnUrl || '/about'

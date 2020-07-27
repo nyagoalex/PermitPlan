@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <navComponent v-if="true"/>
+      <navComponent v-if="!nav_allowed_routes.includes(this.$route.name)"/>
       <router-view></router-view>
     </div>
 </template>
@@ -9,6 +9,11 @@
 import navComponent from '@/components/nav.vue'
 
 export default {
+  data () {
+    return {
+      nav_allowed_routes: ['Login', 'Register', 'NotFound', null]
+    }
+  },
   name: 'app',
   components: {
     navComponent
@@ -23,7 +28,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color:#e2e8f0;
+  // background-color:#e2e8f0;
+}
+.acc-tb table tbody tr[tabindex="0"]:hover {
+  color: blue !important;
+  cursor: pointer;
+}
+
+.b-table-details {
+  background-color: #d4ebf2 !important;
 }
 
 // #nav {

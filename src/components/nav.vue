@@ -5,17 +5,17 @@
 
     <b-navbar-nav>
       <b-nav-item href="#">Dashbord</b-nav-item>
-      <b-nav-item href="bookings">All Bookings</b-nav-item>
-      <b-nav-item href="#">Safari Calenda</b-nav-item>
+      <b-nav-item :to="{ name: 'Bookings'}">All Bookings</b-nav-item>
+      <b-nav-item :to="{ name: 'Bookings'}">Safari Calenda</b-nav-item>
       <b-nav-item-dropdown text="+ More" right>
-        <b-dropdown-item href="#">Agents</b-dropdown-item>
-        <b-dropdown-item href="#">Departures Permits</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Agents'})">Agents</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'GroupPermits'})">Departures Permits</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item href="#">Lodges + Hotels</b-dropdown-item>
-        <b-dropdown-item href="#">Transfers</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Accommodation'})">Lodges + Hotels</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Transfers'})">Transfers</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item href="#">Vehicles</b-dropdown-item>
-        <b-dropdown-item href="#">Guides & Drivers</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Vehicles'})">Vehicles</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Guides'})">Guides & Drivers</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
       <!-- Right aligned nav items -->
@@ -24,7 +24,7 @@
         <b-form-input size="sm" class="mr-sm-2"  placeholder="Search"></b-form-input>
         <!-- <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button> -->
       </b-nav-form>
-      <b-button variant="success" style="max-height:40px; padding:0px 30px;font-size:15px;">+ Add Booking</b-button>
+      <b-button v-b-modal.new-booking variant="success" style="max-height:40px; padding:0px 30px;font-size:15px;">+ Add Booking</b-button>
       <b-nav-item-dropdown class="ml-4" right>
         <!-- Using 'button-content' slot -->
         <template v-slot:button-content>
@@ -37,12 +37,14 @@
       </b-nav-item-dropdown>
     </b-navbar-nav>
   </b-navbar>
+  <AddBooking/>
 </div>
 
 </template>
 
 <script>
 import Logout from '@/components/Logout'
+import AddBooking from '@/components/Bookings/Modals/AddBooking.vue'
 // // axios.defaults.headers.common.Authorization = authHeader()
 export default {
   data () {
@@ -54,7 +56,8 @@ export default {
     }
   },
   components: {
-    Logout
+    Logout,
+    AddBooking
   }
 }
 </script>

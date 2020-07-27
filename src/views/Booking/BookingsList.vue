@@ -1,6 +1,7 @@
 <template>
   <b-container class="bg-white text-left mt-5">
     <b-table
+      class="acc-tb"
       :striped="true"
       :outlined="true"
       :hover="true"
@@ -14,6 +15,7 @@
       responsive="sm"
       :per-page="perPage"
       :current-page="currentPage"
+      @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
     >
       <template v-slot:table-caption>
         <b-row>
@@ -23,10 +25,26 @@
         <b-row v-show="filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
           <b-col>
             <b>Status: </b>
-            <b-badge pill variant="primary" class="ml-2">Confirmed</b-badge>
-            <b-badge pill variant="white" class="bg-white ml-2">Tentative</b-badge>
+            <b-badge pill variant="primary" class="ml-2">All</b-badge>
+            <b-badge pill variant="light" class="bg-white ml-2">Confirmed</b-badge>
+            <b-badge pill variant="light" class="bg-white ml-2">Tentative</b-badge>
             <b-badge pill variant="light" class="bg-white ml-2">Cancelled</b-badge>
-
+          </b-col>
+          <b-col>
+            <b>Source: </b>
+            <b-badge pill variant="primary" class="ml-2">All</b-badge>
+            <b-badge pill variant="light" class="bg-white ml-2">Agent</b-badge>
+            <b-badge pill variant="light" class="bg-white ml-2">Direct</b-badge>
+          </b-col>
+        </b-row>
+      </template>
+       <template v-slot:row-details="row">
+        <b-row>
+          <b-col><strong>Source: </strong>{{row.item.source}} - <small class="text-primary">Agent Name</small> </b-col>
+          <b-col class="text-center">
+          <b-button pill size="sm" variant="info"  class="mr-4"  @click="$router.push({name: 'BookingDetails', params: { id: row.item.no }})">View</b-button>
+          <b-button pill size="sm" variant="warning"  class="mr-4">Edit</b-button>
+          <b-button pill size="sm" variant="danger" > Delete</b-button>
           </b-col>
         </b-row>
       </template>
@@ -42,6 +60,7 @@
       ></b-pagination>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     </div>
+    <a href="/bookings/1">Details</a>
   </b-container>
 </template>
 
