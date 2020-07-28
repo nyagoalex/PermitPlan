@@ -13,6 +13,10 @@ import { authHeader } from '@/services'
 
 import 'vue-search-select/dist/VueSearchSelect.css'
 
+import VueSweetalert2 from 'vue-sweetalert2'
+
+Vue.use(VueSweetalert2)
+
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Install BootstrapVue
 Vue.use(BootstrapVue)
@@ -37,25 +41,26 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    if (error.response.status) {
-      alert(error.response.status)
+    if (error.response) {
       switch (error.response.status) {
         case 400:
           // do something
           break
         case 401:
-          alert('session expired')
+          if (router.currentRoute.name !== 'Login') {
+            alert('session expired')
+          }
           router.replace({
             path: '/login',
             query: {
-              redirect: router.currentRoute.fullPath
+              returnUrl: router.currentRoute.fullPath
             }
           })
           break
         case 403:
           router.replace({
             path: '/login',
-            query: { redirect: router.currentRoute.fullPath }
+            query: { returnUrl: router.currentRoute.fullPath }
           })
           break
         case 404:
@@ -66,13 +71,15 @@ axios.interceptors.response.use(
             router.replace({
               path: '/login',
               query: {
-                redirect: router.currentRoute.fullPath
+                returnUrl: router.currentRoute.fullPath
               }
             })
           }, 1000)
       }
-      return Promise.reject(error.response)
+      return Promise.reject(error.response.data)
     }
+    alert(error) // network error
+    return Promise.reject(error)
   }
 )
 

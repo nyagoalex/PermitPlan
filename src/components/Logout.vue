@@ -4,6 +4,7 @@
 
 <script>
 import axios from 'axios'
+import router from '@/router'
 const apiUrl = process.env.VUE_APP_APIURL
 // axios.defaults.headers.common.Authorization = authHeader()
 export default {
@@ -22,10 +23,11 @@ export default {
 function logout () {
   console.log('logout')
   axios.post(apiUrl + '/auth/logout')
-    .finally(() => {
+    .finally(function () {
       localStorage.removeItem('user')
       delete axios.defaults.headers.common.Authorization
-      this.$router.push({ name: 'Login' })
+      alert(555)
+      router.push({ name: 'Login' })
     })
 }
 </script>

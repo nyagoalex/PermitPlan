@@ -22,7 +22,7 @@
                     <template v-slot:prepend>
                         <b-input-group-text><b-icon class="text-success" icon="person-fill"></b-icon></b-input-group-text>
                     </template>
-                    <b-form-input type="text" v-model="username" name="username" :class="{ 'is-invalid': submitted && !username }" placeholder="username">{{username}}</b-form-input>
+                    <b-form-input type="text" v-model="username" name="username" :class="{ 'is-invalid': submitted && !username }" placeholder="username"></b-form-input>
                     <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
                 </b-input-group>
                  <b-input-group class="mt-5">
@@ -39,9 +39,10 @@
                 </div>
                  <hr>
                 <div class="form-group">
+                 <b-overlay :show="loading" rounded opacity="0.6" spinner-small  class="d-inline-block">
                     <button class="btn btn-success"  style="padding:10px 45px;font-size:20px;" :disabled="loading">SignIn <b-icon icon="arrow-right"></b-icon></button>
+                    </b-overlay>
                     <div v-if="error" class="alert alert-danger">{{error}}</div>
-                    <b-icon v-show="loading" class="ml-2" icon="arrow-clockwise" animation="spin" font-scale="2"></b-icon>
                 </div>
                 <div class="text-center">Create new Company? <router-link to="/register">Sign Up</router-link></div>
             </form>
@@ -76,7 +77,7 @@ export default {
     }
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.$route.query.returnUrl || '/about'
+    this.returnUrl = this.$route.query.returnUrl || '/dashboard'
   },
   methods: {
     handleSubmit (e) {
@@ -91,22 +92,13 @@ export default {
         .then(user => {
           localStorage.setItem('user', JSON.stringify(user.data))
           axios.defaults.headers.common.Authorization = authHeader()
+          router.push(this.returnUrl)
           return user
         })
-        .then(
-          user => router.push(this.returnUrl),
-          error => {
-            this.error = error.response.data.message
-            this.loading = false
-            // remove user from local storage to log user out
-            localStorage.removeItem('user')
-          }
-        )
-        .catch(function (error) {
-          this.error = error.response
+        .catch(error => {
+          localStorage.removeItem('user') // remove user from local storage to log user out
           this.loading = false
-          // remove user from local storage to log user out
-          localStorage.removeItem('user')
+          this.error = error.message
         })
     }
   }

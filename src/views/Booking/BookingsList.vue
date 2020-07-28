@@ -73,7 +73,7 @@ export default {
     return {
       sortBy: 'age',
       sortDesc: false,
-      perPage: 6,
+      perPage: 2,
       currentPage: 1,
       filters: false,
       fields: [

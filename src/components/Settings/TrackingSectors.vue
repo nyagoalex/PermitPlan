@@ -1,7 +1,7 @@
 <template>
       <b-container fluid="md">
       <label class="float-left"> <strong> TRACKING & HABITUATION SECTORS </strong></label>
-      <b-button pill variant="outline-success" class="float-right"><b-icon icon="plus-circle"></b-icon> add sector</b-button>
+      <b-button pill variant="outline-success" class="float-right" v-b-modal.new-sector><b-icon icon="plus-circle"></b-icon> add sector</b-button>
       <br><hr>
         <div class="row pl-3" >
           <b-col v-for="sector in sectors" v-bind:key="sector.id" md='3' class="m-4 user_card" style="background-color:#F5F9F7;">
@@ -14,41 +14,55 @@
             </b-row>
             <b-row >
              <b-col class="p-0" ><b-button block variant="outline-success" style="height: 2em;"> <b-icon icon="pen"></b-icon></b-button></b-col>
-             <b-col class="p-0"><b-button block variant="outline-danger" style="height: 2em;"> <b-icon icon="trash"></b-icon></b-button></b-col>
+             <b-col class="p-0"><b-button block variant="outline-danger" @click="deleteSector(sector.id)" style="height: 2em;"> <b-icon icon="trash"></b-icon></b-button></b-col>
             </b-row>
           </b-col>
         </div>
-        <b-pagination align="center"
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
+        <b-pagination align="right" pills
+        v-model="current_page"
+        :total-rows="total"
+        :per-page="per_page"
+        last-number
+        @input="getSectors(current_page)"
       ></b-pagination>
+      <AddSector/>
       </b-container>
 </template>
 
 <script>
-const faker = require('faker')
+import axios from 'axios'
+import AddSector from '@/components/Modals/AddSector.vue'
+
+const apiUrl = process.env.VUE_APP_APIURL
 export default {
   name: 'sectors',
   data () {
     return {
       sectors: this.getSectors(),
-      currentPage: 1,
-      perPage: 5,
-      rows: 10
+      current_page: process.env.VUE_APP_CURRENTPAGE,
+      per_page: process.env.VUE_APP_PERPAGE,
+      total: process.env.VUE_APP_TOTALROWS
     }
   },
+  components: {
+    AddSector
+  },
   methods: {
-    getSectors () {
-      const s = []
-      for (let i = 1; i < 10; i++) {
-        const v = { id: i, name: faker.random.word(), national_park: faker.lorem.words(), active: faker.random.boolean() }
-        s.push(v)
-      }
-      return s
+    getSectors (page = 1) {
+      this.$swal('Hello Vue world!!!')
+      axios.get(apiUrl + '/sectors?page=' + page).then(sectors => {
+        this.sectors = sectors.data.data
+        const meta = sectors.data.meta
+        this.current_page = meta.current_page
+        this.per_page = meta.per_page
+        this.total = meta.total
+      })
+    },
+    deleteSector (id) {
+      axios.delete(apiUrl + '/sectors/' + id).then(() => {
+        this.sectors = this.sectors.filter(item => item.id !== id)
+      })
     }
   }
 }
-
 </script>
