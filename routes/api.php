@@ -65,5 +65,62 @@ Route::group(
                 Route::patch('/{permit_type_name}', 'PermitTypeController@update')->name('permit_type.update');
             }
         );
+
+        Route::group(
+            ['prefix' => 'agents'],
+            function () {
+                Route::get('/', 'AgentController@index')->name('agent.all');
+                Route::get('/{agent_id}', 'AgentController@show')->name('agent.show');
+                Route::post('/', 'AgentController@store')->name('agent.create');
+                Route::patch('/{agent_id}', 'AgentController@update')->name('agent.update');
+                Route::delete('/{agent_id}', 'AgentController@destroy')->name('agent.delete');
+                Route::delete('/{agent_id}/deactivate', 'AgentController@deactivate')->name('agent.deactivate');
+                Route::post('/{agent_id}/activate', 'AgentController@activate')->name('agent.activate');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'guides'],
+            function () {
+                Route::get('/', 'GuideController@index')->name('guide.all');
+                Route::get('/{guide_id}', 'GuideController@show')->name('guide.show');
+                Route::post('/', 'GuideController@store')->name('guide.create');
+                Route::patch('/{guide_id}', 'GuideController@update')->name('guide.update');
+                Route::delete('/{guide_id}', 'GuideController@destroy')->name('guide.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'vehicles'],
+            function () {
+                Route::get('/', 'VehicleController@index')->name('vehicle.all');
+                Route::get('/{vehicle_id}', 'VehicleController@show')->name('vehicle.show');
+                Route::post('/', 'VehicleController@store')->name('vehicle.create');
+                Route::patch('/{vehicle_id}', 'VehicleController@update')->name('vehicle.update');
+                Route::delete('/{vehicle_id}', 'VehicleController@destroy')->name('vehicle.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'road-transfers'],
+            function () {
+                Route::get('/', 'RoadTransferController@index')->name('road_transfer.all');
+                Route::get('/{road_transfer_id}', 'RoadTransferController@show')->name('road_transfer.show');
+                Route::post('/', 'RoadTransferController@store')->name('road_transfer.create');
+                Route::patch('/{road_transfer_id}', 'RoadTransferController@update')->name('road_transfer.update');
+                Route::delete('/{road_transfer_id}', 'RoadTransferController@destroy')->name('road_transfer.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'flight-transfers'],
+            function () {
+                Route::get('/', 'FlightTransferController@index')->name('flight_transfer.all');
+                Route::get('/{flight_transfer_id}', 'FlightTransferController@show')->name('flight_transfer.show');
+                Route::post('/', 'FlightTransferController@store')->name('flight_transfer.create');
+                Route::patch('/{flight_transfer_id}', 'FlightTransferController@update')->name('flight_transfer.update');
+                Route::delete('/{flight_transfer_id}', 'FlightTransferController@destroy')->name('flight_transfer.delete');
+            }
+        );
     }
 );

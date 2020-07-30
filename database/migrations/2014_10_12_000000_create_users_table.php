@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
 
-                $table->increments('id')->unsigned();
+                $table->uuid('id')->primary();
                 $table->string('first_name', 20);
                 $table->string('last_name', 20);
                 $table->string('username', 10)->unique();
@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
                 $table->string('phone', 30)->unique();
                 $table->timestamp('last_login')->nullable();
                 $table->string('password', 120);
-                $table->enum('status', ['active','inactive'])->default('inactive');
+                $table->boolean('active')->default(false);
                 $table->date("last_pass_reset_date")->nullable();
                 //will keep incrementing
                 $table->integer("failed_login_count")->unsigned()->default(0); //0 impplies actual

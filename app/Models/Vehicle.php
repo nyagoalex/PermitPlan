@@ -5,15 +5,16 @@ namespace App\Models;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class Sector extends Model
+class Vehicle extends Model
 {
     use UsesUuid;
-    /**
+
+   /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        "name", "national_park","tracking_activity"
-    ];
+        'reg_no', 'color', 'no_of_seats', 'type', 'status', 'ownership', 'cost_per_day', 'code'
+    ]; 
 }

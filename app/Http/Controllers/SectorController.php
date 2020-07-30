@@ -93,9 +93,9 @@ class SectorController extends Controller
         $request = Request();
 
         return $request->validate([
-            'name' => "required|alpha_dash|min:3|max:100",
-            'national_park' => "required|alpha_dash|min:3|max:200",
-            'tracking_activity' => "required|alpha_dash|min:3|max:250",
+            'name' => "required|string|min:3|max:100",
+            'national_park' => "required|string|min:3|max:200",
+            'tracking_activity' => "required|string|min:3|max:250",
         ]);
     }
 }

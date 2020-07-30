@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectorsTable extends Migration
+class CreateAgentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateSectorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sectors', function (Blueprint $table) {
+        Schema::create('agents', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string("name", 250);
-            $table->string("national_park", 250);
-            $table->string("tracking_activity", 250);
+            $table->string("country", 250);
+            $table->string("city", 250);
+            $table->string("email", 250)->nullable();
+            $table->string("phone", 30)->unique();
+            $table->boolean("active")->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateSectorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sectors');
+        Schema::dropIfExists('agents');
     }
 }

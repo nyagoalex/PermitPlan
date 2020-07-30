@@ -14,7 +14,7 @@ class CreatePermitTypesTable extends Migration
     public function up()
     {
         Schema::create('permit_types', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name', 45)->unique();
             $table->float('east_african_cost', 9, 2)->default(0);
             $table->float('foreign_resident_cost', 9, 2)->default(0);

@@ -5,25 +5,25 @@ namespace App\Models;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class PermitType extends Model
+class Agent extends Model
 {
     use UsesUuid;
-    /**
+
+     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'east_african_cost', 'foreign_resident_cost', 'non_resident_cost', 'ugandan_cost'
+        'name','country','city', 'email', 'phone'
     ];
 
-    /**
-     * The attributes that should be cast.
+      /**
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'created_at' => 'datetime:D, d M Y',
-        'updated_at' => 'datetime:D, d M Y',
+        'active' => 'boolean',
     ];
 }
