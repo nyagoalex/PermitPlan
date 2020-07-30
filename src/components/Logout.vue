@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import router from '@/router'
-const apiUrl = process.env.VUE_APP_APIURL
-// axios.defaults.headers.common.Authorization = authHeader()
+export const Logout = {
+  logout
+}
 export default {
   name: 'Logout',
   // isLoggedIn: true,
@@ -15,19 +15,21 @@ export default {
   },
   methods: {
     logout: function () {
-      logout()
+      const http = this.$http
+      logout(http)
     }
   }
 }
 
-function logout () {
+function logout (http) {
   console.log('logout')
-  axios.post(apiUrl + '/auth/logout')
+  http.post('/auth/logout')
     .finally(function () {
       localStorage.removeItem('user')
-      delete axios.defaults.headers.common.Authorization
-      alert(555)
-      router.push({ name: 'Login' })
+      delete http.defaults.headers.common.Authorization
+      if (router.currentRoute.name !== 'Login') {
+        router.push({ name: 'Login' })
+      }
     })
 }
 </script>

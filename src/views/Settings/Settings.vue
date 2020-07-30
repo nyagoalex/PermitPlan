@@ -53,9 +53,6 @@ import TrackingSectors from '@/components/Settings/TrackingSectors.vue'
 import PermitCosts from '@/components/Settings/PermitCosts.vue'
 import DepositExpiry from '@/components/Settings/DepositExpiry.vue'
 
-import axios from 'axios'
-
-const apiUrl = process.env.VUE_APP_APIURL
 export default {
   name: 'company',
   data () {
@@ -72,7 +69,7 @@ export default {
   },
   methods: {
     getCosts () {
-      axios.get(apiUrl + '/permit-types')
+      this.$http.get('/permit-types')
         .then(permitCosts => {
           this.permit_costs = permitCosts.data.data
           // // this.permit_costs = {
@@ -100,18 +97,6 @@ export default {
     })
   }
 }
-
-// function getCosts () {
-//   const permitCosts = {
-//     gorilla_permits: { id: 1, uganda: 11, east_africa: 12, foreign_residents: 13, non_residents: 14 },
-//     chimp_permits: { id: 2, uganda: 21, east_africa: 22, foreign_residents: 23, non_residents: 24 },
-//     gorilla_habituation: { id: 3, uganda: 31, east_africa: 32, foreign_residents: 33, non_residents: 34 },
-//     chimp_habituation: { id: 4, uganda: 41, east_africa: 42, foreign_residents: 43, non_residents: 44 }
-//   }
-
-// console.log(222)
-// return permitCosts
-// }
 </script>
 
 <style  lang="scss">

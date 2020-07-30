@@ -1,10 +1,11 @@
 <template>
-    <b-modal  id="new-sector" title="Add Sector">
+    <b-modal  id="new-sector" :title="`${mode} Sector`"
+>
         <form>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="">Sector Name</label>
+                        <label for="">Sector Name  {{mode}}</label>
                         <input class="form-control" type="text" v-model="sector.name" placeholder="e.g Buhoma Sector" :class="{ 'is-invalid': errors.name}">
                         <ul class="list-unstyled invalid-feedback" v-if="errors.name">
                           <li v-for="(error) in errors.name" :key="error">{{ error }}</li>
@@ -34,7 +35,7 @@
         <template v-slot:modal-footer="{ cancel }">
             <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
             <b-overlay :show="loading" rounded opacity="0.6" spinner-small  class="d-inline-block">
-            <b-button size="sm" variant="success" :disabled="loading" @click="addSectors">Add Sector</b-button>
+            <b-button size="sm" variant="success" :disabled="loading" @click="(`${mode}` == 'create') ? addSectors() : updateSectors()" >{{(`${mode}` == 'create') ? 'Add' : 'Update' }} Sector </b-button>
             </b-overlay>
 
         </template>
@@ -42,40 +43,51 @@
 </template>
 
 <script>
-import axios from 'axios'
-
-const apiUrl = process.env.VUE_APP_APIURL
 
 export default {
   name: 'company',
   data () {
     return {
-      sector: this.resetModal(),
       loading: false,
       errors: {}
     }
+  },
+  props: {
+    mode: String,
+    sector: Object
   },
   methods: {
     addSectors () {
       this.loading = true
       this.errors = {}
 
-      axios.post(apiUrl + '/sectors', this.sector)
+      this.$http.post('/sectors', this.sector)
         .then(response => {
-          alert(' successfully updated')
-          this.sector = this.resetModal()
+          this.alertAddSuccess()
           this.$parent.getSectors()
           this.$bvModal.hide('new-sector')
         })
-        .catch(errors => { this.errors = errors.errors })
+        .catch(errors => {
+          this.errors = errors.errors
+          this.toastError(errors.message)
+        })
         .finally(() => { this.loading = false })
     },
-    resetModal () {
-      return {
-        name: '',
-        national_park: '',
-        tracking_activity: ''
-      }
+    updateSectors () {
+      this.loading = true
+      this.errors = {}
+
+      this.$http.patch('/sectors/' + this.sector.id, this.sector)
+        .then(response => {
+          this.toastSuccess('Successfully Updated')
+          this.$parent.getSectors()
+          this.$bvModal.hide('new-sector')
+        })
+        .catch(errors => {
+          this.errors = errors.errors
+          this.toastError(errors.message)
+        })
+        .finally(() => { this.loading = false })
     }
   }
 }

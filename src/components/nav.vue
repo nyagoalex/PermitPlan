@@ -45,7 +45,6 @@
 <script>
 import Logout from '@/components/Logout'
 import AddBooking from '@/components/Bookings/Modals/AddBooking.vue'
-// // axios.defaults.headers.common.Authorization = authHeader()
 export default {
   data () {
     return {

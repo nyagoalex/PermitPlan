@@ -15,6 +15,8 @@ import 'vue-search-select/dist/VueSearchSelect.css'
 
 import VueSweetalert2 from 'vue-sweetalert2'
 
+import myMixin from '@/mixins/mixin.js'
+
 Vue.use(VueSweetalert2)
 
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -24,15 +26,19 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 Vue.use(Vuelidate)
-Vue.use(axios)
+
 Vue.config.productionTip = false
 
 // axios.defaults.baseURL = process.env.VUE_APP_APIURL
-axios.defaults.headers.common.Authorization = authHeader()
+// this.$http.defaults.headers.common.Authorization = authHeader()
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.common.Authorization = authHeader()
+const baseAxios = axios.create({
+  baseURL: process.env.VUE_APP_APIURL
+})
 
-axios.interceptors.response.use(
+baseAxios.interceptors.response.use(
   response => {
     if (response.status === 200 || response.status === 201) {
       return Promise.resolve(response)
@@ -78,11 +84,20 @@ axios.interceptors.response.use(
       }
       return Promise.reject(error.response.data)
     }
-    alert(error) // network error
+    Vue.swal.fire({ // network error
+      icon: 'error',
+      title: 'Oops...',
+      text: 'network error!',
+      footer: '<a href>Why do I have this issue?</a>'
+    })
     return Promise.reject(error)
   }
 )
+Vue.prototype.$http = baseAxios
 
+Vue.mixin({
+  mixins: [myMixin]
+})
 new Vue({
   created () {
     console.log('Component is created')

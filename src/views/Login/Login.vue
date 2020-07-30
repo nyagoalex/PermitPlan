@@ -54,8 +54,6 @@
 import router from '@/router'
 import { authHeader } from '@/services'
 import { Logout } from '@/components/Logout.vue'
-import axios from 'axios'
-const apiUrl = process.env.VUE_APP_APIURL
 
 export default {
   data () {
@@ -73,7 +71,8 @@ export default {
     console.log('login created')
     const loggedIn = localStorage.getItem('user')
     if (loggedIn) {
-      Logout()
+      const http = this.$http
+      Logout.logout(http)
     }
 
     // get return url from route parameters or default to '/'
@@ -85,13 +84,13 @@ export default {
       const { username, password } = this
 
       this.loading = true
-      axios.post(apiUrl + '/auth/token', {
+      this.$http.post('/auth/token', {
         username: username,
         password: password
       })
         .then(user => {
           localStorage.setItem('user', JSON.stringify(user.data))
-          axios.defaults.headers.common.Authorization = authHeader()
+          this.$http.defaults.headers.common.Authorization = authHeader()
           router.push(this.returnUrl)
           return user
         })

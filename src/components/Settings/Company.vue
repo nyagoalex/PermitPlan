@@ -85,9 +85,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
-const apiUrl = process.env.VUE_APP_APIURL
 
 export default {
   name: 'company',
@@ -110,17 +107,20 @@ export default {
   },
   methods: {
     getCompanyDetails () {
-      axios.get(apiUrl + '/settings').then(settings => { this.company = settings.data.data })
+      this.$http.get('/settings').then(settings => { this.company = settings.data.data })
     },
     updateCompany () {
       this.loading = true
       this.errors = {}
-      axios.patch(apiUrl + '/settings', this.company)
+      this.$http.patch('/settings', this.company)
         .then(response => {
           this.company = response.data.data
-          alert(' successfully updated')
+          this.toastSuccess('Company Details Successfully Updated')
         })
-        .catch(errors => { this.errors = errors.errors })
+        .catch(errors => {
+          this.errors = errors.errors
+          this.toastError(errors.message)
+        })
         .finally(() => { this.loading = false })
     }
   }

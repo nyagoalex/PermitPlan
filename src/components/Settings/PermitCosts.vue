@@ -57,9 +57,7 @@
 </template>
 
 <script>
-import axios from 'axios'
 
-const apiUrl = process.env.VUE_APP_APIURL
 export default {
   data () {
     return {
@@ -76,12 +74,15 @@ export default {
     updateCost: function () {
       this.loading = true
       this.errors = {}
-      axios.patch(apiUrl + '/permit-types/' + this.costs.name, this.costs)
+      this.$http.patch('/permit-types/' + this.costs.name, this.costs)
         .then(response => {
           this.costs = response.data.data
-          alert(this.costs.name + ' successfully updated')
+          this.toastSuccess(this.costs.name + ' Successfully Updated')
         })
-        .catch(errors => { this.errors = errors.errors })
+        .catch(errors => {
+          this.errors = errors.errors
+          this.toastError(errors.message)
+        })
         .finally(() => { this.loading = false })
     }
   }

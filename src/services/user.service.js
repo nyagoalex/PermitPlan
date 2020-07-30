@@ -1,16 +1,15 @@
 
 // import config from 'config'
 import { authHeader } from '@/services'
-import axios from 'axios'
 
 export const userService = {
   login,
   logout,
   getAll
 }
-const apiUrl = process.env.VUE_APP_APIURL
+
 function login (username, password) {
-  axios.post(apiUrl + '/auth/token', {
+  this.$http.post('/auth/token', {
     username: username,
     password: password
   })
@@ -34,7 +33,7 @@ function getAll () {
     method: 'GET',
     headers: authHeader()
   }
-  return fetch(`${apiUrl}/users`, requestOptions).then(handleResponse)
+  return fetch(this.$apiURL + '/users', requestOptions).then(handleResponse)
   // ${config.apiUrl}
 }
 
