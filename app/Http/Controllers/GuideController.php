@@ -21,8 +21,17 @@ class GuideController extends Controller
     {
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
-        $order_column = $this->getOrderColumn("first_name");
-        $guide = Guide::orderBy($order_column, $sort)->paginate($per_page);
+        $order_column = $this->getOrderColumn("experience_since");
+        
+        $query = Guide::query();
+        $query->when(request()->filled('status'), function ($query){
+            return $query->whereStatus(request('status'));
+        });
+        $query->when(request()->filled('contract_basis'), function ($query){
+            return $query->whereContractBasis(request('contract_basis'));
+        });
+        $guide = $query->orderBy($order_column, $sort)->paginate($per_page);
+        
         
         return GuideResource::collection($guide);
     }
@@ -38,6 +47,7 @@ class GuideController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $this->validateData();
+        $data['code'] = uniqid();
         $guide = Guide::create($data);
         DB::commit();
         return new GuideResource($guide);
@@ -91,11 +101,10 @@ class GuideController extends Controller
     {
         $request = Request();
         $today = today()->format('Y-m-d');
-        $unique_code = $request->isMethod('post') ? 'unique:guides' : "unique:guides,code,". $request->route('guide_id');
         return $request->validate([
             'first_name' => "required|string|min:3|max:250",
             'last_name' => "required|string|min:3|max:250",
-            'dob' => "required|date_format:Y-m-d|before:$today",
+            'dob' => "required|date_format:Y-m-d|before:experience_since",
             'experience_since' => "required|date_format:Y-m-d|before_or_equal:$today",
             'email' => "nullable|email:filter",
             "phone" => ['required', new PhoneValidator],
@@ -103,8 +112,7 @@ class GuideController extends Controller
             'status' => 'required|in:working,terminated,probation',
             'cost_per_day' => ['required', 'numeric', 'min:0', 'max:999999999999999999999'],
             'parks_experience' => ['nullable', 'json'],
-            'vehicle_types_expiience' => ['nullable', 'json'],
-            'code' => "required|alpha_dash|min:2|max:150|".$unique_code
+            'vehicle_types_expiience' => ['nullable', 'json']
         ]);
     }
 }

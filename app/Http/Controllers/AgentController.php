@@ -24,7 +24,12 @@ class AgentController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("name");
-        $agents = Agent::orderBy($order_column, $sort)->paginate($per_page);
+        $query  = Agent::query();
+        $query->when(request()->filled('active'), function ($query){
+            $active = (request('active') === 'true') ? 1 : 0;
+            return $query->whereActive($active);
+        });
+        $agents = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         return AgentResource::collection($agents);
     }

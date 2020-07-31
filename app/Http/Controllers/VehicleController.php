@@ -21,7 +21,14 @@ class VehicleController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("code");
-        $vehicle = Vehicle::orderBy($order_column, $sort)->paginate($per_page);
+        $query = Vehicle::query();
+        $query->when(request()->filled('status'), function ($query){
+            return $query->whereStatus(request('status'));
+        });
+        $query->when(request()->filled('ownership'), function ($query){
+            return $query->whereOwnership(request('ownership'));
+        });
+        $vehicle = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         return VehicleResource::collection($vehicle);
     }

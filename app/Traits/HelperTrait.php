@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 
 trait HelperTrait
@@ -22,5 +23,26 @@ trait HelperTrait
     {
         $request = Request();
        return !($request->input('orderby')) ? $column : $request->input('orderby');
+    }
+
+
+    function getAge($dob)
+    {
+        $interval = Carbon::parse($dob)->diffAsCarbonInterval(Carbon::now(), false);
+        if ($interval->y >= 1)
+            $age = $this->pluralize($interval->y, 'year');
+        elseif ($interval->m >= 1)
+            $age = $this->pluralize($interval->m, 'month');
+        elseif ($interval->d >= 1)
+            $age = $this->pluralize($interval->d, 'day');
+        else 
+            $age = "0 years";
+        
+        return $age;
+    }
+
+    function pluralize ($count, $text)
+    {
+        return $count.' '.(($count ==1) ? $text : $text."s");
     }
 }
