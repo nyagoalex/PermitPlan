@@ -38,6 +38,11 @@ export default {
 .b-table-details {
   background-color: #d4ebf2 !important;
 }
+.small-time {
+  font-style: italic;
+  font-weight: bold;
+  font-size: .7em;
+}
 
 // #nav {
 //   padding: 30px;

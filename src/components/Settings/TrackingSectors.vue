@@ -67,16 +67,6 @@ export default {
         }
       })
     },
-    updateSector (id) {
-      this.ConfirmDelete().then((result) => {
-        if (result.value) {
-          this.$http.delete('/sectors/' + id).then(() => {
-            this.sectors = this.sectors.filter(item => item.id !== id)
-            this.$swal.fire('Deleted!', 'Sector has been deleted.', 'success')
-          })
-        }
-      })
-    },
     newSectorModal () {
       this.sector = this.resetModal()
       this.mode = 'create'

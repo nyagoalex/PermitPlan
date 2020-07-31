@@ -1,104 +1,191 @@
 <template>
   <div class="bg-white text-left mt-3 mx-4" >
     <b-table
+      class="acc-tb"
       :striped="true"
       :outlined="true"
       :hover="true"
       :no-border-collapse="true"
-      :items="items"
+      :items="agents"
       :fields="fields"
       caption-top
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
       sort-icon-left
       responsive="sm"
-      :per-page="perPage"
-      :current-page="currentPage"
+      :per-page="per_page"
+      :current-page="current_page"
+      @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)"
     >
       <template v-slot:table-caption>
         <b-row>
           <b-col><span class='font-weight-bold'>Agents</span></b-col>
-          <b-col class='text-center'><b-button v-b-modal.new-agent size="sm"  variant="success"><b-icon icon="plus"></b-icon> Add Agent</b-button></b-col>
-          <b-col><b-button @click="showfilters" class='float-right' variant="link"><b-icon icon="funnel"></b-icon> show filters</b-button></b-col>
+          <b-col class='text-center'><b-button @click="newAgentModal" size="sm"  variant="success"><b-icon icon="plus"></b-icon> Add Agent</b-button></b-col>
+          <b-col><b-button :pressed.sync="show_filters" class='float-right' variant="link"><b-icon icon="funnel"></b-icon> show filters</b-button></b-col>
         </b-row>
-        <b-row v-show="filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
+        <b-row v-show="show_filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
           <b-col>
             <b>Status: </b>
-            <b-badge pill variant="primary" class="ml-2">All</b-badge>
-            <b-badge pill variant="light" class="bg-white ml-2">Active</b-badge>
-            <b-badge pill variant="light" class="bg-white ml-2">Inactive</b-badge>
+            <b-badge pill :variant="`${(filters.active === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === null, 'ml-2': true }" @click="filters.active = null">All</b-badge>
+            <b-badge pill :variant="`${(filters.active === true) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === true, 'ml-2': true }" @click="filters.active = true">Active</b-badge>
+            <b-badge pill :variant="`${(filters.active === false) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === false, 'ml-2': true }" @click="filters.active = false">Inactive</b-badge>
 
           </b-col>
         </b-row>
       </template>
-      <template v-slot:cell(action)="row">
-        <b-button pill size="sm" variant="outline-info" @click="info(row.item, row.index, $event.target)" class="mr-2">
-          Edit
-        </b-button>
-        <b-button pill size="sm" class="float-right" variant="outline-danger" @click="row.toggleDetails"> Delete
-        </b-button>
+      <template v-slot:cell(#)="row">
+        {{ row.index + 1 }}
+      </template>
+      <template v-slot:cell(status)="row">
+         <b-badge pill variant="success" v-if="row.item.active" >Active</b-badge>
+        <b-badge pill variant="danger" v-else>Inactive</b-badge>
+      </template>
+      <template v-slot:row-details="row">
+        <b-row>
+          <b-col><strong>Country: </strong> {{row.item.country}}</b-col>
+          <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
+          <b-col class="small-time">Added on: {{row.item.created_at}}<br>  Edited At: {{row.item.updated_at}}</b-col>
+          <b-col class="text-center">
+          <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.index)"  class="mr-4">Deactivate</b-button>
+          <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.index)"  class="mr-4">Activate</b-button>
+          <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)"  class="mr-4">Edit</b-button>
+          <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
+          </b-col>
+        </b-row>
       </template>
     </b-table>
     <div>
       <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
       <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
       <b-pagination class="float-right"
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
+        v-model="current_page"
+        :total-rows="total"
+        :per-page="per_page"
+        last-number
+        @input="getAgents(current_page)"
       ></b-pagination>
-    <p class="mt-3">Current Page: {{ currentPage }}</p>
     </div>
-    <AddAgent/>
+    <AddAgent v-bind:agent="agent" v-bind:mode="mode"/>
   </div>
 </template>
 <script>
 import AddAgent from '@/components/Modals/AddAgent.vue'
 
-const faker = require('faker')
-
 export default {
   data () {
     return {
-      sortBy: 'age',
+      sortBy: 'code',
       sortDesc: false,
-      perPage: 6,
-      currentPage: 1,
-      filters: false,
+      show_filters: false,
+      filters: {
+        active: null
+      },
       fields: [
-        { key: 'no', sortable: false },
-        { key: 'ID', sortable: true },
+        { key: '#', sortable: false },
+        { key: 'code', sortable: true },
         { key: 'name', sortable: true },
-        { key: 'location', sortable: true },
-        { key: 'email', sortable: true },
-        { key: 'contact', sortable: true },
+        { key: 'city', sortable: true },
+        { key: 'phone', sortable: true },
         { key: 'no_of_booking', sortable: true },
-        { key: 'status' },
-        { key: 'action', sortable: true }
+        { key: 'status' }
       ],
-      items: this.fakeBookings()
+      agents: [],
+      agent: this.resetModal(),
+      mode: '',
+      current_page: process.env.VUE_APP_CURRENTPAGE,
+      per_page: process.env.VUE_APP_PERPAGE,
+      total: process.env.VUE_APP_TOTALROWS
     }
   },
   components: {
     AddAgent
   },
-  computed: {
-    rows () {
-      return this.items.length
+  methods: {
+    getAgents (page = 1) {
+      const filters = this.filters
+      filters.page = page
+      this.$http.get('/agents', { params: filters }).then(agents => {
+        this.agents = agents.data.data
+        const meta = agents.data.meta
+        this.current_page = meta.current_page
+        this.per_page = meta.per_page
+        this.total = meta.total
+      })
+    },
+    deleteAgent (id) {
+      this.ConfirmDelete().then((result) => {
+        if (result.value) {
+          this.$http.delete('/agents/' + id).then(() => {
+            this.agents = this.agents.filter(item => item.id !== id)
+            this.$swal.fire('Deleted!', 'Agent has been deleted.', 'success')
+          })
+        }
+      })
+    },
+    deactivateAgent (index) {
+      const id = this.agents[index].id
+      this.$swal.fire({
+        title: 'Deactivate Agent?',
+        text: 'Are you sure you want to perform this action',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, deactivate it!',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.value) {
+          this.$http.delete('/agents/' + id + '/deactivate').then(() => {
+            this.$set(this.agents[index], 'active', false)
+            this.$swal.fire('Deactivated!', 'Agent has been deactivated.', 'success')
+          })
+        }
+      })
+    },
+    activateAgent (index) {
+      const id = this.agents[index].id
+      this.$swal.fire({
+        title: 'Activate Agent?',
+        text: 'Are you sure you want to perform this action',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, activate it!',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.value) {
+          this.$http.post('/agents/' + id + '/activate').then(() => {
+            this.$set(this.agents[index], 'active', true)
+            this.$swal.fire('Activated!', 'Agent has been activated.', 'success')
+          })
+        }
+      })
+    },
+    newAgentModal () {
+      this.agent = this.resetModal()
+      this.mode = 'create'
+      this.$bvModal.show('new-agent')
+    },
+    editAgentModal (agent) {
+      this.agent = agent
+      this.mode = 'update'
+      this.$bvModal.show('new-agent')
+    },
+    resetModal () {
+      return {
+        name: '',
+        code: '',
+        country: '',
+        city: '',
+        phone: '',
+        no_of_booking: '',
+        email: ''
+      }
     }
   },
-  methods: {
-    showfilters () {
-      this.filters = !this.filters
-    },
-    fakeBookings () {
-      const s = []
-      for (let i = 1; i < 20; i++) {
-        const v = { no: i, ID: faker.random.number(), name: faker.name.lastName(), location: faker.address.state(), email: faker.internet.email(), contact: faker.phone.phoneNumber(), no_of_booking: faker.random.number(), status: faker.random.arrayElement(['active', 'inactive']) }
-        s.push(v)
-      }
-      return s
+  mounted () {
+    this.getAgents()
+  },
+  watch: {
+    'filters.active': function (val, oldVal) {
+      this.getAgents()
     }
   }
 }
