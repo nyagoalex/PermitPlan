@@ -14,6 +14,16 @@ class RoadTransferResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id, 
+            'name' => $this->name, 
+            'starting_point' => $this->starting_point,
+            'destination' => $this->destination,
+            'vehicle_id' => $this->vehicle_id,
+            'cost_per_person' => $this->cost_per_person,
+            'est_time' => $this->est_time,
+            'distance' => $this->distance,
+            'vehicle' => $this->vehicle->only('code', 'type')
+        ];
     }
 }

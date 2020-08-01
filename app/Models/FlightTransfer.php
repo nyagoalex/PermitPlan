@@ -17,4 +17,19 @@ class FlightTransfer extends Model
     protected $fillable = [
         'name', 'starting_point', 'destination', 'airline_operator', 'cost_per_person', 'distance', 'est_time', 'departure_time', 'arrival_time', 'flight_type'
     ];
+
+    public function getEstTimeAttribute($value)
+    {
+        return substr($value,0,-3); // remove micro second from time
+    }
+
+    public function getArrivalTimeAttribute($value)
+    {
+        return substr($value,0,-3); // remove micro second from time
+    }
+
+    public function getDepartureTimeAttribute($value)
+    {
+        return substr($value,0,-3); // remove micro second from time
+    }
 }
