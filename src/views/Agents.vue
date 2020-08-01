@@ -13,8 +13,6 @@
       :sort-desc.sync="sortDesc"
       sort-icon-left
       responsive="sm"
-      :per-page="per_page"
-      :current-page="current_page"
       @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)"
     >
       <template v-slot:table-caption>
