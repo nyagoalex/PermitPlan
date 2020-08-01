@@ -67,7 +67,6 @@
         last-number
         @input="getGuides(current_page)"
       ></b-pagination>
-    <p class="mt-3">Current Page: {{ guides }}</p>
     </div>
     <AddGuide/>
     <GuideDetails v-bind:guide="guide"/>
@@ -80,7 +79,7 @@ import GuideDetails from '@/components/Modals/GuideDetails.vue'
 export default {
   data () {
     return {
-      sortBy: 'experience',
+      sortBy: 'experience_since',
       sortDesc: false,
       filters: {
         status: null,

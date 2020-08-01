@@ -56,7 +56,7 @@
           <b-col><strong>Color: </strong> <b-badge pill size="sm" variant="success"> {{row.item.color}} </b-badge></b-col>
           <b-col class="text-center">
             <b-button pill size="sm" variant="warning" @click="editVehicleModal(row.item)"  class="mr-4">Edit</b-button>
-            <b-button pill size="sm" variant="danger" > Delete</b-button>
+            <b-button pill size="sm" variant="danger" @click="deleteVehicle(row.item.id)"> Delete</b-button>
           </b-col>
         </b-row>
       </template>
@@ -128,7 +128,7 @@ export default {
         if (result.value) {
           this.$http.delete('/vehicles/' + id).then(() => {
             this.vehicles = this.vehicles.filter(item => item.id !== id)
-            this.$swal.fire('Deleted!', 'Vehicles has been deleted.', 'success')
+            this.$swal.fire('Deleted!', 'Vehicle has been deleted.', 'success')
           })
         }
       })
