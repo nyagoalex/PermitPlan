@@ -29,7 +29,7 @@ class GuideResource extends JsonResource
             "status" => $this->status,
             "cost_per_day" => $this->cost_per_day,
             "parks_experience" => $this->parks_experience,
-            "vehicle_types_expiience" => $this->vehicle_types_expiience,
+            "vehicle_types_experience" => $this->vehicle_types_experience,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             "full_name" => $this->full_name,

@@ -26,7 +26,7 @@ class CreateGuidesTable extends Migration
             $table->enum("status", ['working', 'terminated', 'probation'])->default('probation');
             $table->decimal("cost_per_day",  23, 2)->default(0);
             $table->json("parks_experience")->nullable();
-            $table->json("vehicle_types_expiience")->nullable();
+            $table->json("vehicle_types_experience")->nullable();
             $table->timestamps();
         });
     }

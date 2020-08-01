@@ -47,7 +47,7 @@ class GuideController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $this->validateData();
-        $data['code'] = uniqid();
+        $data['code'] = "GD".sprintf('%04d', Guide::count() + 1);
         $guide = Guide::create($data);
         DB::commit();
         return new GuideResource($guide);
@@ -111,8 +111,8 @@ class GuideController extends Controller
             'contract_basis' => 'required|in:full_time,freelancer',
             'status' => 'required|in:working,terminated,probation',
             'cost_per_day' => ['required', 'numeric', 'min:0', 'max:999999999999999999999'],
-            'parks_experience' => ['nullable', 'json'],
-            'vehicle_types_expiience' => ['nullable', 'json']
+            'parks_experience' => ['nullable', 'array'],
+            'vehicle_types_experience' => ['nullable', 'array']
         ]);
     }
 }

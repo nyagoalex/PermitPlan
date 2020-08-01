@@ -17,6 +17,7 @@ class UserTableSeeder extends Seeder
         'phone' => '256786911269','password' => Hash::make('2222'),
         'last_pass_reset_date' => Carbon\Carbon::today(),'active' => true,'email' => 'alex@laceltech.com');
         
-        User::firstOrCreate(['id' => '6bd47133-70b6-470a-b314-2a9f6a85ab78'], $user);
+        // User::firstOrCreate(['id' => '6bd47133-70b6-470a-b314-2a9f6a85ab78'], $user);
+        User::firstOrCreate(['id' => 1], $user);
     }
 }
