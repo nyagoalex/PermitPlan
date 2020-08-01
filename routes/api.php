@@ -122,5 +122,72 @@ Route::group(
                 Route::delete('/{flight_transfer_id}', 'FlightTransferController@destroy')->name('flight_transfer.delete');
             }
         );
+
+
+        Route::group(
+            ['prefix' => 'lodges'],
+            function () {
+                Route::get('/', 'LodgeController@index')->name('lodge.all');
+                Route::get('/{lodge_id}', 'LodgeController@show')->name('lodge.show');
+                Route::post('/', 'LodgeController@store')->name('lodge.create');
+                Route::patch('/{lodge_id}', 'LodgeController@update')->name('lodge.update');
+                Route::delete('/{lodge_id}', 'LodgeController@destroy')->name('lodge.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'lodges/{lodge_id}/rooms'],
+            function () {
+                Route::get('/', 'RoomController@index')->name('room.all');
+                Route::get('/{room_id}', 'RoomController@show')->name('room.show');
+                Route::post('/', 'RoomController@store')->name('room.create');
+                Route::patch('/{room_id}', 'RoomController@update')->name('room.update');
+                Route::delete('/{room_id}', 'RoomController@destroy')->name('room.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'lodges/{lodge_id}/activities'],
+            function () {
+                Route::get('/', 'LodgeActivityController@index')->name('activity.all');
+                Route::get('/{activity_id}', 'LodgeActivityController@show')->name('activity.show');
+                Route::post('/', 'LodgeActivityController@store')->name('activity.create');
+                Route::patch('/{activity_id}', 'LodgeActivityController@update')->name('activity.update');
+                Route::delete('/{activity_id}', 'LodgeActivityController@destroy')->name('activity.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'lodges/{lodge_id}/facilities'],
+            function () {
+                Route::get('/', 'LodgeFacilityController@index')->name('facility.all');
+                Route::get('/{facility_id}', 'LodgeFacilityController@show')->name('facility.show');
+                Route::post('/', 'LodgeFacilityController@store')->name('activity.create');
+                Route::patch('/{facility_id}', 'LodgeFacilityController@update')->name('facility.update');
+                Route::delete('/{facility_id}', 'LodgeFacilityController@destroy')->name('facility.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'lodges/{lodge_id}/seasons'],
+            function () {
+                Route::get('/', 'SeasonController@index')->name('season.all');
+                Route::get('/{season_id}', 'SeasonController@show')->name('season.show');
+                Route::post('/', 'SeasonController@store')->name('season.create');
+                Route::patch('/{season_id}', 'SeasonController@update')->name('season.update');
+                Route::delete('/{season_id}', 'SeasonController@destroy')->name('season.delete');
+            }
+        );
+
+        Route::group(
+            ['prefix' => 'seasonal-room-cost'],
+            function () {
+                Route::get('/', 'SeasonalRoomCostController@index')->name('cost.all');
+                Route::get('/{cost_id}', 'SeasonalRoomCostController@show')->name('cost.show');
+                Route::post('/', 'SeasonalRoomCostController@store')->name('cost.create');
+                Route::patch('/{cost_id}', 'SeasonalRoomCostController@update')->name('cost.update');
+                Route::delete('/{cost_id}', 'SeasonalRoomCostController@destroy')->name('cost.delete');
+            }
+        );
     }
 );
