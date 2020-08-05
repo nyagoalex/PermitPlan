@@ -14,20 +14,20 @@
 
               <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="accommodation"><b-icon icon="arrow-left"></b-icon></a></span><span class="l-name-label">
                       lodge name </span></span>
-                      <span class="ml-4"><star-rating :rating="3.34" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating></span>
+                      <span class="ml-4"><star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating></span>
           </div>
       </div>
         <div class="pt-3">
 
           <b-tabs fill>
               <b-tab class="nav-item" title="Lodge Details">
-                <Details/>
+                <Details :lodge="lodge"/>
               </b-tab>
               <b-tab class="nav-item" title="The Rooms">
-                  <Rooms/>
+                  <Rooms :rooms="lodge.rooms" />
               </b-tab>
               <b-tab class="nav-item" title="Rates & Seasons">
-                  <Rates/>
+                  <Rates :seasons="lodge.seasons" :contracted_rating="lodge.contracted_rating"/>
               </b-tab>
 
               <b-tab class="nav-item" title="Photos">
@@ -35,7 +35,7 @@
               </b-tab>
 
               <b-tab class="nav-item" title="Facilities & Activities">
-                  <Activities/>
+                  <Activities :activities="lodge.activities" :facilities="lodge.facilities"/>
               </b-tab>
           </b-tabs>
         </div>
@@ -54,7 +54,33 @@ import StarRating from 'vue-star-rating'
 export default {
   data () {
     return {
-      breadcrumb_items: [
+      breadcrumb_items: this.breadcrumbItems(),
+      lodge: {},
+      star_rating: 0
+    }
+  },
+  components: {
+    Details,
+    Rooms,
+    Rates,
+    Photos,
+    Activities,
+    StarRating
+  },
+  methods: {
+    setRating: function (rating) {
+      this.$http.patch('/lodges/' + this.$route.params.id + '/star-rating', { star_rating: rating }).then(() => {
+        this.toastSuccess('Star Rating Successfully Updated')
+      })
+    },
+    async getLodge () {
+      await this.$http.get('/lodges/' + this.$route.params.id).then(lodge => {
+        this.lodge = lodge.data.data
+        this.star_rating = this.lodge.star_rating
+      })
+    },
+    breadcrumbItems: function () {
+      return [
         {
           text: 'Dashboard',
           to: { name: 'Dashboard' }
@@ -70,18 +96,8 @@ export default {
       ]
     }
   },
-  components: {
-    Details,
-    Rooms,
-    Rates,
-    Photos,
-    Activities,
-    StarRating
-  },
-  methods: {
-    setRating: function (rating) {
-      alert(rating)
-    }
+  mounted () {
+    this.getLodge()
   }
 }
 </script>
