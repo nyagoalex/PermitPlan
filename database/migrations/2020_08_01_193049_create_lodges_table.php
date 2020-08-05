@@ -17,8 +17,8 @@ class CreateLodgesTable extends Migration
             $table->uuid('id')->primary();
             $table->string("code", 150)->unique();
             $table->string("name", 250);
-            $table->decimal("star_rating", 3, 2);
-            $table->decimal("contracted_rating", 4, 2);
+            $table->decimal("star_rating", 3, 2)->default(0);
+            $table->decimal("contracted_rating", 4, 2)->default(0);
             $table->string("email", 250)->nullable();
             $table->string("phone", 50)->nullable();
             $table->text("address")->nullable();

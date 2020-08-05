@@ -17,4 +17,9 @@ class Season extends Model
     protected $fillable = [
     'name', 'lodge_id', 'from_date', 'to_date'
     ];
+
+    public function roomCosts()
+    {
+        return $this->hasMany(SeasonalRoomCost::class);
+    }
 }

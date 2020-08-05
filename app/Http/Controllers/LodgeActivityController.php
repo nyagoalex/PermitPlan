@@ -87,7 +87,8 @@ class LodgeActivityController extends Controller
     {
         $request = Request();
         return $request->validate([
-            'name' => "required|string|min:3|max:250"
+            'name' => "required|string|min:3|max:250",
+            'cost_per_person' => ['required', 'numeric', 'min:0', 'max:999999999999999999999'],
         ]);
     }
 }

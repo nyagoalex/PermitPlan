@@ -17,6 +17,7 @@ class CreateLodgeFacilitiesTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('lodge_id');
             $table->string("name", 250);
+            $table->decimal("cost_per_person", 23,2)->default(0);
             $table->timestamps();
 
             $table->foreign('lodge_id')->references('id')->on('lodges')->onDelete('cascade');

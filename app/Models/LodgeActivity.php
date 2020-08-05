@@ -15,6 +15,6 @@ class LodgeActivity extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'lodge_id'
+        'name', 'lodge_id', 'cost_per_person'
     ];
 }

@@ -17,7 +17,7 @@ class CreateSeasonalRoomCostsTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('season_id');
             $table->uuid("room_id");
-            $table->decimal("amount", 23,2);
+            $table->decimal("amount", 23,2)->default(0);
             $table->timestamps();
 
             $table->unique(['season_id', 'room_id']);

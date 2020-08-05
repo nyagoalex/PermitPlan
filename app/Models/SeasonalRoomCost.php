@@ -17,4 +17,9 @@ class SeasonalRoomCost extends Model
     protected $fillable = [
     'amount', 'season_id', 'room_id'
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 }

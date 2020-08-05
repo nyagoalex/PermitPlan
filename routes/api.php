@@ -132,6 +132,8 @@ Route::group(
                 Route::post('/', 'LodgeController@store')->name('lodge.create');
                 Route::patch('/{lodge_id}', 'LodgeController@update')->name('lodge.update');
                 Route::delete('/{lodge_id}', 'LodgeController@destroy')->name('lodge.delete');
+                Route::patch('/{lodge_id}/star-rating', 'LodgeController@updateStarRating')->name('lodge.starrating');
+                Route::patch('/{lodge_id}/contracted-rating', 'LodgeController@updateContractedRating')->name('lodge.contractedrating');
             }
         );
 
@@ -182,11 +184,8 @@ Route::group(
         Route::group(
             ['prefix' => 'seasonal-room-cost'],
             function () {
-                Route::get('/', 'SeasonalRoomCostController@index')->name('cost.all');
                 Route::get('/{cost_id}', 'SeasonalRoomCostController@show')->name('cost.show');
-                Route::post('/', 'SeasonalRoomCostController@store')->name('cost.create');
                 Route::patch('/{cost_id}', 'SeasonalRoomCostController@update')->name('cost.update');
-                Route::delete('/{cost_id}', 'SeasonalRoomCostController@destroy')->name('cost.delete');
             }
         );
     }
