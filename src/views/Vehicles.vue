@@ -13,6 +13,7 @@
       :sort-desc.sync="sortDesc"
       sort-icon-left
       responsive="sm"
+      sticky-header
       @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
     >
       <template v-slot:table-caption>

@@ -39,6 +39,40 @@
               </div>
           </div>
       </div>
+      <b-row class="p-4 mb-5">
+        <b-col>
+          <div role="tablist" v-for="(room, index) in rooms" :key="index">
+            <b-card no-body class="mb-1">
+              <b-card-header header-tag="header" class="p-0" role="tab">
+                <b-button block v-b-toggle="`accordion-${room.id}`" variant="light" class="text-left">
+                <strong class="text-primary">{{room.name.toUpperCase()}}</strong>
+                  <span class="when-opened float-right"><b-icon icon="chevron-up"></b-icon></span>
+                  <span class="when-closed float-right"><b-icon icon="chevron-down"></b-icon></span>
+                </b-button>
+              </b-card-header>
+              <b-collapse :id="`accordion-${room.id}`" :visible="(`${index}` == 0)" role="tabpanel" >
+                <div class="container">
+                    <b-table-simple sticky-header >
+                    <b-thead head-variant="light">
+                      <b-tr>
+                        <b-th v-for="(cost, index) in room.costs" :key="index">{{cost.season.name}}</b-th>
+                        <b-th>Action</b-th>
+                      </b-tr>
+                    </b-thead>
+                    <b-tbody>
+                      <b-tr>
+                        <b-th v-for="(cost, index) in room.costs" :key="index">
+                        <input type="number" class="form-control" style="min-width:120px;" v-model="cost.amount"></b-th>
+                        <b-th><b-button variant="outline-success"  @click="updateCosts(index)">Update</b-button></b-th>
+                      </b-tr>
+                    </b-tbody>
+                    </b-table-simple>
+                </div>
+              </b-collapse>
+            </b-card>
+          </div>
+        </b-col>
+      </b-row>
   </div>
 </template>
 <script>
@@ -115,7 +149,28 @@ export default {
             })
         }
       })
+    },
+    updateCosts (index) {
+      var room = this.rooms[index]
+      var costs = room.costs.map(function (cost) {
+        return { id: cost.id, amount: cost.amount }
+      })
+
+      this.$http.patch('/rooms/' + room.id + '/costs', { costs: costs })
+        .then(response => {
+          this.toastSuccess('Costs for' + room.name + ' Successfully Updated')
+        })
+        .catch(errors => {
+          this.$swal.fire('Failed!', errors.message, 'error')
+        })
     }
   }
 }
 </script>
+
+<style>
+.collapsed > .when-opened,
+  :not(.collapsed) > .when-closed {
+      display: none;
+  }
+</style>

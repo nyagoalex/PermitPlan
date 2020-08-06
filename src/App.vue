@@ -43,6 +43,9 @@ export default {
   font-weight: bold;
   font-size: .7em;
 }
+.b-table-sticky-header {
+  max-height: 500px !important;
+}
 
 // #nav {
 //   padding: 30px;

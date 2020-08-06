@@ -13,6 +13,7 @@
       :sort-desc.sync="sortDesc"
       sort-icon-left
       responsive="sm"
+      sticky-header
       @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)"
     >
       <template v-slot:table-caption>
@@ -81,7 +82,7 @@ export default {
       fields: [
         { key: '#', sortable: false },
         { key: 'code', sortable: true },
-        { key: 'name', sortable: true },
+        { key: 'name', sortable: true, stickyColumn: true },
         { key: 'city', sortable: true },
         { key: 'phone', sortable: true },
         { key: 'no_of_booking', sortable: true },

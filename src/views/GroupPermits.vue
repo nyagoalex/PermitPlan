@@ -14,6 +14,7 @@
       responsive="sm"
       :per-page="perPage"
       :current-page="currentPage"
+      sticky-header
     >
       <template v-slot:table-caption>
         <b-row>

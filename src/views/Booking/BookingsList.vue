@@ -15,6 +15,7 @@
       responsive="sm"
       :per-page="perPage"
       :current-page="currentPage"
+      sticky-header
       @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)"
     >
       <template v-slot:table-caption>
@@ -73,7 +74,7 @@ export default {
     return {
       sortBy: 'age',
       sortDesc: false,
-      perPage: 2,
+      perPage: 10,
       currentPage: 1,
       filters: false,
       fields: [

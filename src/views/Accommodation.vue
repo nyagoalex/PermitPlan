@@ -14,6 +14,7 @@
       responsive="sm"
       @row-clicked="onRowClicked"
       class="acc-tb"
+      sticky-header
     >
       <template v-slot:table-caption>
         <b-row>
@@ -36,7 +37,6 @@
         last-number
         @input="getLodges(current_page)"
       ></b-pagination>
-    <p class="mt-3">Current Page: {{ lodges }}</p>
     </div>
     <AddAccomodation/>
   </div>
