@@ -30,7 +30,7 @@ class Lodge extends Model
 
     public function rooms()
     {
-        return $this->hasMany(Room::class);
+        return $this->hasMany(Room::class)->with('costs');
     }
 
     public function seasons()

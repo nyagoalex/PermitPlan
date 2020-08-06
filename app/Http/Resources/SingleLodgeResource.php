@@ -27,11 +27,11 @@ class SingleLodgeResource extends JsonResource
             "location" => $this->location,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
-            "rooms" => $this->rooms->map(function ($room) { return $room->only('id', 'name'); }),
+            "rooms" =>  $this->rooms,
             "seasons" => $this->seasons->map(function ($season) { return $season->only('id', 'name', 'from_date', 'to_date');}),
             "activities" => $this->activities->map(function ($activity) { return $activity->only('id', 'name', 'cost_per_person'); }),
             "facilities" => $this->facilities->map(function ($facility) { return $facility->only('id', 'name', 'cost_per_person'); }),
-            "room_costs" => $this->roomCosts
+            // "room_costs" => $this->roomCosts
         ];
     }
 }

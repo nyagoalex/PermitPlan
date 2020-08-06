@@ -17,4 +17,10 @@ class Room extends Model
     protected $fillable = [
         'name', 'lodge_id'
     ];
+
+
+    public function costs()
+    {
+        return $this->hasMany(SeasonalRoomCost::class)->with('season:id,name');
+    }
 }

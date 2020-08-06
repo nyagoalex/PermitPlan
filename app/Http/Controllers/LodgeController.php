@@ -52,7 +52,7 @@ class LodgeController extends Controller
      */
     public function show($id)
     {
-        $lodge = Lodge::with('rooms', 'activities', 'facilities', 'seasons', 'seasons.roomCosts','seasons.roomCosts.room')->findOrFail($id);
+        $lodge = Lodge::with('rooms', 'activities', 'facilities', 'seasons', 'rooms.costs')->findOrFail($id);
         return new SingleLodgeResource($lodge);
     }
 

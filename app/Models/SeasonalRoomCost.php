@@ -22,4 +22,9 @@ class SeasonalRoomCost extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
 }

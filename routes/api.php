@@ -182,10 +182,10 @@ Route::group(
         );
 
         Route::group(
-            ['prefix' => 'seasonal-room-cost'],
+            ['prefix' => 'rooms/{room_id}/costs'],
             function () {
-                Route::get('/{cost_id}', 'SeasonalRoomCostController@show')->name('cost.show');
-                Route::patch('/{cost_id}', 'SeasonalRoomCostController@update')->name('cost.update');
+                Route::get('/', 'SeasonalRoomCostController@index')->name('cost.all');
+                Route::patch('/', 'SeasonalRoomCostController@update')->name('cost.update');
             }
         );
     }

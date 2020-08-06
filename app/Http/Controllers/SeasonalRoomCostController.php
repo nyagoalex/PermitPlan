@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoomResource;
 use App\Http\Resources\SeasonalRoomCostResource;
+use App\Models\Room;
 use App\Models\SeasonalRoomCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SeasonalRoomCostController extends Controller
 {
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     $costs = SeasonalRoomCost::all();
-    //     return SeasonalRoomCostResource::collection($costs);
-    // }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($room_id)
+    {
+        $costs = SeasonalRoomCost::whereRoomId($room_id)->get();
+        return SeasonalRoomCostResource::collection($costs);
+    }
 
     // /**
     //  * Store a newly created resource in storage.
@@ -36,17 +38,17 @@ class SeasonalRoomCostController extends Controller
     //     return new SeasonalRoomCostResource($cost);
     // }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SeasonalRoomCost  $cost
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $cost = SeasonalRoomCost::findOrFail($id);
-        return new SeasonalRoomCostResource($cost);
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  \App\Models\SeasonalRoomCost  $cost
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show($id)
+    // {
+    //     $cost = SeasonalRoomCost::findOrFail($id);
+    //     return new SeasonalRoomCostResource($cost);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -55,14 +57,19 @@ class SeasonalRoomCostController extends Controller
      * @param  \App\Models\SeasonalRoomCost  $cost
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update($room_id)
     {
         DB::beginTransaction();
-        $cost = SeasonalRoomCost::findOrFail($id);
-        $data = $this->validateUpdateData();
-        $cost->update($data);
+        $room = Room::findOrFail($room_id);
+        $costs_array = $this->validateUpdateData();
+        // dd($costs_array);
+        foreach($costs_array['costs'] as $item) {
+            $cost = SeasonalRoomCost::whereRoomId($room_id)->findOrFail($item['id']);
+            $cost->amount = $item['amount'];
+            $cost->save();
+        }
         DB::commit();
-        return new SeasonalRoomCostResource($cost);
+        return new RoomResource($room->load('costs'));
     }
 
     // /**
@@ -93,7 +100,9 @@ class SeasonalRoomCostController extends Controller
     {
         $request = Request();
         return $request->validate([
-            'amount' => ['required', 'numeric', 'min:0', 'max:100000000000000'],
+            'costs' => ['required', 'array', 'min:0'],
+            'costs.*.id' => ['required', 'string', 'exists:seasonal_room_costs,id', 'distinct'],
+            'costs.*.amount' => ['required', 'numeric', 'min:0', 'max:100000000000000']
         ]);
     }
 }
