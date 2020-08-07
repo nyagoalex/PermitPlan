@@ -44,7 +44,7 @@
                     </b-overlay>
                     <div v-if="error" class="alert alert-danger">{{error}}</div>
                 </div>
-                <div class="text-center">Create new Company? <router-link to="/register">Sign Up</router-link></div>
+                <div class="text-center">Create new Company? <a :href="registerUrl" >Sign Up</a></div>
             </form>
           </div>
         </div>
@@ -63,7 +63,8 @@ export default {
       submitted: false,
       loading: false,
       returnUrl: '',
-      error: ''
+      error: '',
+      registerUrl: 'http://' + process.env.VUE_APP_DOMAIN + ':8081/register'
     }
   },
   created () {

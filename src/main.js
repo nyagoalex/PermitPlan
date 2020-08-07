@@ -29,13 +29,22 @@ Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 
+const subdir = () => {
+  var host = window.location.hostname
+  host = host.replace('www.', '') // remove www
+  var domain = process.env.VUE_APP_DOMAIN
+  var subdir = host.split('.')[0]
+  subdir = (subdir === domain) ? '' : subdir + '.'
+  return 'http://' + subdir
+}
+
 // axios.defaults.baseURL = process.env.VUE_APP_APIURL
 // this.$http.defaults.headers.common.Authorization = authHeader()
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // axios.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.headers.common.Authorization = authHeader()
 const baseAxios = axios.create({
-  baseURL: process.env.VUE_APP_APIURL
+  baseURL: subdir() + process.env.VUE_APP_APIURL
 })
 
 baseAxios.interceptors.response.use(
@@ -101,6 +110,12 @@ Vue.mixin({
 new Vue({
   created () {
     console.log('Component is created')
+    // var host = window.location.hostname
+    // host = host.replace('www.', '') // remove www
+    // var domain = 'localhost'
+    // var subdir = host.split('.')[0]
+    // subdir = (subdir === domain) ? null : subdir
+    // alert(subdir)
   },
   mounted () {
     console.log('Component is mounted')
