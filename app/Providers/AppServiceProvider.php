@@ -18,7 +18,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Passport::ignoreMigrations();
+        // Passport::routes(null, ['middleware' => [
+        //     // You can make this simpler by creating a tenancy route group
+        //     InitializeTenancyBySubdomain::class,
+        //     PreventAccessFromCentralDomains::class,
+        // ]]);
     }
 
     /**
