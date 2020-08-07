@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'Tenant\RegisterTenantController')->name('register.tenant');
 
-
+Route::get('/nnn', function () {  
+    $r = ['domain' => 'name'];
+    return response()->json([ 'data' => $r ]);
+});
 
 // Route::group(
 //     ['prefix' => 'auth'],

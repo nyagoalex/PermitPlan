@@ -46,6 +46,6 @@ class RegisterTenantController extends Controller
         Artisan::call("tenants:seed --tenants=".$data['company_name']);
         DB::commit();
 
-        return response()->json([ $tenant->domains()->first('domain')]);
+        return response()->json([ 'data' => $tenant->domains()->first('domain')]);
     }
 }
