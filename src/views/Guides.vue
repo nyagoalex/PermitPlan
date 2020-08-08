@@ -68,7 +68,7 @@
       ></b-pagination>
     </div>
     <AddGuide/>
-    <GuideDetails v-bind:guide="guide"/>
+    <GuideDetails v-if="guide" :guide="guide"/>
   </div>
 </template>
 <script>
@@ -99,7 +99,7 @@ export default {
         { key: 'status' }
       ],
       guides: [],
-      guide: {},
+      guide: false,
       current_page: process.env.VUE_APP_CURRENTPAGE,
       per_page: process.env.VUE_APP_PERPAGE,
       total: process.env.VUE_APP_TOTALROWS

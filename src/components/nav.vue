@@ -1,12 +1,12 @@
 <template>
 <div>
   <b-navbar toggleable="lg" variant="faded" type="light" class="bg-white shadow-lg" style="max-height:60px;">
-    <b-navbar-brand href="/dashboard"><img src="@/assets/image/pplanw.png" alt="Kitten" width="130" height="50"></b-navbar-brand>
+    <b-navbar-brand @click="$router.push({name: 'Dashboard'})" style="cursor:pointer"><img src="@/assets/image/pplanw.png" alt="Kitten" width="130" height="50"></b-navbar-brand>
 
     <b-navbar-nav>
-      <b-nav-item href="#">Dashbord</b-nav-item>
-      <b-nav-item :to="{ name: 'Bookings'}">All Bookings</b-nav-item>
-      <b-nav-item :to="{ name: 'Bookings'}">Safari Calenda</b-nav-item>
+      <b-nav-item @click="$router.push({name: 'Dashboard'})">Dashbord</b-nav-item>
+      <b-nav-item @click="$router.push({name: 'Bookings'})">All Bookings</b-nav-item>
+      <b-nav-item @click="$router.push({name: 'Bookings'})">Safari Calenda</b-nav-item>
       <b-nav-item-dropdown text="+ More" right>
         <b-dropdown-item @click="$router.push({name: 'Agents'})">Agents</b-dropdown-item>
         <b-dropdown-item @click="$router.push({name: 'GroupPermits'})">Departures Permits</b-dropdown-item>
@@ -31,8 +31,8 @@
           <!-- <em>User</em> -->
           <img v-bind="mainProps" rounded="circle" src="@/assets/image/user-ic.png"  alt="">
         </template>
-        <b-dropdown-item href="/profile">Profile</b-dropdown-item>
-        <b-dropdown-item href="/settings">Settings</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Profile'})">Profile</b-dropdown-item>
+        <b-dropdown-item @click="$router.push({name: 'Settings'})">Settings</b-dropdown-item>
         <b-dropdown-item href="#"><Logout/></b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>

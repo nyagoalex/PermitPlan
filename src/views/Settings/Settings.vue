@@ -27,19 +27,19 @@
         <b-card-text><DepositExpiry/></b-card-text>
       </b-tab>
       <b-tab title="$ Gorilla Permits Cost">
-        <b-card-text><PermitCosts costTitle="gorilla tracking permits cost" v-bind:costs="permit_costs.gorilla_permits"/></b-card-text>
+        <b-card-text><PermitCosts costTitle="gorilla tracking permits cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_permits"/></b-card-text>
       </b-tab>
       <b-tab title="$ Chimp Permits Cost">
-      <b-card-text><PermitCosts costTitle="chimp permits cost" v-bind:costs="permit_costs.chimpanzee_permits"/></b-card-text>
+      <b-card-text><PermitCosts costTitle="chimp permits cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_permits"/></b-card-text>
       </b-tab>
       <b-tab title="$ Gorilla Habituation Cost">
-      <b-card-text><PermitCosts costTitle="gorilla habituation cost" v-bind:costs="permit_costs.gorilla_habituation"/></b-card-text>
+      <b-card-text><PermitCosts costTitle="gorilla habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_habituation"/></b-card-text>
       </b-tab>
       <b-tab title="$ Chimp Habituation Cost">
-      <b-card-text><PermitCosts costTitle="chimp habituation cost" v-bind:costs="permit_costs.chimpanzee_habituation"/></b-card-text>
+      <b-card-text><PermitCosts costTitle="chimp habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_habituation"/></b-card-text>
       </b-tab>
       <b-tab title="$ Golden Monkey Permits Cost">
-      <b-card-text><PermitCosts costTitle="golden monkey permits" v-bind:costs="permit_costs.golden_monkey_permits"/></b-card-text>
+      <b-card-text><PermitCosts costTitle="golden monkey permits" v-if="permit_costs" v-bind:costs="permit_costs.golden_monkey_permits"/></b-card-text>
       </b-tab>
     </b-tabs>
   </b-card>
@@ -57,7 +57,7 @@ export default {
   name: 'company',
   data () {
     return {
-      permit_costs: {}
+      permit_costs: false
     }
   },
   components: {
@@ -72,12 +72,6 @@ export default {
       this.$http.get('/permit-types')
         .then(permitCosts => {
           this.permit_costs = permitCosts.data.data
-          // // this.permit_costs = {
-          // //   gorilla_permits: { id: 1, uganda: 11, east_africa: 12, foreign_residents: 13, non_residents: 14 },
-          // //   chimp_permits: { id: 2, uganda: 21, east_africa: 22, foreign_residents: 23, non_residents: 24 },
-          // //   gorilla_habituation: { id: 3, uganda: 31, east_africa: 32, foreign_residents: 33, non_residents: 34 },
-          // //   chimp_habituation: { id: 4, uganda: 41, east_africa: 42, foreign_residents: 43, non_residents: 44 }
-          // // }
           // console.log('after')
           return this.permit_costs
         })
