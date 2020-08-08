@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
@@ -63,15 +64,15 @@ class LoginController extends  AccessTokenController
         return response(['message' => 'Successfully logged out'], Response::HTTP_OK);
     }
 
-    //  /**
-    //  * details api
-    //  *
-    //  * @return mixed
-    //  */
-    // public function profile()
-    // {
-    //     $user = Auth::user();
-    //     $user = User::FindOrFail($user->id);
-    //     return new LoginedInUserResource($user);
-    // }
+     /**
+     * details api
+     *
+     * @return mixed
+     */
+    public function profile()
+    {
+        $user_id = Auth::id();
+        $user = User::FindOrFail($user_id);
+        return new UserResource($user);
+    }
 }

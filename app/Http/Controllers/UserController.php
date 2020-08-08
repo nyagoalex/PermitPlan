@@ -45,7 +45,7 @@ class UserController extends Controller
          $data['password'] = Hash::make($data['password']);
          $user = User::create($data);
          DB::commit();
-         return new UserResource($user);
+         return new UserResource($user->fresh());
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends Controller
         abort_if($id == Auth()->user()->id, Response::HTTP_UNPROCESSABLE_ENTITY, "Request failed user can't deactivate self");
 
         #deactivation process
-        $user->status = 'inactive';
+        $user->active = false;
         $user->save();
         DB::commit();
         return new UserResource($user);
@@ -135,10 +135,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         // checks the current status of the user
-        abort_if($user->active, Response::HTTP_BAD_REQUEST, 'user_already_activated');
-
+        abort_if($user->active, Response::HTTP_BAD_REQUEST, 'user already activated');
+        
         #activation process
-        $user->status = 'active';
+        $user->active = true;
         $user->save();
         DB::commit();
         return new UserResource($user);

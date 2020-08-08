@@ -38,10 +38,11 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
     ];
 
-    public function getActiveAttribute()
+    public function getFullNameAttribute()
     {
-        return ($this->status =="active") ? true : false;
+        return  ucwords($this->first_name. ' '. $this->last_name);
     }
 }

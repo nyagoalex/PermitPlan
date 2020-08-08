@@ -39,7 +39,7 @@ Route::middleware([
         function () {
             Route::post('token', 'Auth\LoginController@login')->name('auth.token');
             Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout')->middleware(['auth:api']);
-            // Route::get('me', 'AuthController@profile')->name('auth.profile')->middleware(['auth:api']);
+            Route::get('me', 'Auth\LoginController@profile')->name('auth.profile')->middleware(['auth:api']);
         }
     );
     
