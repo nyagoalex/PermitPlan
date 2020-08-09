@@ -21,7 +21,7 @@ class FlightTransferController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("name");
-        $transfer = FlightTransfer::orderBy($order_column, $sort)->paginate($per_page);
+        $transfer = FlightTransfer::search(request('search'))->orderBy($order_column, $sort)->paginate($per_page);
         
         return FlightTransferResource::collection($transfer);
     }

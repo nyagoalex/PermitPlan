@@ -30,6 +30,7 @@ class GuideController extends Controller
         $query->when(request()->filled('contract_basis'), function ($query){
             return $query->whereContractBasis(request('contract_basis'));
         });
+        $query->search(request('search'));
         $guide = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         

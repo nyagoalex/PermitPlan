@@ -21,7 +21,7 @@ class SectorController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("name");
-        $sector = Sector::orderBy($order_column, $sort)->paginate($per_page);
+        $sector = Sector::search(request('search'))->orderBy($order_column, $sort)->paginate($per_page);
         
         return SectorResource::collection($sector);
     }

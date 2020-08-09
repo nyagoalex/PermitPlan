@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class Guide extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'first_name','last_name', 'code', 'email', 'phone'
+    ];
 
    /**
      * The attributes that are mass assignable.

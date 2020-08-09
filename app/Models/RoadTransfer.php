@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class RoadTransfer extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'name','destination', 'starting_point', 'vehicle.type'
+    ];
 
        /**
      * The attributes that are mass assignable.

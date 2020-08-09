@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Agent extends Model
 {
-    use UsesUuid;
-
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'name','country','city', 'email', 'phone', 'code'
+    ];
      /**
      * The attributes that are mass assignable.
      *
@@ -17,6 +21,8 @@ class Agent extends Model
     protected $fillable = [
         'name','country','city', 'email', 'phone', 'code'
     ];
+
+
 
       /**
      * The attributes that should be cast to native types.

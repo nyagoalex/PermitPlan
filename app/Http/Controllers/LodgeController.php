@@ -23,7 +23,9 @@ class LodgeController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("name");
-        $lodges = Lodge::orderBy($order_column, $sort)->paginate($per_page);
+        $query = Lodge::query();
+        $query->search(request('search'));
+        $lodges = $query->orderBy($order_column, $sort)->paginate($per_page);
         return LodgeResource::collection($lodges);
     }
 

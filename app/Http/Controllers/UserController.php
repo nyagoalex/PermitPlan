@@ -25,7 +25,13 @@ class UserController extends Controller
         $sort = $this->getSort();
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("first_name");
-        $users = User::orderBy($order_column, $sort)->paginate($per_page);
+        $query = User::query();
+        $query->when(request()->filled('active'), function ($query){
+            $active = (request('active') === 'true') ? 1 : 0;
+            return $query->whereActive($active);
+        });
+        $query->search(request('search'));
+        $users = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         return UserResource::collection($users);
     }

@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class FlightTransfer extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'name','destination','airline_operator', 'flight_type', 'starting_point'
+    ];
 
        /**
      * The attributes that are mass assignable.

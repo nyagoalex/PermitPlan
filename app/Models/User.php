@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,8 +12,11 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens, UsesUuid;
-
+    use Notifiable, HasApiTokens, UsesUuid, Searchable;
+    
+    public $searchable = [
+        'first_name','last_name'
+    ];
     /**
      * The attributes that are mass assignable.
      *

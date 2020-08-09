@@ -28,6 +28,7 @@ class VehicleController extends Controller
         $query->when(request()->filled('ownership'), function ($query){
             return $query->whereOwnership(request('ownership'));
         });
+        $query->search(request('search'));
         $vehicle = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         return VehicleResource::collection($vehicle);

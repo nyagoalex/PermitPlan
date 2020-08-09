@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Lodge extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'name','country','location', 'email', 'phone', 'code', 'address'
+    ];
 
           /**
      * The attributes that are mass assignable.

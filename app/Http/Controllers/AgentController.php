@@ -29,6 +29,7 @@ class AgentController extends Controller
             $active = (request('active') === 'true') ? 1 : 0;
             return $query->whereActive($active);
         });
+        $query->search(request('search'));
         $agents = $query->orderBy($order_column, $sort)->paginate($per_page);
         
         return AgentResource::collection($agents);

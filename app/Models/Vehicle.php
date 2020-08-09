@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+    
+    public $searchable = [
+        'reg_no','type','code'
+    ];
 
    /**
      * The attributes that are mass assignable.
