@@ -69,6 +69,7 @@
 </template>
 <script>
 import AddAgent from '@/components/Modals/AddAgent.vue'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   data () {
@@ -77,7 +78,8 @@ export default {
       sortDesc: false,
       show_filters: false,
       filters: {
-        active: null
+        active: null,
+        search: null
       },
       fields: [
         { key: '#', sortable: false },
@@ -181,9 +183,17 @@ export default {
   },
   mounted () {
     this.getAgents()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Agents') {
+        this.filters.search = search
+      }
+    })
   },
   watch: {
     'filters.active': function (val, oldVal) {
+      this.getAgents()
+    },
+    'filters.search': function (val, oldVal) {
       this.getAgents()
     }
   }

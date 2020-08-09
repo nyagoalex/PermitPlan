@@ -76,6 +76,7 @@
 </template>
 <script>
 import AddVehicle from '@/components/Modals/AddVehicle.vue'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   data () {
@@ -85,7 +86,8 @@ export default {
       filters: {
         status: null,
         ownership: null,
-        page: 1
+        page: 1,
+        search: null
       },
       show_filters: false,
       fields: [
@@ -157,12 +159,17 @@ export default {
   },
   mounted () {
     this.getVehicles()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Vehicles') {
+        this.filters.search = search
+      }
+    })
   },
   watch: {
     'filters.status': function (val, oldVal) {
       this.getVehicles()
     },
-    'filters.ownership': function (val, oldVal) {
+    'filters.search': function (val, oldVal) {
       this.getVehicles()
     }
   }

@@ -12,7 +12,7 @@
       <div class="">
           <div class="bg-grey2 p-2" style="border-radius:4px;">
 
-              <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="accommodation"><b-icon icon="arrow-left"></b-icon></a></span><span class="l-name-label">
+              <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})"><b-icon icon="arrow-left"></b-icon></a></span><span class="l-name-label">
                       lodge name </span></span>
                       <span class="ml-4"><star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating></span>
           </div>
@@ -86,8 +86,8 @@ export default {
           to: { name: 'Dashboard' }
         },
         {
-          text: 'Accommodation',
-          to: { name: 'Accommodation' }
+          text: 'Accommodations',
+          to: { name: 'Accommodations' }
         },
         {
           text: 'Details',

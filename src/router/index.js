@@ -75,12 +75,12 @@ const routes = [
     component: GroupPermits
   },
   {
-    path: '/accommodation',
-    name: 'Accommodation',
+    path: '/accommodations',
+    name: 'Accommodations',
     component: Accommodation
   },
   {
-    path: '/accommodation/:id',
+    path: '/accommodations/:id',
     name: 'AccommodationDetails',
     component: AccommodationDetails
   },

@@ -50,12 +50,16 @@
 </template>
 <script>
 import AddRoadTransfer from '@/components/Modals/AddRoadTransfer.vue'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   data () {
     return {
       sortBy: 'name',
       sortDesc: false,
+      filters: {
+        search: null
+      },
       fields: [
         { key: '#' },
         { key: 'name', sortable: true },
@@ -79,9 +83,8 @@ export default {
   },
   methods: {
     getTransfers (page = 1) {
-      const filters = {
-        page: page
-      }
+      const filters = this.filters
+      filters.page = page
       this.$http.get('/road-transfers', { params: filters }).then(transfers => {
         this.transfers = transfers.data.data
         const meta = transfers.data.meta
@@ -119,6 +122,16 @@ export default {
   },
   mounted () {
     this.getTransfers()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Transfers') {
+        this.filters.search = search
+      }
+    })
+  },
+  watch: {
+    'filters.search': function (val, oldVal) {
+      this.getTransfers()
+    }
   }
 }
 </script>

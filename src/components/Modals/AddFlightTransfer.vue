@@ -109,8 +109,7 @@ export default {
   data () {
     return {
       loading: false,
-      errors: {},
-      vehicles: []
+      errors: {}
     }
   },
   props: {
@@ -149,13 +148,6 @@ export default {
         })
         .finally(() => { this.loading = false })
     }
-  },
-  mounted () {
-    this.$http.get('/vehicles').then(vehicles => {
-      this.vehicles = vehicles.data.data.map(function (num) {
-        return { value: num.id, text: num.type + ' (' + num.code + ')' }
-      })
-    })
   }
 }
 

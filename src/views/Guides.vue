@@ -74,6 +74,7 @@
 <script>
 import AddGuide from '@/components/Modals/AddGuide.vue'
 import GuideDetails from '@/components/Modals/GuideDetails.vue'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   data () {
@@ -83,7 +84,8 @@ export default {
       filters: {
         status: null,
         contract_basis: null,
-        page: 1
+        page: 1,
+        search: null
       },
       show_filters: false,
       fields: [
@@ -138,12 +140,20 @@ export default {
   },
   mounted () {
     this.getGuides()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Guides') {
+        this.filters.search = search
+      }
+    })
   },
   watch: {
     'filters.status': function (val, oldVal) {
       this.getGuides()
     },
     'filters.contract_basis': function (val, oldVal) {
+      this.getGuides()
+    },
+    'filters.search': function (val, oldVal) {
       this.getGuides()
     }
   }

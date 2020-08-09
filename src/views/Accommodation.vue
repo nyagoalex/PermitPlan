@@ -44,6 +44,7 @@
 <script>
 import AddAccomodation from '@/components/Modals/AddAccomodation.vue'
 import StarRating from 'vue-star-rating'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   data () {
@@ -52,7 +53,7 @@ export default {
       sortDesc: false,
       show_filters: false,
       filters: {
-        active: null
+        search: null
       },
       fields: [
         { key: '#', sortable: false },
@@ -93,9 +94,14 @@ export default {
   },
   mounted () {
     this.getLodges()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Accommodations') {
+        this.filters.search = search
+      }
+    })
   },
   watch: {
-    'filters.active': function (val, oldVal) {
+    'filters.search': function (val, oldVal) {
       this.getLodges()
     }
   }

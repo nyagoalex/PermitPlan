@@ -31,14 +31,19 @@
 
 <script>
 import AddSector from '@/components/Modals/AddSector.vue'
+import EventBus from '@/Events/EventBus.js'
 
 export default {
   name: 'sectors',
   data () {
     return {
-      sectors: this.getSectors(),
+      sectors: {},
       sector: this.resetModal(),
       mode: '',
+      filters: {
+        search: null,
+        page: 1
+      },
       current_page: process.env.VUE_APP_CURRENTPAGE,
       per_page: process.env.VUE_APP_PERPAGE,
       total: process.env.VUE_APP_TOTALROWS
@@ -49,7 +54,9 @@ export default {
   },
   methods: {
     getSectors (page = 1) {
-      this.$http.get('/sectors?page=' + page).then(sectors => {
+      const filters = this.filters
+      filters.page = page
+      this.$http.get('/sectors', { params: filters }).then(sectors => {
         this.sectors = sectors.data.data
         const meta = sectors.data.meta
         this.current_page = meta.current_page
@@ -83,6 +90,19 @@ export default {
         national_park: '',
         tracking_activity: ''
       }
+    }
+  },
+  mounted () {
+    this.getSectors()
+    EventBus.$on('EVENT_SEARCH', (search) => {
+      if (this.$route.name === 'Settings') {
+        this.filters.search = search
+      }
+    })
+  },
+  watch: {
+    'filters.search': function (val, oldVal) {
+      this.getSectors()
     }
   }
 }
