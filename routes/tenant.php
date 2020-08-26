@@ -208,6 +208,122 @@ Route::middleware([
                     Route::patch('/', 'SeasonalRoomCostController@update')->name('cost.update');
                 }
             );
+    
+            Route::group(
+                ['prefix' => 'bookings'],
+                function () {
+                    Route::get('/', 'BookingController@index')->name('booking.all');
+                    Route::get('/{booking_id}', 'BookingController@show')->name('booking.show');
+                    Route::post('/', 'BookingController@store')->name('booking.create');
+                    Route::patch('/{booking_id}', 'BookingController@update')->name('booking.update');
+                    Route::delete('/{booking_id}', 'BookingController@destroy')->name('booking.delete');
+                    Route::patch('/{booking_id}/comment', 'BookingController@updateComment')->name('booking.comment');
+                    Route::post('/{booking_id}/confirm', 'BookingController@confirm')->name('booking.confirm');
+                    Route::post('/{booking_id}/cancel', 'BookingController@cancel')->name('booking.cancel');
+
+                    Route::group(
+                        ['prefix' => '{booking_id}/payments'],
+                        function () {
+                            Route::get('/', 'PaymentController@index')->name('booking.payment.all');
+                            Route::post('/', 'PaymentController@store')->name('booking.payment.create');
+                            Route::delete('/{payment_id}', 'PaymentController@destroy')->name('booking.payment.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/permits'],
+                        function () {
+                            Route::get('/', 'PermitController@index')->name('booking.permit.all');
+                            Route::post('/', 'PermitController@store')->name('booking.permit.create');
+                            Route::patch('/{permit_id}', 'PermitController@update')->name('booking.permit.update');
+                            Route::delete('/{permit_id}', 'PermitController@destroy')->name('booking.permit.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/guests'],
+                        function () {
+                            Route::get('/', 'GuestController@index')->name('booking.guest.all');
+                            Route::post('/', 'GuestController@store')->name('booking.guest.create');
+                            Route::patch('/{guest_id}', 'GuestController@update')->name('booking.guest.update');
+                            Route::delete('/{guest_id}', 'GuestController@destroy')->name('booking.guest.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/iteneraries'],
+                        function () {
+                            Route::get('/', 'BookingIteneraryController@index')->name('booking.itenerary.all');
+                            Route::post('/', 'BookingIteneraryController@store')->name('booking.itenerary.create');
+                            Route::patch('/{itenerary_id}', 'BookingIteneraryController@update')->name('booking.itenerary.update');
+                            Route::delete('/{itenerary_id}', 'BookingIteneraryController@destroy')->name('booking.itenerary.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/accomodations'],
+                        function () {
+                            Route::get('/', 'BookingAccomodationController@index')->name('booking.accomodation.all');
+                            Route::post('/', 'BookingAccomodationController@store')->name('booking.accomodation.create');
+                            Route::patch('/{itenerary_id}', 'BookingAccomodationController@update')->name('booking.accomodation.update');
+                            Route::delete('/{itenerary_id}', 'BookingAccomodationController@destroy')->name('booking.accomodation.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/activities'],
+                        function () {
+                            Route::get('/', 'BookingActivityController@index')->name('booking.activity.all');
+                            Route::post('/', 'BookingActivityController@store')->name('booking.activity.create');
+                            Route::patch('/{activity_id}', 'BookingActivityController@update')->name('booking.activity.update');
+                            Route::delete('/{activity_id}', 'BookingActivityController@destroy')->name('booking.activity.delete');
+                        }
+                    );
+                    
+                    Route::group(
+                        ['prefix' => '{booking_id}/guides'],
+                        function () {
+                            Route::get('/', 'BookingGuideController@index')->name('booking.guide.all');
+                            Route::post('/', 'BookingGuideController@store')->name('booking.guide.create');
+                            Route::patch('/{guide_id}', 'BookingGuideController@update')->name('booking.guide.update');
+                            Route::delete('/{guide_id}', 'BookingGuideController@destroy')->name('booking.guide.delete');
+                        }
+                    );
+                    # payments for items of booking
+                    Route::group(
+                        ['prefix' => '{booking_id}/item-payment'],
+                        function () {
+                            Route::get('/', 'ItemPaymentController@index')->name('booking.item.payment.all');
+                            Route::post('/', 'ItemPaymentController@store')->name('booking.item.payment.create');
+                            Route::delete('/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete');
+                        }
+                    );
+                },
+                  
+                Route::group(
+                    ['prefix' => 'departure-tours'],
+                    function () {
+                        Route::get('/', 'DepartureTourController@index')->name('departure.tour.all');
+                        Route::get('/{tour_id}', 'DepartureTourController@show')->name('departure.tour.show');
+                        Route::post('/', 'DepartureTourController@store')->name('departure.tour.create');
+                        Route::patch('/{tour_id}', 'DepartureTourController@update')->name('departure.tour.update');
+                        Route::delete('/{tour_id}', 'DepartureTourController@destroy')->name('departure.tour.delete');
+                        Route::post('/{tour_id}/activate', 'DepartureTourController@activate')->name('departure.tour.activate');
+                        Route::post('/{tour_id}/deactivate', 'DepartureTourController@deactivate')->name('departure.tour.deactivate');
+
+                        Route::group(
+                            ['prefix' => '{tour_id}/permits'],
+                            function () {
+                                Route::get('/', 'DepartureTourPermitController@index')->name('departure.permit.all');
+                                Route::post('/', 'DepartureTourPermitController@store')->name('departure.permit.create');
+                                Route::delete('/{permit_id}', 'DepartureTourPermitController@destroy')->name('departure.permit.delete');
+                                Route::post('/{permit_id}/allocate', 'DepartureTourPermitController@allocate')->name('departure.permit.allocate');
+                                Route::patch('/{permit_id}', 'DepartureTourPermitController@update')->name('departure.permit.update');
+                            }
+                        );
+                    }
+                )
+            );
         }
     );
 });
