@@ -15,6 +15,7 @@ import AccommodationDetails from '@/views/AccommodationDetails.vue'
 import Transfers from '@/views/Transfers.vue'
 import Vehicles from '@/views/Vehicles.vue'
 import Guides from '@/views/Guides.vue'
+import Calenda from '@/views/Calenda.vue'
 
 Vue.use(VueRouter)
 
@@ -98,6 +99,11 @@ const routes = [
     path: '/guides',
     name: 'Guides',
     component: Guides
+  },
+  {
+    path: '/calenda',
+    name: 'Calenda',
+    component: Calenda
   },
   { // catch all 404 - define at the very end
     path: '*',

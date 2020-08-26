@@ -212,4 +212,8 @@
     font-size: 20px;
     font-weight: bold;
 }
+.list-group .list-group-item h5{
+    font-size: 15px !important;
+    text-align: left;
+}
 </style>

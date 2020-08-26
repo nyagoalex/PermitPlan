@@ -6,7 +6,7 @@
     <b-navbar-nav>
       <b-nav-item @click="$router.push({name: 'Dashboard'})">Dashbord</b-nav-item>
       <b-nav-item @click="$router.push({name: 'Bookings'})">All Bookings</b-nav-item>
-      <b-nav-item @click="$router.push({name: 'Bookings'})">Safari Calenda</b-nav-item>
+      <b-nav-item @click="$router.push({name: 'Calenda'})">Safari Calenda</b-nav-item>
       <b-nav-item-dropdown text="+ More" right>
         <b-dropdown-item @click="$router.push({name: 'Agents'})">Agents</b-dropdown-item>
         <b-dropdown-item @click="$router.push({name: 'GroupPermits'})">Departures Permits</b-dropdown-item>

@@ -13,7 +13,7 @@
           </b-dropdown-item-button><b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item v-b-modal.new-guest>Add Guest</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item v-b-modal.invoice-details>Add Invoice Details</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item active>Preview Invoice</b-dropdown-item>
+          <b-dropdown-item  v-b-modal.invoice-preview active>Preview Invoice</b-dropdown-item>
         </b-dropdown>
       </b-col>
     </b-row>
@@ -28,6 +28,7 @@
     <AddPermit/>
     <AddGuest/>
     <AddInvoiceDetails/>
+    <InvoicePreview/>
   </div>
 </template>
 
@@ -37,6 +38,7 @@ import MainDetails from '@/components/Bookings/MainDetails.vue'
 import AddPermit from '@/components/Bookings/Modals/AddPermit.vue'
 import AddGuest from '@/components/Bookings/Modals/AddGuest.vue'
 import AddInvoiceDetails from '@/components/Bookings/Modals/AddInvoiceDetails.vue'
+import InvoicePreview from '@/components/Bookings/Modals/InvoicePreview.vue'
 export default {
   name: 'side_details',
   components: {
@@ -44,7 +46,8 @@ export default {
     MainDetails,
     AddPermit,
     AddGuest,
-    AddInvoiceDetails
+    AddInvoiceDetails,
+    InvoicePreview
   }
 }
 </script>

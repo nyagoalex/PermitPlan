@@ -51,7 +51,6 @@ import UserDetails from '@/components/Modals/UserDetails.vue'
 import AddUser from '@/components/Modals/AddUser.vue'
 import EventBus from '@/Events/EventBus.js'
 
-const faker = require('faker')
 export default {
   name: 'users',
   data () {
@@ -74,14 +73,6 @@ export default {
     AddUser
   },
   methods: {
-    getUsersm () {
-      const s = []
-      for (let i = 1; i < 10; i++) {
-        const v = { id: i, name: faker.name.firstName() + ' ' + faker.name.lastName(), role: faker.random.arrayElement(['administrator', 'cashier', 'tour guide']), active: faker.random.boolean() }
-        s.push(v)
-      }
-      return s
-    },
     getUsers (page = 1) {
       const filters = this.filters
       filters.page = page
