@@ -14,11 +14,19 @@ class CreateGuestsTable extends Migration
     public function up()
     {
         Schema::create('guests', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('booking_id');
+            $table->string("first_name");
+            $table->string("last_name");
+            $table->date("dob");
+            $table->string("passport", 100)->nullable();
+            $table->string("nationality", 250);
             $table->timestamps();
+
+            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

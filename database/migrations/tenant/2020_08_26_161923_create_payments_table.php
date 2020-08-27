@@ -14,8 +14,15 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('booking_id');
+            $table->uuid('user_id');
+            $table->float('amount', 9, 2)->default(0);
+            $table->date("date");
             $table->timestamps();
+
+            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -14,8 +14,16 @@ class CreateItemPaymentsTable extends Migration
     public function up()
     {
         Schema::create('item_payments', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('paymentable'); // eg App\Models\Permit
+
+            $table->uuid('user_id');
+            $table->float('amount', 9, 2)->default(0);
+            $table->date("date");
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->index(['paymentable_id', 'paymentable_type']);
         });
     }
 

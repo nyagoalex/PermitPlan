@@ -235,7 +235,7 @@ Route::middleware([
                         function () {
                             Route::get('/', 'PermitController@index')->name('booking.permit.all');
                             Route::post('/', 'PermitController@store')->name('booking.permit.create');
-                            Route::patch('/{permit_id}', 'PermitController@update')->name('booking.permit.update');
+                            Route::patch('/{permit_id}', 'PermitController@reshedule')->name('booking.permit.reshedule');
                             Route::delete('/{permit_id}', 'PermitController@destroy')->name('booking.permit.delete');
                         }
                     );
@@ -289,16 +289,16 @@ Route::middleware([
                             Route::delete('/{guide_id}', 'BookingGuideController@destroy')->name('booking.guide.delete');
                         }
                     );
-                    # payments for items of booking
-                    Route::group(
-                        ['prefix' => '{booking_id}/item-payment'],
-                        function () {
-                            Route::get('/', 'ItemPaymentController@index')->name('booking.item.payment.all');
-                            Route::post('/', 'ItemPaymentController@store')->name('booking.item.payment.create');
-                            Route::delete('/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete');
-                        }
-                    );
                 },
+                # payments for items of booking
+                Route::group(
+                    ['prefix' => 'item-payment/{type_model}/{id}'],
+                    function () {
+                        Route::post('/', 'ItemPaymentController@store')->name('booking.item.payment.create');
+                        Route::get('/', 'ItemPaymentController@index')->name('booking.item.payment.all');
+                        Route::delete('/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete');
+                    }
+                ),
                   
                 Route::group(
                     ['prefix' => 'departure-tours'],

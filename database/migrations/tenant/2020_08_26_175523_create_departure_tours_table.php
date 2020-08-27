@@ -14,8 +14,15 @@ class CreateDepartureToursTable extends Migration
     public function up()
     {
         Schema::create('departure_tours', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string("name", 250);
+            $table->date("arrival_date");
+            $table->date("departure_date");
+            $table->uuid("user_id");
+            $table->boolean("active")->default(false);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

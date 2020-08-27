@@ -13,7 +13,7 @@ class PaymentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,10 @@ class PaymentRequest extends FormRequest
      */
     public function rules()
     {
+        $today = today()->format('Y-m-d');
         return [
-            //
+            "amount" => ["required", "numeric", "gte:0"],
+            'date' => "required|date_format:Y-m-d|before_or_equal:$today"
         ];
     }
 }

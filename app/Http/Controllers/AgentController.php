@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AgentRequest;
 use App\Http\Resources\AgentResource;
 use App\Models\Agent;
-use App\Rules\PhoneValidator;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

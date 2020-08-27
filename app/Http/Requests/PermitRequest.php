@@ -13,7 +13,7 @@ class PermitRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,12 @@ class PermitRequest extends FormRequest
      */
     public function rules()
     {
+        $today = today()->format('Y-m-d');
         return [
-            //
+            "permit_type_id" => ["required", "exists:permit_types,id"],
+            "sector_id" => ["required", "exists:sectors,id"],
+            "cost" => ["required", "numeric", "gte:0"],
+            'tracking_date' => "required|date_format:Y-m-d|after_or_equal:$today"
         ];
     }
 }

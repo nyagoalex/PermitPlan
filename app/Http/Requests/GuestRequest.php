@@ -13,7 +13,7 @@ class GuestRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,13 @@ class GuestRequest extends FormRequest
      */
     public function rules()
     {
+        $today = today()->format('Y-m-d');
         return [
-            //
+            'first_name' => ['required', 'string', 'max:20'],
+            'last_name' => ['required', 'string', 'max:20'],
+            'dob' => "required|date_format:Y-m-d|before_or_equal:$today",
+            'nationality' => "required|string|min:3|max:250",
+            'passport' => "required|alpha_dash|min:3|max:100",
         ];
     }
 }
