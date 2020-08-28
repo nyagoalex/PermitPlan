@@ -1,172 +1,178 @@
 <template>
-    <div class="col-9 p-0 pr-2">
-        <div class="pl-4 pr-4">
-            <div class="accordion-panel  text-left">
-                <div class="buttons-wrapper">
-                    <i class="plus-icon"></i>
-                    <div class="open-btn">
-                        Open all
-                    </div>
-                    <div class="close-btn hidden">
-                        Close all
-                    </div>
+<div class="col-9 p-0 pr-2">
+    <div class="pl-4 pr-4">
+        <div class="accordion-panel  text-left">
+            <div class="buttons-wrapper">
+                <i class="plus-icon"></i>
+                <div class="open-btn">
+                    Open all
                 </div>
+                <div class="close-btn hidden">
+                    Close all
+                </div>
+            </div>
 
-                <dl class="accordion">
-                    <dt>Permits <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
+            <dl class="accordion">
+                <dt>Permits <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
 
                         <div class="mt-3 header-small pt-3 bg-white  p-3">
-                            <b-button  size="sm" pill variant="outline-secondary" class="float-right" data-toggle="modal" data-target="#new-payment">+ Permit Payment</b-button>
+                            <b-button size="sm" pill variant="outline-secondary" class="float-right" data-toggle="modal" data-target="#new-payment">+ Permit Payment</b-button>
 
-                                <b-table :items="permit_items" :fields="permit_fields" outlined striped hover>
-                                    <template v-slot:cell(index)="data">
-                                        {{ data.index + 1 }}
-                                    </template>
-                                  <template v-slot:cell(action)="data">
+                            <b-table :items="permit_items" :fields="permit_fields" outlined striped hover>
+                                <template v-slot:cell(index)="data">
+                                    {{ data.index + 1 }}
+                                </template>
+                                <template v-slot:cell(action)="data">
                                     <b-dropdown text="Action" variant="light" size="sm">
                                         <b-dropdown-item-button> Reschedule</b-dropdown-item-button>
-                                        <b-dropdown-item>Show Payments</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
-                                        <b-dropdown-item>Register Payment</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item>Show Payments</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item>Register Payment</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
                                         <b-dropdown-item disabled>Delete</b-dropdown-item>
                                         <b-dropdown-item disabled>{{ data.action }}</b-dropdown-item>
                                     </b-dropdown>
 
-                                  </template>
+                                </template>
 
-                                </b-table>
+                            </b-table>
 
-                            </div>
-                            <br>
                         </div>
+                        <br>
+                    </div>
 
-                    </dd>
+                </dd>
 
-                    <dt>Payments <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
+                <dt>Payments <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
 
-                            <div class="mt-3 pt-3 header-small bg-white  p-3">
-                                <b-button v-b-modal.overall_payment_modal size="sm" pill variant="outline-secondary" class="float-right" >+ add payment</b-button>
+                        <div class="mt-3 pt-3 header-small bg-white  p-3">
+                            <b-button v-b-modal.overall_payment_modal size="sm" pill variant="outline-secondary" class="float-right">+ add payment</b-button>
 
-                                <b-table :items="payment_items" :fields="payment_fields" outlined striped hover>
-                                    <template v-slot:cell(index)="data">
-                                        {{ data.index + 1 }}
-                                    </template>
-                                  <template v-slot:cell(action)="data">
+                            <b-table :items="payment_items" :fields="payment_fields" outlined striped hover>
+                                <template v-slot:cell(index)="data">
+                                    {{ data.index + 1 }}
+                                </template>
+                                <template v-slot:cell(action)="data">
                                     <b-dropdown text="Action" variant="light" size="sm">
                                         <b-dropdown-item-button> Reschedule</b-dropdown-item-button>
-                                        <b-dropdown-item>Show Payments</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
-                                        <b-dropdown-item>Register Payment</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item>Show Payments</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item>Register Payment</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
                                         <b-dropdown-item disabled>Delete</b-dropdown-item>
                                         <b-dropdown-item disabled>{{ data.action }}</b-dropdown-item>
                                     </b-dropdown>
 
-                                  </template>
+                                </template>
 
-                                </b-table>
+                            </b-table>
 
-                            </div>
-                            <br>
                         </div>
-                    </dd>
+                        <br>
+                    </div>
+                </dd>
 
-                    <dt>Guests Details<i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
+                <dt>Guests Details<i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
 
-                          <div class="mt-3 header-small pt-3 bg-white  p-3">
+                        <div class="mt-3 header-small pt-3 bg-white  p-3">
                             <b-table :items="guest_items" :fields="guest_fields" outlined striped hover>
                                 <template v-slot:cell(index)="data">
                                     {{ data.index + 1 }}
                                 </template>
-                              <template v-slot:cell(action)="data">
-                                <b-dropdown text="Action" variant="light" size="sm">
-                                    <b-dropdown-item-button> Reschedule</b-dropdown-item-button>
-                                    <b-dropdown-item>Show Payments</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
-                                    <b-dropdown-item>Register Payment</b-dropdown-item><b-dropdown-divider></b-dropdown-divider>
-                                    <b-dropdown-item disabled>Delete</b-dropdown-item>
-                                    <b-dropdown-item disabled>{{ data.action }}</b-dropdown-item>
-                                </b-dropdown>
+                                <template v-slot:cell(action)="data">
+                                    <b-dropdown text="Action" variant="light" size="sm">
+                                        <b-dropdown-item-button> Reschedule</b-dropdown-item-button>
+                                        <b-dropdown-item>Show Payments</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item>Register Payment</b-dropdown-item>
+                                        <b-dropdown-divider></b-dropdown-divider>
+                                        <b-dropdown-item disabled>Delete</b-dropdown-item>
+                                        <b-dropdown-item disabled>{{ data.action }}</b-dropdown-item>
+                                    </b-dropdown>
 
-                              </template>
+                                </template>
 
                             </b-table>
 
-                            </div>
-                        </div>
-                    </dd>
-
-                    <dt>Day to day Itinerary (Coming Soon) <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
-                            <p>coming soon</p>
-                        </div>
-                    </dd>
-
-                    <dt>Accommodation (Coming Soon) <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
-                            <p>coming soon</p>
-                        </div>
-                    </dd>
-
-                    <dt>Activities (Coming Soon) <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
-                            <p>coming soon</p>
-                        </div>
-                    </dd>
-
-                    <dt>Guide & Vehicle (Coming Soon) <i class="plus-icon"></i></dt>
-                    <dd>
-                        <div class="contents">
-                            <p>coming soon</p>
-                        </div>
-                    </dd>
-                </dl>
-            </div>
-        </div>
-        <br>
-
-        <div class="pl-3 pr-3">
-            <h6 class="container w-100" style="font-size:20px;color:purple;"><strong>Recent Activity</strong></h6>
-
-            <div class="container">
-                <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
-                    <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
-
-                        <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Aaliyah Haworth</span></div>
-                        <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
-                        <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
-                            <div class="col col-lg-11 position-static px-0">
-                                <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
-                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
+                </dd>
 
-                <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
-                    <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
-
-                        <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Alex Nyago</span></div>
-                        <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
-                        <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
-                            <div class="col col-lg-11 position-static px-0">
-                                <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
-                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
-                                </div>
-                            </div>
-                        </div>
+                <dt>Day to day Itinerary (Coming Soon) <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
+                        <p>coming soon</p>
                     </div>
-                </div>
-            </div>
+                </dd>
+
+                <dt>Accommodation (Coming Soon) <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
+                        <p>coming soon</p>
+                    </div>
+                </dd>
+
+                <dt>Activities (Coming Soon) <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
+                        <p>coming soon</p>
+                    </div>
+                </dd>
+
+                <dt>Guide & Vehicle (Coming Soon) <i class="plus-icon"></i></dt>
+                <dd>
+                    <div class="contents">
+                        <p>coming soon</p>
+                    </div>
+                </dd>
+            </dl>
         </div>
-      <OverallPayment/>
     </div>
+    <br>
+
+    <div class="pl-3 pr-3">
+        <h6 class="container w-100" style="font-size:20px;color:purple;"><strong>Recent Activity</strong></h6>
+
+        <div class="container">
+            <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
+                <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+
+                    <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Aaliyah Haworth</span></div>
+                    <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
+                    <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
+                        <div class="col col-lg-11 position-static px-0">
+                            <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
+                                <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
+                <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+
+                    <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Alex Nyago</span></div>
+                    <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
+                    <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
+                        <div class="col col-lg-11 position-static px-0">
+                            <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
+                                <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <OverallPayment />
+</div>
 </template>
 
 <style>
@@ -273,8 +279,9 @@
     right: 10px;
     top: 12px;
 }
+
 .header-small {
-  font-size: 13px;
+    font-size: 13px;
 }
 </style>
 
@@ -283,109 +290,126 @@ import $ from 'jquery'
 import OverallPayment from '@/components/Bookings/Modals/OverallPayment.vue'
 
 export default {
-  data () {
-    return {
-      permit_fields: ['index', 'permit_type', 'permits_no', 'cost_(USD)', 'balances_(USD)', 'payment_status', 'preffered_sector', 'tracking_date', 'action'],
-      permit_items: [
-        { permit_type: 'golden monkey permits', permits_no: 'PT0001', 'cost_(USD)': 70.00, 'balances_(USD)': 609.9, payment_status: 'Tentative', preffered_sector: 'hb sdhb', tracking_date: '24th/Jul/2020 12:20 pm' }
-      ],
+    data() {
+        return {
+            permit_fields: ['index', 'permit_type', 'permits_no', 'cost_(USD)', 'balances_(USD)', 'payment_status', 'preffered_sector', 'tracking_date', 'action'],
+            permit_items: [{
+                permit_type: 'golden monkey permits',
+                permits_no: 'PT0001',
+                'cost_(USD)': 70.00,
+                'balances_(USD)': 609.9,
+                payment_status: 'Tentative',
+                preffered_sector: 'hb sdhb',
+                tracking_date: '24th/Jul/2020 12:20 pm'
+            }],
 
-      payment_fields: ['index', 'payment_date', 'amount', 'created_by', 'action'],
-      payment_items: [
-        { payment_date: '24th/Jul/2020 12:20 pm', amount: 30000, created_by: 'Alex Nyago' }
-      ],
+            payment_fields: ['index', 'payment_date', 'amount', 'created_by', 'action'],
+            payment_items: [{
+                payment_date: '24th/Jul/2020 12:20 pm',
+                amount: 30000,
+                created_by: 'Alex Nyago'
+            }],
 
-      guest_fields: ['index', 'name', 'passport_no', 'DOB', 'nationality', 'action'],
-      guest_items: [
-        { name: 'Alex Nyago', passport_no: '66y6666', DOB: '24th/Jul/2020 12:20 pm', nationality: 'Uganda' },
-        { name: 'Alex Nyago', passport_no: '66y6666', DOB: '24th/Jul/2020 12:20 pm', nationality: 'Uganda' }
-      ]
+            guest_fields: ['index', 'name', 'passport_no', 'DOB', 'nationality', 'action'],
+            guest_items: [
+                {
+                    name: 'Alex Nyago',
+                    passport_no: '66y6666',
+                    DOB: '24th/Jul/2020 12:20 pm',
+                    nationality: 'Uganda'
+                },
+                {
+                    name: 'Alex Nyago',
+                    passport_no: '66y6666',
+                    DOB: '24th/Jul/2020 12:20 pm',
+                    nationality: 'Uganda'
+                }
+            ]
+        }
+    },
+    components: {
+        OverallPayment
+    },
+    created() {
+        // reset login status
+
+    },
+    methods: {
+        handleSubmit(e) {
+
+        }
     }
-  },
-  components: {
-    OverallPayment
-  },
-  created () {
-    // reset login status
-
-  },
-  methods: {
-    handleSubmit (e) {
-
-    }
-  }
 }
 
 $(document).ready(function () {
-  var bodyEl = $('body')
-  var accordionDT = $('.accordion').find('dt')
-  var accordionDD = accordionDT.next('dd')
-  var accordionPanel = $('.accordion-panel')
-  var buttonsWrapper = accordionPanel.find('.buttons-wrapper')
-  var openBtn = accordionPanel.find('.open-btn')
-  var closeBtn = accordionPanel.find('.close-btn')
+    var bodyEl = $('body')
+    var accordionDT = $('.accordion').find('dt')
+    var accordionDD = accordionDT.next('dd')
+    var accordionPanel = $('.accordion-panel')
+    var buttonsWrapper = accordionPanel.find('.buttons-wrapper')
+    var openBtn = accordionPanel.find('.open-btn')
+    var closeBtn = accordionPanel.find('.close-btn')
 
-  bodyEl.on('click', function (argument) {
-    var totalItems = $('.accordion').children('dt').length
-    var totalItemsOpen = $('.accordion').children('dt.is-open').length
+    bodyEl.on('click', function (argument) {
+        var totalItems = $('.accordion').children('dt').length
+        var totalItemsOpen = $('.accordion').children('dt.is-open').length
 
-    if (totalItems === totalItemsOpen) {
-      openBtn.addClass('hidden')
-      closeBtn.removeClass('hidden')
-      buttonsWrapper.addClass('is-open')
-    } else {
-      openBtn.removeClass('hidden')
-      closeBtn.addClass('hidden')
-      buttonsWrapper.removeClass('is-open')
-    }
-  })
+        if (totalItems === totalItemsOpen) {
+            openBtn.addClass('hidden')
+            closeBtn.removeClass('hidden')
+            buttonsWrapper.addClass('is-open')
+        } else {
+            openBtn.removeClass('hidden')
+            closeBtn.addClass('hidden')
+            buttonsWrapper.removeClass('is-open')
+        }
+    })
 
-  function openAll () {
-    openBtn.on('click', function (argument) {
-      accordionDD.each(function (argument) {
-        var eachNewHeight = $(this).children('.contents').outerHeight(true)
-        $(this).css({
-          height: eachNewHeight
+    function openAll() {
+        openBtn.on('click', function (argument) {
+            accordionDD.each(function (argument) {
+                var eachNewHeight = $(this).children('.contents').outerHeight(true)
+                $(this).css({
+                    height: eachNewHeight
+                })
+            })
+            accordionDT.addClass('is-open')
         })
-      })
-      accordionDT.addClass('is-open')
-    })
-  }
+    }
 
-  function closeAll () {
-    closeBtn.on('click', function (argument) {
-      accordionDD.css({
-        height: 0
-      })
-      accordionDT.removeClass('is-open')
-    })
-  }
+    function closeAll() {
+        closeBtn.on('click', function (argument) {
+            accordionDD.css({
+                height: 0
+            })
+            accordionDT.removeClass('is-open')
+        })
+    }
 
-  function openCloseItem () {
-    accordionDT.on('click', function () {
-      var el = $(this)
-      var target = el.next('dd')
-      var parentHeight = target.height()
-      var childHeight = target.children('.contents').outerHeight(true)
-      var newHeight = parentHeight > 0 ? 0 : childHeight
+    function openCloseItem() {
+        accordionDT.on('click', function () {
+            var el = $(this)
+            var target = el.next('dd')
+            var parentHeight = target.height()
+            var childHeight = target.children('.contents').outerHeight(true)
+            var newHeight = parentHeight > 0 ? 0 : childHeight
 
-      // animate to new height
-      target.css({
-        height: newHeight
-      })
+            // animate to new height
+            target.css({
+                height: newHeight
+            })
 
-      // remove existing classes & add class to clicked target
-      if (!el.hasClass('is-open')) {
-        el.addClass('is-open')
-      } else { // if we are on clicked target then remove the class
-        el.removeClass('is-open')
-      }
-    })
-  }
+            // remove existing classes & add class to clicked target
+            if (!el.hasClass('is-open')) {
+                el.addClass('is-open')
+            } else { // if we are on clicked target then remove the class
+                el.removeClass('is-open')
+            }
+        })
+    }
 
-  openAll()
-  closeAll()
-  openCloseItem()
+    openAll()
+    closeAll()
+    openCloseItem()
 })
-
 </script>

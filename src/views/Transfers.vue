@@ -1,16 +1,16 @@
 <template>
-  <b-container class="bg-white text-left mt-3 fluid" >
+<b-container class="bg-white text-left mt-3 fluid">
     <div class="pt-3">
-      <b-tabs fill>
-          <b-tab class="nav-item" title="Road Transfers">
-            <Road/>
-          </b-tab>
-          <b-tab class="nav-item" title="Flight Transfers">
-              <Flight/>
-          </b-tab>
-      </b-tabs>
+        <b-tabs fill>
+            <b-tab class="nav-item" title="Road Transfers">
+                <Road />
+            </b-tab>
+            <b-tab class="nav-item" title="Flight Transfers">
+                <Flight />
+            </b-tab>
+        </b-tabs>
     </div>
-  </b-container>
+</b-container>
 </template>
 
 <script>
@@ -18,46 +18,47 @@ import Road from '@/components/Transfers/Road.vue'
 import Flight from '@/components/Transfers/Flight.vue'
 
 export default {
-  components: {
-    Road,
-    Flight
-  }
+    components: {
+        Road,
+        Flight
+    }
 }
 </script>
 
 <style>
-
 .nav {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
 }
 
-.nav-link:hover, .nav-link:focus {
-  text-decoration: none;
+.nav-link:hover,
+.nav-link:focus {
+    text-decoration: none;
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .nav-tabs .nav-item {
-  margin-bottom: .5rem !important;
+    margin-bottom: .5rem !important;
 }
 
-.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-color: #e9ecef #e9ecef #dee2e6;
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    border-color: #e9ecef #e9ecef #dee2e6;
 }
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #dee2e6 #fff;
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
 }
 
 /*  impproved   tabs*/

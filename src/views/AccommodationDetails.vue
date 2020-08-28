@@ -1,46 +1,50 @@
 <template>
-  <b-container class="bg-white text-left mt-3 fluid" >
+<b-container class="bg-white text-left mt-3 fluid">
     <div class="">
-      <!-- <ol class="breadcrumb">
+        <!-- <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="accommodation">Lodges + Hotels</a></li>
           <li class="breadcrumb-item"><a href="#"><span class="l-name-label">
                       lodge name</span> (<span class="l-location-label">
                       location</span>)</a></li>
           <li class="breadcrumb-item active" aria-current="page">Details</li>
       </ol> -->
-      <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
-      <div class="">
-          <div class="bg-grey2 p-2" style="border-radius:4px;">
+        <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
+        <div class="">
+            <div class="bg-grey2 p-2" style="border-radius:4px;">
 
-              <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})"><b-icon icon="arrow-left"></b-icon></a></span><span class="l-name-label">
-                      lodge name </span></span>
-                      <span class="ml-4"><star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating></span>
-          </div>
-      </div>
+                <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})">
+                            <b-icon icon="arrow-left"></b-icon>
+                        </a></span><span class="l-name-label">
+                        lodge name </span></span>
+                <span class="ml-4">
+                    <star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating>
+                </span>
+            </div>
+        </div>
         <div class="pt-3">
 
-          <b-tabs fill>
-              <b-tab class="nav-item" title="Lodge Details">
-                <Details :lodge="lodge"/>
-              </b-tab>
-              <b-tab class="nav-item" title="The Rooms">
-                  <Rooms :rooms="lodge.rooms" />
-              </b-tab>
-              <b-tab class="nav-item" title="Rates & Seasons">
-                  <Rates :seasons="lodge.seasons" :contracted_rating="lodge.contracted_rating"/>
-              </b-tab>
+            <b-tabs fill>
+                <b-tab class="nav-item" title="Lodge Details">
+                    <Details :lodge="lodge" />
+                </b-tab>
+                <b-tab class="nav-item" title="The Rooms">
+                    <Rooms :rooms="lodge.rooms" />
+                </b-tab>
+                <b-tab class="nav-item" title="Rates & Seasons">
+                    <Rates :seasons="lodge.seasons" :contracted_rating="lodge.contracted_rating" />
+                </b-tab>
 
-              <b-tab class="nav-item" title="Photos">
-                  <Photos/>
-              </b-tab>
+                <b-tab class="nav-item" title="Photos">
+                    <Photos />
+                </b-tab>
 
-              <b-tab class="nav-item" title="Facilities & Activities">
-                  <Activities :activities="lodge.activities" :facilities="lodge.facilities"/>
-              </b-tab>
-          </b-tabs>
+                <b-tab class="nav-item" title="Facilities & Activities">
+                    <Activities :activities="lodge.activities" :facilities="lodge.facilities" />
+                </b-tab>
+            </b-tabs>
         </div>
     </div>
-  </b-container>
+</b-container>
 </template>
 
 <script>
@@ -52,53 +56,59 @@ import Activities from '@/components/Accomodation/Activities.vue'
 
 import StarRating from 'vue-star-rating'
 export default {
-  data () {
-    return {
-      breadcrumb_items: this.breadcrumbItems(),
-      lodge: {},
-      star_rating: 0
-    }
-  },
-  components: {
-    Details,
-    Rooms,
-    Rates,
-    Photos,
-    Activities,
-    StarRating
-  },
-  methods: {
-    setRating: function (rating) {
-      this.$http.patch('/lodges/' + this.$route.params.id + '/star-rating', { star_rating: rating }).then(() => {
-        this.toastSuccess('Star Rating Successfully Updated')
-      })
-    },
-    async getLodge () {
-      await this.$http.get('/lodges/' + this.$route.params.id).then(lodge => {
-        this.lodge = lodge.data.data
-        this.star_rating = this.lodge.star_rating
-      })
-    },
-    breadcrumbItems: function () {
-      return [
-        {
-          text: 'Dashboard',
-          to: { name: 'Dashboard' }
-        },
-        {
-          text: 'Accommodations',
-          to: { name: 'Accommodations' }
-        },
-        {
-          text: 'Details',
-          active: true
+    data() {
+        return {
+            breadcrumb_items: this.breadcrumbItems(),
+            lodge: {},
+            star_rating: 0
         }
-      ]
+    },
+    components: {
+        Details,
+        Rooms,
+        Rates,
+        Photos,
+        Activities,
+        StarRating
+    },
+    methods: {
+        setRating: function (rating) {
+            this.$http.patch('/lodges/' + this.$route.params.id + '/star-rating', {
+                star_rating: rating
+            }).then(() => {
+                this.toastSuccess('Star Rating Successfully Updated')
+            })
+        },
+        async getLodge() {
+            await this.$http.get('/lodges/' + this.$route.params.id).then(lodge => {
+                this.lodge = lodge.data.data
+                this.star_rating = this.lodge.star_rating
+            })
+        },
+        breadcrumbItems: function () {
+            return [
+                {
+                    text: 'Dashboard',
+                    to: {
+                        name: 'Dashboard'
+                    }
+                },
+                {
+                    text: 'Accommodations',
+                    to: {
+                        name: 'Accommodations'
+                    }
+                },
+                {
+                    text: 'Details',
+                    active: true
+                }
+            ]
+        }
+    },
+    mounted() {
+        this.getLodge()
     }
-  },
-  mounted () {
-    this.getLodge()
-  }
 }
 </script>
 
@@ -150,6 +160,7 @@ export default {
     top: 2px;
     left: 2px;
 }
+
 .rating>label {
     margin-top: .5rem !important;
     margin-bottom: 0 !important;
@@ -165,121 +176,126 @@ export default {
     font-size: 12px;
 
 }
+
 .bg-grey2 {
-/*        background: #DCDBDB;*/
-/*        background: #FAF7F0;*/
+    /*        background: #DCDBDB;*/
+    /*        background: #FAF7F0;*/
     border: 1px solid #F1F0EE;
 }
 
 .hotel-name {
     font-size: 25px;
     color: #666;
-/*        text-shadow: 1px 0px #000;*/
+    /*        text-shadow: 1px 0px #000;*/
 }
 
 .content .content-overlay {
-  background: rgba(0,0,0,0.7);
-  position: absolute;
-  height: 99%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-  -webkit-transition: all 0.4s ease-in-out 0s;
-  -moz-transition: all 0.4s ease-in-out 0s;
-  transition: all 0.4s ease-in-out 0s;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    height: 99%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
 }
 
-.content:hover .content-overlay{
-  opacity: 1;
-  cursor: pointer;
+.content:hover .content-overlay {
+    opacity: 1;
+    cursor: pointer;
 }
 
 .content-details {
-  position: absolute;
-  text-align: center;
-  padding-left: 1em;
-  padding-right: 1em;
-  width: 100%;
-  top: 80%;
-  left: 50%;
-  opacity: 0;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  -webkit-transition: all 0.3s ease-in-out 0s;
-  -moz-transition: all 0.3s ease-in-out 0s;
-  transition: all 0.3s ease-in-out 0s;
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 80%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
 }
 
-.content:hover .content-details{
-  top: 50%;
-  left: 50%;
-  opacity: 1;
+.content:hover .content-details {
+    top: 50%;
+    left: 50%;
+    opacity: 1;
 }
 
-.content-details h3{
-  color: #fff;
-  font-weight: 500;
-  letter-spacing: 0.15em;
+.content-details h3 {
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.15em;
 }
-.content-details .content-title{
-  text-transform: uppercase;
-  text-overflow: ellipsis;
+
+.content-details .content-title {
+    text-transform: uppercase;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-     width: 200px;
+    width: 200px;
 }
 
-.content-details .content-text{
-  color: #fff;
-  font-size: 0.8em;
-  text-overflow: ellipsis;
+.content-details .content-text {
+    color: #fff;
+    font-size: 0.8em;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-     width: 250px;
+    width: 250px;
 }
+
 .nav {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
 }
 
-.nav-link:hover, .nav-link:focus {
-  text-decoration: none;
+.nav-link:hover,
+.nav-link:focus {
+    text-decoration: none;
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .nav-tabs .nav-item {
-  margin-bottom: .5rem !important;
+    margin-bottom: .5rem !important;
 }
 
-.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-color: #e9ecef #e9ecef #dee2e6;
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    border-color: #e9ecef #e9ecef #dee2e6;
 }
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #dee2e6 #fff;
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
 }
 
-.tab-content > .tab-pane {
-  display: none;
+.tab-content>.tab-pane {
+    display: none;
 }
 
-.tab-content > .active {
-  display: block;
+.tab-content>.active {
+    display: block;
 }
 
 /*  impproved   tabs*/
@@ -366,6 +382,7 @@ export default {
     height: 100%;
     cursor: pointer;
 }
+
 .form-control {
     color: #4a5568;
     font-size: 8px;

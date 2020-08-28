@@ -1,6 +1,6 @@
 <template>
-    <b-modal id="new-booking" title="Add Booking" size="lg">
-      <form>
+<b-modal id="new-booking" title="Add Booking" size="lg">
+    <form>
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
@@ -50,33 +50,33 @@
                     <label><small>Select agent</small></label>
                     <select class="form-control" id="agents-tb-booking"></select>
                 </div>
-              </div>
-              </div>
-          </form>
-        <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="busy" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="success"  :disabled="busy" ref="button" @click="onSubmit">Add Booking</b-button>
-        </template>
-        <b-overlay :show="busy" opacity="0.6" no-wrap></b-overlay>
-    </b-modal>
+            </div>
+        </div>
+    </form>
+    <template v-slot:modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" :disabled="busy" @click="cancel()">Cancel</b-button>
+        <b-button size="sm" variant="success" :disabled="busy" ref="button" @click="onSubmit">Add Booking</b-button>
+    </template>
+    <b-overlay :show="busy" opacity="0.6" no-wrap></b-overlay>
+</b-modal>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      source_selected: '',
-      busy: false
+    data() {
+        return {
+            source_selected: '',
+            busy: false
+        }
+    },
+    methods: {
+        onSubmit() {
+            this.busy = true
+            // Simulate an async request
+            setTimeout(() => {
+                this.busy = false
+            }, 5000)
+        }
     }
-  },
-  methods: {
-    onSubmit () {
-      this.busy = true
-      // Simulate an async request
-      setTimeout(() => {
-        this.busy = false
-      }, 5000)
-    }
-  }
 }
 </script>

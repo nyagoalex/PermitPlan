@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="overall_payment_modal"  title="Register Overall Payment" size="sm">
+<b-modal id="overall_payment_modal" title="Register Overall Payment" size="sm">
     <form>
         <div class="row">
             <div class="col-12">
@@ -27,5 +27,5 @@
         <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
         <b-button size="sm" variant="success" @click="ok()">Register Payment</b-button>
     </template>
-  </b-modal>
+</b-modal>
 </template>
