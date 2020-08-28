@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Permit extends Model
 {
@@ -33,5 +34,34 @@ class Permit extends Model
     public function payments()
     {
         return $this->morphMany(ItemPayment::class, 'paymentable');
+    }
+    /**
+     * Get all of the post's comments.
+     */
+    public function permitType()
+    {
+        return $this->belongsTo(PermitType::class);
+    }
+    /**
+     * Get all of the post's comments.
+     */
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
+    }
+
+    /**
+     * Get all of the post's comments.
+     */
+    public function getRescheduledAttribute()
+    {
+        return !is_null($this->rescheduled_from);
+    }
+    /**
+     * Get all of the post's comments.
+     */
+    public function getExpiredAttribute()
+    {
+        return is_null($this->expired_date) ? false : Carbon::parse($this->expired_date)->isPast();
     }
 }

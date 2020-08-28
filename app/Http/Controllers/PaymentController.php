@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentResource;
 use App\Http\Resources\PermitResource;
+use App\Models\Booking;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
@@ -34,9 +36,12 @@ class PaymentController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $request->validated();
-        $data['booking_id'] = $booking_id;
         $data['user_id'] = Auth::id();
-        $payment = Payment::create($data);
+
+        $booking = Booking::findOrFail($booking_id);
+        // do not pay beyond the balance
+        abort_if($data['amount'] > $booking->balance, Response::HTTP_BAD_REQUEST, "Action Failed, Booking Over Payment Amount:{$data['amount']} Bal:{$booking->balance}");
+        $payment = $booking->payments()->create($data);
         DB::commit();
         return new PaymentResource($payment);
     }

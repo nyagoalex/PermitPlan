@@ -19,7 +19,7 @@ class CreateDepartureTourPermitsTable extends Migration
             $table->uuid('sector_id');
             $table->uuid('group_tour_id');
             $table->uuid('allocated_permit_id')->nullable();
-            $table->string("number");
+            $table->string("number", 10)->unique();
             $table->float('cost', 9, 2)->default(0);
             $table->date("tracking_date");
             $table->date("rescheduled_from")->nullable();

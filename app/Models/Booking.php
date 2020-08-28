@@ -21,16 +21,7 @@ class Booking extends Model
     protected $fillable = [
         'number','ref','user_id', 'agent_id', 'no_of_persons', 'cost_per_person', 'arrival_date', 'departure_date', 'client_name', 'comment'
     ];
-
-         /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'created_at' => 'datetime:D, d M Y',
-        'updated_at' => 'datetime:D, d M Y',
-    ];
+    protected $withCount = ['permits'];
 
     public function user()
     {
@@ -42,9 +33,19 @@ class Booking extends Model
         return $this->hasMany(Permit::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function guests()
+    {
+        return $this->hasMany(Guest::class);
+    }
+
     public function agent()
     {
-        return $this->belongsTo(User::class, 'agent_id');
+        return $this->belongsTo(Agent::class);
     }
 
     public function getTentativeAttribute()
@@ -55,5 +56,20 @@ class Booking extends Model
     public function getSourceAttribute()
     {
         return is_null($this->agent_id) ? 'direct' : 'Agent';
+    }
+
+    public function getTotalCostAttribute()
+    {
+        return $this->no_of_persons * $this->cost_per_person;
+    }
+
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments->sum('amount');
+    }
+
+    public function getBalanceAttribute()
+    {
+        return round(($this->total_cost - $this->total_paid), 2);
     }
 }

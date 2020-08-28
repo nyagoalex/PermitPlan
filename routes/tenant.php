@@ -217,7 +217,7 @@ Route::middleware([
                     Route::post('/', 'BookingController@store')->name('booking.create');
                     Route::patch('/{booking_id}', 'BookingController@update')->name('booking.update');
                     Route::delete('/{booking_id}', 'BookingController@destroy')->name('booking.delete');
-                    Route::patch('/{booking_id}/comment', 'BookingController@updateComment')->name('booking.comment');
+                    Route::patch('/{booking_id}/comment', 'BookingController@comment')->name('booking.comment');
                     Route::post('/{booking_id}/confirm', 'BookingController@confirm')->name('booking.confirm');
                     Route::post('/{booking_id}/cancel', 'BookingController@cancel')->name('booking.cancel');
 

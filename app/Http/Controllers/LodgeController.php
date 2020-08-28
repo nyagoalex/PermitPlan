@@ -40,7 +40,7 @@ class LodgeController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $this->validateData();
-        $data['code'] = "LHi".sprintf('%04d', Lodge::count() + 1);
+        $data['code'] =$this->nextNumber(Lodge::query(), 'code', 'L');
         $lodge = Lodge::create($data);
         DB::commit();
         return new LodgeResource($lodge);

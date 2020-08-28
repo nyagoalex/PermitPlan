@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PermitRequest;
 use App\Http\Resources\PermitResource;
 use App\Models\Permit;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PermitController extends Controller
 {
+    use HelperTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +19,7 @@ class PermitController extends Controller
      */
     public function index($booking_id)
     {
-        $bookings = Permit::whereBookingId($booking_id)->get();
+        $bookings = Permit::whereBookingId($booking_id)->orderBy('number')->get();
         return PermitResource::collection($bookings);
     }
 
@@ -33,10 +35,15 @@ class PermitController extends Controller
         DB::beginTransaction();
         $data = $request->validated();
         $data['booking_id'] = $booking_id;
-        $permit = Permit::create($data);
+
+        $i = 1;
+        while($i <= $data['no_of_permits']) {
+            $data['number'] =$this->nextNumber(Permit::query(), 'number', 'PT');
+            Permit::create($data);
+            $i++;
+        }
         DB::commit();
-        return new PermitResource($permit);
-        calculate expiry and number
+        return $this->index($booking_id);
     }
 
     /**

@@ -16,7 +16,7 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string("number");
+            $table->string("number", 10)->unique();
             $table->string("ref");
             $table->uuid('user_id');
             $table->uuid('agent_id')->nullable();

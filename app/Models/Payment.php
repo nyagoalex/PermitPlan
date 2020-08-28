@@ -26,4 +26,12 @@ class Payment extends Model
        'created_at' => 'datetime:D, d M Y',
        'updated_at' => 'datetime:D, d M Y',
    ];
+
+   /**
+     * Get all of the post's comments.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

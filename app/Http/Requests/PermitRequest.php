@@ -28,7 +28,8 @@ class PermitRequest extends FormRequest
             "permit_type_id" => ["required", "exists:permit_types,id"],
             "sector_id" => ["required", "exists:sectors,id"],
             "cost" => ["required", "numeric", "gte:0"],
-            'tracking_date' => "required|date_format:Y-m-d|after_or_equal:$today"
+            'tracking_date' => "required|date_format:Y-m-d|after_or_equal:$today",
+            "no_of_permits" => ["required", "integer", "min:1", "max:20"],
         ];
     }
 }

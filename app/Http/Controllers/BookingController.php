@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\BookingSingleResource;
 use App\Models\Booking;
 use App\Traits\HelperTrait;
 use Illuminate\Support\Facades\Auth;
@@ -41,13 +42,13 @@ class BookingController extends Controller
      */
     public function store(BookingRequest $request)
     {
-        #insert new booking
         DB::beginTransaction();
         $data = $request->validated();
+        $data['number'] =$this->nextNumber(Booking::query(), 'number', 'B');
         $data['user_id'] = Auth::id();
         $booking = Booking::create($data);
         DB::commit();
-        return new BookingResource($booking);
+        return new BookingSingleResource($booking->refresh());
     }
 
     /**
@@ -58,8 +59,8 @@ class BookingController extends Controller
      */
     public function show($booking_id)
     {
-        $booking = Booking::with('permits')->findOrFail($booking_id);
-        return new BookingResource($booking);
+        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
+        return new BookingSingleResource($booking);
     }
 
     /**
@@ -76,7 +77,7 @@ class BookingController extends Controller
         $data = $request->validated();
         $booking->update($data);
         DB::commit();
-        return new BookingResource($booking);
+        return new BookingSingleResource($booking);
     }
 
     /**
@@ -108,7 +109,7 @@ class BookingController extends Controller
         $booking->status = 'cancelled';
         $booking->save();
         DB::commit();
-        return new BookingResource($booking);
+        return new BookingSingleResource($booking);
     }
 
     public function confirm($booking_id)
@@ -121,7 +122,7 @@ class BookingController extends Controller
         $booking->status = 'confirmed';
         $booking->save();
         DB::commit();
-        return new BookingResource($booking);
+        return new BookingSingleResource($booking);
     }
 
     public function comment($booking_id)
@@ -131,6 +132,6 @@ class BookingController extends Controller
         $data = request()->validate(['comment' => "nullable|string"]);
         $booking->update($data);
         DB::commit();
-        return new BookingResource($booking);
+        return new BookingSingleResource($booking);
     }
 }

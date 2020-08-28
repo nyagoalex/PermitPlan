@@ -48,7 +48,7 @@ class GuideController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $this->validateData();
-        $data['code'] = "GD".sprintf('%04d', Guide::count() + 1);
+        $data['code'] =$this->nextNumber(Guide::query(), 'code', 'GD');
         $guide = Guide::create($data);
         DB::commit();
         return new GuideResource($guide);

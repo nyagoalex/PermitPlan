@@ -46,6 +46,7 @@ class AgentController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $request->validated();
+        $data['code'] =$this->nextNumber(Agent::query(), 'code', 'AG');
         $agent = Agent::create($data);
         DB::commit();
         return new AgentResource($agent);

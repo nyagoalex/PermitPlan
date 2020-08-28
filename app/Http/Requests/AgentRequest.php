@@ -38,7 +38,7 @@ class AgentRequest extends FormRequest
     {
         return [
             'name' => "required|string|min:3|max:250",
-            'code' => "required|alpha_dash|min:3|max:250|unique:agents",
+            // 'code' => "required|alpha_dash|min:3|max:250|unique:agents",
             'country' => "required|string|min:3|max:250",
             'city' => "required|string|min:3|max:250",
             'email' => "nullable|email:filter",
@@ -51,7 +51,7 @@ class AgentRequest extends FormRequest
     {
         return [
             'name' => "required|string|min:3|max:250",
-            'code' => "required|alpha_dash|min:3|max:250|unique:agents,code,". $this->route('agent_id'),
+            // 'code' => "required|alpha_dash|min:3|max:250|unique:agents,code,". $this->route('agent_id'),
             'country' => "required|string|min:3|max:250",
             'city' => "required|string|min:3|max:250",
             'email' => "nullable|email:filter",

@@ -18,10 +18,10 @@ class CreatePermitsTable extends Migration
             $table->uuid('booking_id');
             $table->uuid('permit_type_id');
             $table->uuid('sector_id');
-            $table->string("number");
+            $table->string("number", 10)->unique();
             $table->float('cost', 9, 2)->default(0);
             $table->date("tracking_date");
-            $table->date("expiry_date");
+            $table->date("expiry_date")->nullable();
             $table->date("rescheduled_from")->nullable();
             $table->timestamps();
 

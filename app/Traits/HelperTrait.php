@@ -45,4 +45,11 @@ trait HelperTrait
     {
         return $count.' '.(($count ==1) ? $text : $text."s");
     }
+
+    function nextNumber($model, $column, $prefix)
+    {
+        $last_number = $model->max($column);
+        $last_number = (int) filter_var($last_number, FILTER_SANITIZE_NUMBER_INT);
+        return $prefix.sprintf('%04d', $last_number + 1);
+    }
 }

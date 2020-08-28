@@ -25,6 +25,10 @@ class BookingResource extends JsonResource
             "arrival_date" => $this->arrival_date,
             "departure_date" => $this->departure_date,
             "client_name" => $this->client_name,
+            "permits_count" => $this->permits_count,
+            "total_cost" => $this->total_cost,
+            "total_paid" => $this->total_paid,
+            "balance" => $this->balance,
         ];
     }
 }

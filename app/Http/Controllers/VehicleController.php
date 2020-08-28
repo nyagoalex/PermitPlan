@@ -45,6 +45,7 @@ class VehicleController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $this->validateData();
+        $data['code'] =$this->nextNumber(Vehicle::query(), 'code', 'VH');
         $vehicle = Vehicle::create($data);
         DB::commit();
         return new VehicleResource($vehicle);
@@ -97,7 +98,7 @@ class VehicleController extends Controller
     private function validateData()
     {
         $request = Request();
-        $unique_code = $request->isMethod('post') ? 'unique:vehicles' : "unique:vehicles,code,". $request->route('vehicle_id');
+        // $unique_code = $request->isMethod('post') ? 'unique:vehicles' : "unique:vehicles,code,". $request->route('vehicle_id');
         $unique_reg_no = $request->isMethod('post') ? 'unique:vehicles' : "unique:vehicles,reg_no,". $request->route('vehicle_id');
         
         return $request->validate([
@@ -108,7 +109,7 @@ class VehicleController extends Controller
             'status' => 'required|in:ready,disposed_off,too_old,has_issues',
             'ownership' => 'required|in:company,hired',
             'cost_per_day' => ['required', 'numeric', 'min:0', 'max:999999999999999999999'],
-            'code' => "required|alpha_dash|min:2|max:150|".$unique_code
+            // 'code' => "required|alpha_dash|min:2|max:150|".$unique_code
         ]);
     }
 }

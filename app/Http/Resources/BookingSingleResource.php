@@ -17,12 +17,14 @@ class BookingSingleResource extends BookingResource
         return array_merge(
             parent::toArray($request),
             [
-                'user' => $this->user->only('id', 'name'),
+                'user' => $this->user->only('id', 'full_name'),
                 'agent' => ($this->agent) ? $this->agent->only('id', 'name') : null,
                 "comment" => $this->comment,
-                "created_at" => $this->created_at,
-                "updated_at" => $this->updated_at,
-                "permits" => $this->permits,
+                "created_at" => $this->created_at->format('D, d M Y'),
+                "updated_at" => $this->updated_at->format('D, d M Y'),
+                "permits" => PermitResource::collection($this->permits),
+                "payments" => PaymentResource::collection($this->payments),
+                "guests" => GuestResource::collection($this->guests),
             ]
         );
     }
