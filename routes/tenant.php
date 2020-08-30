@@ -309,7 +309,7 @@ Route::middleware([
                         Route::patch('/{tour_id}', 'DepartureTourController@update')->name('departure.tour.update');
                         Route::delete('/{tour_id}', 'DepartureTourController@destroy')->name('departure.tour.delete');
                         Route::post('/{tour_id}/activate', 'DepartureTourController@activate')->name('departure.tour.activate');
-                        Route::post('/{tour_id}/deactivate', 'DepartureTourController@deactivate')->name('departure.tour.deactivate');
+                        Route::delete('/{tour_id}/deactivate', 'DepartureTourController@deactivate')->name('departure.tour.deactivate');
 
                         Route::group(
                             ['prefix' => '{tour_id}/permits'],
@@ -318,7 +318,7 @@ Route::middleware([
                                 Route::post('/', 'DepartureTourPermitController@store')->name('departure.permit.create');
                                 Route::delete('/{permit_id}', 'DepartureTourPermitController@destroy')->name('departure.permit.delete');
                                 Route::post('/{permit_id}/allocate', 'DepartureTourPermitController@allocate')->name('departure.permit.allocate');
-                                Route::patch('/{permit_id}', 'DepartureTourPermitController@update')->name('departure.permit.update');
+                                Route::patch('/{permit_id}', 'DepartureTourPermitController@reshedule')->name('departure.permit.update');
                             }
                         );
                     }

@@ -53,6 +53,11 @@ class Booking extends Model
         return ($this->status == 'tentative');
     }
 
+    public function getCancelledAttribute()
+    {
+        return ($this->status == 'cancelled');
+    }
+
     public function getSourceAttribute()
     {
         return is_null($this->agent_id) ? 'direct' : 'Agent';

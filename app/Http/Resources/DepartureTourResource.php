@@ -14,6 +14,17 @@ class DepartureTourResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "arrival_date" => $this->arrival_date,
+            "departure_date" => $this->departure_date,
+            'user' => $this->user->full_name,
+            "active" => $this->active,
+            "created_at" => $this->created_at->format('D, d M Y'),
+            "updated_at" => $this->updated_at->format('D, d M Y'),
+            "permits" => DepartureTourPermitResource::collection($this->permits),
+            "permits_count" => $this->permits_count,
+        ];
     }
 }

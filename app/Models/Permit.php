@@ -49,6 +49,14 @@ class Permit extends Model
     {
         return $this->belongsTo(Sector::class);
     }
+    
+    /**
+     * Get all of the post's comments.
+     */
+    public function Booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 
     /**
      * Get all of the post's comments.

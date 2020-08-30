@@ -18,7 +18,7 @@ class BookingSingleResource extends BookingResource
         return array_merge(
             parent::toArray($request),
             [
-                'user' => $this->user->only('id', 'full_name'),
+                'user' => $this->user->full_name,
                 'agent' => ($this->agent) ? $this->agent->only('id', 'name') : null,
                 "comment" => $this->comment,
                 "created_at" => $this->created_at->format('D, d M Y'),
