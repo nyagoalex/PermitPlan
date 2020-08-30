@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="new-booking" title="Add Booking" size="lg">
+    <b-modal id="edit-booking" :title="`Edit Booking : ${booking.number} `" size="lg">
         <form>
             <div class="row">
                 <div class="col-6">
@@ -70,7 +70,7 @@
         </form>
         <template v-slot:modal-footer="{ cancel }">
             <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="success" :disabled="loading" ref="button" @click="addBooking">Add Booking</b-button>
+            <b-button size="sm" variant="success" :disabled="loading" ref="button" @click="updateBooking">Update Booking</b-button>
         </template>
         <b-overlay :show="loading" opacity="0.6" no-wrap></b-overlay>
     </b-modal>
@@ -86,25 +86,16 @@ export default {
             source_selected: '',
             loading: false,
             errors: {},
-            booking: this.resetModal(),
             agents: []
         }
     },
     components: {
         ModelSelect
     },
+    props: {
+        booking: Object
+    },
     methods: {
-        resetModal() {
-            return {
-                ref: '',
-                agent_id: '',
-                no_of_persons: '',
-                cost_per_person: '',
-                arrival_date: '',
-                departure_date: '',
-                client_name: ''
-            }
-        },
         getAgents() {
             this.$http.get('/agents').then(agents => {
                 this.agents = agents.data.data.map(function (num) {
@@ -115,23 +106,17 @@ export default {
                 })
             })
         },
-        addBooking() {
+        updateBooking() {
             this.loading = true
             this.errors = {}
             if (this.source_selected !== 'Agent') {
                 this.booking.agent_id = null
             }
-            this.$http.post('/bookings', this.booking)
-                .then(response => {
-                    this.alertAddSuccess()
-                    this.booking = this.resetModal()
-                    this.$bvModal.hide('new-booking')
-                    this.$router.push({
-                        name: 'BookingDetails',
-                        params: {
-                            id: response.data.data.id
-                        }
-                    })
+            this.$http.patch('/bookings/' + this.$route.params.id, this.booking)
+                .then(booking => {
+                    this.toastSuccess('Successfully Updated')
+                    this.$bvModal.hide('edit-booking')
+                    this.$parent.getBooking()
                 })
                 .catch(errors => {
                     this.errors = errors.errors
@@ -144,6 +129,11 @@ export default {
     },
     mounted() {
         this.getAgents()
+    },
+    watch: {
+        'booking.source': function (val, oldVal) {
+            this.source_selected = val
+        }
     }
 }
 </script>

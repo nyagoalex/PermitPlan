@@ -1,58 +1,59 @@
 <template>
-<div class="bg-white text-left mt-3 mx-4">
-    <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="agents" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)">
-        <template v-slot:table-caption>
-            <b-row>
-                <b-col><span class='font-weight-bold'>Agents</span></b-col>
-                <b-col class='text-center'>
-                    <b-button @click="newAgentModal" size="sm" variant="success">
-                        <b-icon icon="plus"></b-icon> Add Agent
-                    </b-button>
-                </b-col>
-                <b-col>
-                    <b-button :pressed.sync="show_filters" class='float-right' variant="link">
-                        <b-icon icon="funnel"></b-icon> show filters
-                    </b-button>
-                </b-col>
-            </b-row>
-            <b-row v-show="show_filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
-                <b-col>
-                    <b>Status: </b>
-                    <b-badge pill :variant="`${(filters.active === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === null, 'ml-2': true }" @click="filters.active = null">All</b-badge>
-                    <b-badge pill :variant="`${(filters.active === true) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === true, 'ml-2': true }" @click="filters.active = true">Active</b-badge>
-                    <b-badge pill :variant="`${(filters.active === false) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === false, 'ml-2': true }" @click="filters.active = false">Inactive</b-badge>
+    <div class="bg-white text-left mt-3 mx-4">
+        <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="agents" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)">
+            <template v-slot:table-caption>
+                <b-row>
+                    <b-col><span class='font-weight-bold'>Agents</span></b-col>
+                    <b-col class='text-center'>
+                        <b-button @click="newAgentModal" size="sm" variant="success">
+                            <b-icon icon="plus"></b-icon> Add Agent
+                        </b-button>
+                    </b-col>
+                    <b-col>
+                        <b-button :pressed.sync="show_filters" class='float-right' variant="link">
+                            <b-icon icon="funnel"></b-icon> show filters
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row v-show="show_filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
+                    <b-col>
+                        <b>Status: </b>
+                        <b-badge pill :variant="`${(filters.active === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === null, 'ml-2': true }" @click="filters.active = null">All</b-badge>
+                        <b-badge pill :variant="`${(filters.active === true) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === true, 'ml-2': true }" @click="filters.active = true">Active</b-badge>
+                        <b-badge pill :variant="`${(filters.active === false) ? 'primary' : 'light'}`" :class="{ 'bg-white': !filters.active === false, 'ml-2': true }" @click="filters.active = false">Inactive</b-badge>
 
-                </b-col>
-            </b-row>
-        </template>
-        <template v-slot:cell(#)="row">
-            {{ row.index + 1 }}
-        </template>
-        <template v-slot:cell(status)="row">
-            <b-badge pill variant="success" v-if="row.item.active">Active</b-badge>
-            <b-badge pill variant="danger" v-else>Inactive</b-badge>
-        </template>
-        <template v-slot:row-details="row">
-            <b-row>
-                <b-col><strong>Country: </strong> {{row.item.country}}</b-col>
-                <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
-                <b-col class="small-time">Added on: {{row.item.created_at}}<br> Edited At: {{row.item.updated_at}}</b-col>
-                <b-col class="text-center">
-                    <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.index)" class="mr-4">Deactivate</b-button>
-                    <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.index)" class="mr-4">Activate</b-button>
-                    <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
-                    <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
-                </b-col>
-            </b-row>
-        </template>
-    </b-table>
-    <div>
-        <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-            <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
-        <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getAgents(current_page)"></b-pagination>
+                    </b-col>
+                </b-row>
+            </template>
+            <template v-slot:cell(#)="row">
+                {{ row.index + 1 }}
+            </template>
+            <template v-slot:cell(status)="row">
+                <b-badge pill variant="success" v-if="row.item.active">Active</b-badge>
+                <b-badge pill variant="danger" v-else>Inactive</b-badge>
+            </template>
+            <template v-slot:cell(bookings)="row">{{row.item.bookings_count}} </template>
+            <template v-slot:row-details="row">
+                <b-row>
+                    <b-col><strong>Country: </strong> {{row.item.country}}</b-col>
+                    <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
+                    <b-col class="small-time">Added on: {{row.item.created_at}}<br> Edited on: {{row.item.updated_at}}</b-col>
+                    <b-col class="text-center">
+                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.index)" class="mr-4">Deactivate</b-button>
+                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.index)" class="mr-4">Activate</b-button>
+                        <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
+                        <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
+                    </b-col>
+                </b-row>
+            </template>
+        </b-table>
+        <div>
+            <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
+                <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
+            <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getAgents(current_page)"></b-pagination>
+        </div>
+        <AddAgent v-bind:agent="agent" v-bind:mode="mode" />
     </div>
-    <AddAgent v-bind:agent="agent" v-bind:mode="mode" />
-</div>
 </template>
 
 <script>
@@ -69,7 +70,7 @@ export default {
                 active: null,
                 search: null
             },
-            fields: [
+            fields: [ // prettier-ignore
                 {
                     key: '#',
                     sortable: false
@@ -92,7 +93,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'no_of_booking',
+                    key: 'bookings',
                     sortable: true
                 },
                 {

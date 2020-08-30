@@ -1,74 +1,82 @@
 <template>
-<b-container class="bg-white text-left mt-5">
-    <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="items" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" :per-page="perPage" :current-page="currentPage" sticky-header @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)">
-        <template v-slot:table-caption>
-            <b-row>
-                <b-col><span class='font-weight-bold'>Bookings</span></b-col>
-                <b-col>
-                    <b-button @click="showfilters" class='float-right' variant="link">
-                        <b-icon icon="funnel"></b-icon> show filters
-                    </b-button>
-                </b-col>
-            </b-row>
-            <b-row v-show="filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
-                <b-col>
-                    <b>Status: </b>
-                    <b-badge pill variant="primary" class="ml-2">All</b-badge>
-                    <b-badge pill variant="light" class="bg-white ml-2">Confirmed</b-badge>
-                    <b-badge pill variant="light" class="bg-white ml-2">Tentative</b-badge>
-                    <b-badge pill variant="light" class="bg-white ml-2">Cancelled</b-badge>
-                </b-col>
-                <b-col>
-                    <b>Source: </b>
-                    <b-badge pill variant="primary" class="ml-2">All</b-badge>
-                    <b-badge pill variant="light" class="bg-white ml-2">Agent</b-badge>
-                    <b-badge pill variant="light" class="bg-white ml-2">Direct</b-badge>
-                </b-col>
-            </b-row>
-        </template>
-        <template v-slot:row-details="row">
-            <b-row>
-                <b-col><strong>Source: </strong>{{row.item.source}} - <small class="text-primary">Agent Name</small> </b-col>
-                <b-col class="text-center">
-                    <b-button pill size="sm" variant="info" class="mr-4" @click="$router.push({name: 'BookingDetails', params: { id: row.item.no }})">View</b-button>
-                    <b-button pill size="sm" variant="warning" class="mr-4">Edit</b-button>
-                    <b-button pill size="sm" variant="danger"> Delete</b-button>
-                </b-col>
-            </b-row>
-        </template>
-    </b-table>
-    <div>
-        <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-            <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
-        <b-pagination class="float-right" v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
-        <p class="mt-3">Current Page: {{ currentPage }}</p>
-    </div>
-    <a href="/bookings/1">Details</a>
-</b-container>
+    <b-container class="bg-white text-left mt-3" fluid>
+        <b-table :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="bookings" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" @row-clicked="onRowClicked" class="acc-tb" sticky-header>
+            <template v-slot:table-caption>
+                <b-row>
+                    <b-col><span class='font-weight-bold'>Bookings</span></b-col>
+                    <b-col>
+                        <b-button :pressed.sync="show_filters" class='float-right' variant="link">
+                            <b-icon icon="funnel"></b-icon> show filters
+                        </b-button>
+                    </b-col>
+                </b-row>
+                <b-row v-show="show_filters" class="pt-3" style="height: 50px; background-color:#F5F9F7;">
+                    <b-col class="text-left">
+                        <b>Status: </b>
+                        <b-badge pill :variant="`${(filters.status === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.status != null, 'ml-2': true }" @click="filters.status = null">All</b-badge>
+                        <b-badge pill :variant="`${(filters.status === 'confirmed') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.status != 'confirmed', 'ml-2': true }" @click="filters.status = 'confirmed'">Confirmed</b-badge>
+                        <b-badge pill :variant="`${(filters.status === 'tentative') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.status != 'tentative', 'ml-2': true }" @click="filters.status = 'tentative'">Tentative</b-badge>
+                        <b-badge pill :variant="`${(filters.status === 'cancelled') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.status != 'cancelled', 'ml-2': true }" @click="filters.status = 'cancelled'">Cancelled</b-badge>
+                    </b-col>
+                    <b-col class="text-center">
+                        <b>Source: </b>
+                        <b-badge pill :variant="`${(filters.source === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.source != null, 'ml-2': true }" @click="filters.source = null">All</b-badge>
+                        <b-badge pill :variant="`${(filters.source === 'agent') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.source != 'agent', 'ml-2': true }" @click="filters.source = 'agent'">Agent</b-badge>
+                        <b-badge pill :variant="`${(filters.source === 'direct') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.source != 'direct', 'ml-2': true }" @click="filters.source = 'direct'">Direct</b-badge>
+                    </b-col>
+                    <b-col class="text-right">
+                        <b>Payment: </b>
+                        <b-badge pill :variant="`${(filters.payment_status === null) ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.payment_status != null, 'ml-2': true }" @click="filters.payment_status = null">All</b-badge>
+                        <b-badge pill :variant="`${(filters.payment_status === 'cleared') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.payment_status != 'cleared', 'ml-2': true }" @click="filters.payment_status = 'cleared'">Cleared</b-badge>
+                        <b-badge pill :variant="`${(filters.payment_status === 'outstanding') ? 'primary' : 'light'}`" :class="{ 'bg-white': filters.payment_status != 'outstanding', 'ml-2': true }" @click="filters.payment_status = 'outstanding'">Outstanding</b-badge>
+                    </b-col>
+                </b-row>
+            </template>
+            <template v-slot:cell(#)="row">
+                {{ row.index + 1 }}
+            </template>
+            <template v-slot:cell(permits)="row"> {{ row.item.permits_count}} </template>
+            <template v-slot:cell(persons)="row"> {{ row.item.no_of_persons}} </template>
+            <template v-slot:cell(status)="row">
+                <b-badge pill variant="info" v-if="row.item.status == 'tentative'">Tentative</b-badge>
+                <b-badge pill variant="success" v-if="row.item.status == 'confirmed'">Confirmed</b-badge>
+                <b-badge pill variant="danger" v-if="row.item.status == 'cancelled'">Cancelled</b-badge>
+            </template>
+        </b-table>
+        <div>
+            <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
+                <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
+            <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getBookings(current_page)"></b-pagination>
+        </div>
+    </b-container>
 </template>
 
 <script>
-const faker = require('faker')
+import EventBus from '@/Events/EventBus.js'
 
 export default {
     data() {
         return {
-            sortBy: 'age',
+            sortBy: 'number',
             sortDesc: false,
-            perPage: 10,
-            currentPage: 1,
-            filters: false,
-            fields: [
+            show_filters: false,
+            filters: {
+                status: null,
+                source: null,
+                payment_status: null,
+                search: null
+            },
+            fields: [ // prettier-ignore
                 {
-                    key: 'no',
+                    key: '#',
                     sortable: false
                 },
                 {
-                    key: 'booking_no',
+                    key: 'number',
                     sortable: true
                 },
                 {
-                    key: 'booking_ref',
+                    key: 'ref',
                     sortable: true
                 },
                 {
@@ -80,23 +88,31 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'no_of_pax',
+                    key: 'persons',
                     sortable: true
                 },
                 {
-                    key: 'permits_booked',
+                    key: 'permits',
                     sortable: true
                 },
                 {
-                    key: 'created_by',
+                    key: 'total_cost',
                     sortable: true
                 },
                 {
-                    key: 'created_at',
+                    key: 'balance',
+                    sortable: true
+                },
+                {
+                    key: 'arrival',
                     sortable: true
                 }
             ],
-            items: this.fakeBookings()
+            bookings: [],
+            mode: '',
+            current_page: process.env.VUE_APP_CURRENTPAGE,
+            per_page: process.env.VUE_APP_PERPAGE,
+            total: process.env.VUE_APP_TOTALROWS
         }
     },
     computed: {
@@ -105,25 +121,48 @@ export default {
         }
     },
     methods: {
-        showfilters() {
-            this.filters = !this.filters
+        getBookings(page = 1) {
+            const filters = this.filters
+            filters.page = page
+            this.$http.get('/bookings', {
+                params: filters
+            }).then(bookings => {
+                this.bookings = bookings.data.data
+                const meta = bookings.data.meta
+                this.current_page = meta.current_page
+                this.per_page = meta.per_page
+                this.total = meta.total
+            })
         },
-        fakeBookings() {
-            const s = []
-            for (let i = 1; i < 20; i++) {
-                const v = {
-                    no: i,
-                    booking_no: faker.random.number(),
-                    booking_ref: faker.random.number(),
-                    source: faker.random.word(),
-                    no_of_pax: faker.random.number(),
-                    permits_booked: faker.random.number(),
-                    created_by: faker.name.lastName(),
-                    created_at: 'Jul 16 2020'
+        onRowClicked(item, index, event) {
+            this.$router.push({
+                name: 'BookingDetails',
+                params: {
+                    id: item.id
                 }
-                s.push(v)
+            })
+        }
+    },
+    mounted() {
+        this.getBookings()
+        EventBus.$on('EVENT_SEARCH', (search) => {
+            if (this.$route.name === 'Bookings') {
+                this.filters.search = search
             }
-            return s
+        })
+    },
+    watch: {
+        'filters.status': function (val, oldVal) {
+            this.getBookings()
+        },
+        'filters.source': function (val, oldVal) {
+            this.getBookings()
+        },
+        'filters.payment_status': function (val, oldVal) {
+            this.getBookings()
+        },
+        'filters.search': function (val, oldVal) {
+            this.getBookings()
         }
     }
 }
