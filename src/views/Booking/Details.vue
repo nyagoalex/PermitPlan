@@ -10,6 +10,9 @@
             <b-col>
                 <small>last modified on: <b style="color: #b97455;">{{booking.updated_at}}</b></small>
             </b-col>
+            <b-col>
+                <small>created by: <b style="color: #6bccdf;">{{booking.user}}</b></small>
+            </b-col>
             <b-col v-if="booking.status == 'tentative'" class="text-right">
                 <b-button size="sm" pill variant="secondary" @click="cancel">Cancel</b-button>
                 <b-button size="sm" pill variant="success" class="mx-3" @click="confirm">Confirm</b-button>

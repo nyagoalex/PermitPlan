@@ -39,8 +39,8 @@
                     <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
                     <b-col class="small-time">Added on: {{row.item.created_at}}<br> Edited on: {{row.item.updated_at}}</b-col>
                     <b-col class="text-center">
-                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.index)" class="mr-4">Deactivate</b-button>
-                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.index)" class="mr-4">Activate</b-button>
+                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.id)" class="mr-4">Deactivate</b-button>
+                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.id)" class="mr-4">Activate</b-button>
                         <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
                         <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
                     </b-col>
@@ -135,8 +135,8 @@ export default {
                 }
             })
         },
-        deactivateAgent(index) {
-            const id = this.agents[index].id
+        deactivateAgent(id) {
+            const index = this.agents.findIndex(item => item.id === id)
             this.$swal.fire({
                 title: 'Deactivate Agent?',
                 text: 'Are you sure you want to perform this action',
@@ -153,8 +153,8 @@ export default {
                 }
             })
         },
-        activateAgent(index) {
-            const id = this.agents[index].id
+        activateAgent(id) {
+            const index = this.agents.findIndex(item => item.id === id)
             this.$swal.fire({
                 title: 'Activate Agent?',
                 text: 'Are you sure you want to perform this action',
