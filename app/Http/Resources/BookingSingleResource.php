@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class BookingSingleResource extends BookingResource
 {
@@ -25,6 +26,7 @@ class BookingSingleResource extends BookingResource
                 "permits" => PermitResource::collection($this->permits),
                 "payments" => PaymentResource::collection($this->payments),
                 "guests" => GuestResource::collection($this->guests),
+                "number_of_days" => Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->arrival_date))
             ]
         );
     }

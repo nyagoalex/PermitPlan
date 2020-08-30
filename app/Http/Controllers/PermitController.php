@@ -39,11 +39,11 @@ class PermitController extends Controller
         $i = 1;
         while($i <= $data['no_of_permits']) {
             $data['number'] =$this->nextNumber(Permit::query(), 'number', 'PT');
-            Permit::create($data);
+            $permit = Permit::create($data);
             $i++;
         }
         DB::commit();
-        return $this->index($booking_id);
+        return new PermitResource($permit);
     }
 
     /**

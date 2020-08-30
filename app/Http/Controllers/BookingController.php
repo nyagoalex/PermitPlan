@@ -28,9 +28,27 @@ class BookingController extends Controller
         $query->when(request()->filled('status'), function ($query){
             return $query->whereStatus(request('status'));
         });
+
+        $query->when(request()->filled('source'), function ($query){
+            if (request('source') == 'agent') {
+                return $query->whereNotNull('agent_id');
+            }
+            if (request('source') == 'direct') {
+                return $query->whereNull('agent_id');
+            }
+        });
+
+        $query->when(request()->filled('payment_status'), function ($query){
+            $sql = "(select IFNULL(sum(amount),0) from payments where booking_id = bookings.id)";
+            if (request('payment_status') == 'cleared') {
+                return $query->whereRaw($sql."  <= 0");
+            }
+            if (request('payment_status') == 'outstanding') {
+                return $query->whereRaw($sql." > 0");
+            }
+        });
         $query->search(request('search'));
         $bookings = $query->orderBy($order_column, $sort)->paginate($per_page);
-        
         return BookingResource::collection($bookings);
     }
 
@@ -48,7 +66,7 @@ class BookingController extends Controller
         $data['user_id'] = Auth::id();
         $booking = Booking::create($data);
         DB::commit();
-        return new BookingSingleResource($booking->refresh());
+        return new BookingResource($booking);
     }
 
     /**
@@ -77,7 +95,7 @@ class BookingController extends Controller
         $data = $request->validated();
         $booking->update($data);
         DB::commit();
-        return new BookingSingleResource($booking);
+        return new BookingResource($booking);
     }
 
     /**
@@ -100,7 +118,7 @@ class BookingController extends Controller
     {
         #checks if user exists
         DB::beginTransaction();
-        $booking = Booking::findOrFail($booking_id);
+        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
 
         // checks the current status of the user
         abort_unless($booking->tentative, Response::HTTP_BAD_REQUEST, 'Booking status not tentative');
@@ -115,7 +133,7 @@ class BookingController extends Controller
     public function confirm($booking_id)
     {
         DB::beginTransaction();
-        $booking = Booking::findOrFail($booking_id);
+        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
         // checks the current status of the user
         abort_unless($booking->tentative, Response::HTTP_BAD_REQUEST, 'Booking status not tentative');
         #activation process
@@ -128,7 +146,7 @@ class BookingController extends Controller
     public function comment($booking_id)
     {
         DB::beginTransaction();
-        $booking = Booking::findOrFail($booking_id);
+        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
         $data = request()->validate(['comment' => "nullable|string"]);
         $booking->update($data);
         DB::commit();

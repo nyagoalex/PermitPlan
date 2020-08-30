@@ -22,7 +22,7 @@ class Agent extends Model
         'name','country','city', 'email', 'phone', 'code'
     ];
 
-
+    protected $withCount = ['bookings'];
 
       /**
      * The attributes that should be cast to native types.
@@ -35,6 +35,10 @@ class Agent extends Model
         'updated_at' => 'datetime:D, d M Y',
     ];
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
         /**
      * Set the user's first name.
      *

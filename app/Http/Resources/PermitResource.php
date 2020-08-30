@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class PermitResource extends JsonResource
 {
@@ -13,20 +15,22 @@ class PermitResource extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {
+    {//Str::of($this->permitType->name)->replace('_', ' '),
         return [
             "id" => $this->id,
-            "permit_type" => $this->permitType->only("id", "name"),
-            "sector" => $this->sector->only("id", "name"),
+            "permit_type_name" => str_replace('permits', '', str_replace('_', ' ',ucfirst($this->permitType->name))),
+            "sector" => $this->sector->name,
             "number" => $this->number,
             "cost" => $this->cost,
             "tracking_date" => $this->tracking_date,
             "rescheduled" => $this->rescheduled,
-            "rescheduled_from" => $this->rescheduled_from,
+            "rescheduled_from" =>Carbon::parse($this->rescheduled_from)->format('D, d M Y'),
             "expired" => $this->expired,
             "expired_date" => $this->expired_date,
             "created_at" => $this->created_at->format('D, d M Y'),
             "updated_at" => $this->updated_at->format('D, d M Y'),
+            "tracking_date_format" => Carbon::parse($this->tracking_date)->format('D, d M Y'),
+            "payments" => [4]
         ];
     }
 }

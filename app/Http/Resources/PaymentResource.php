@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class PaymentResource extends JsonResource
 {
@@ -17,10 +18,8 @@ class PaymentResource extends JsonResource
         return [
             "id" => $this->id,
             "amount" => $this->amount,
-            "date" => $this->date,
-            "user" => $this->user->only("id", "fullname"),
-            "created_at" => $this->created_at->format('D, d M Y'),
-            "updated_at" => $this->updated_at->format('D, d M Y'),
+            "date" => Carbon::parse($this->date)->format('D, d M Y'),
+            "user" => $this->user->fullname
         ];
     }
 }
