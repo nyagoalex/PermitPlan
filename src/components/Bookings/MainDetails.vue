@@ -27,11 +27,22 @@
                                     <template v-slot:cell(type)="row"> {{ row.item.permit_type_name}} </template>
                                     <template v-slot:cell(preffered_sector)="row"> {{ row.item.sector}} </template>
                                     <template v-slot:cell(tracking_date)="row"> {{ row.item.tracking_date_format}} </template>
+                                    <template v-slot:cell(payment_status)="row">
+                                        <span :id="`tooltip-button-payment-status-${row.item.id}`" :class="{
+                                            'text-success': row.item.payment_status == 'Cleared',
+                                            'text-info': row.item.payment_status == 'Deposited',
+                                            'text-danger': row.item.payment_status == 'Deposit Expired',
+                                            'text-dark': row.item.payment_status == 'Tentative',
+                                            }">
+                                            {{ row.item.payment_status}}
+                                        </span>
+                                        <b-tooltip v-if="row.item.payment_status == 'Deposited' || row.item.payment_status == 'Deposit Expired'" :target="`tooltip-button-payment-status-${row.item.id}`" triggers="hover" variant="secondary">Expires on {{ row.item.expired_date}}</b-tooltip>
+                                    </template>
                                     <template v-slot:row-details="row">
                                         <b-row>
                                             <b-button size="sm" class="mx-3" pill variant="outline-dark" v-b-modal.reschedule @click="reschedule_permit = row.item">Reschedule</b-button>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary">Show Payments</b-button>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary">Register Payment</b-button>
+                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary" v-b-modal.item-payments-modal @click="payment_type='permit', payment_types=row.item.payments">Show Payments</b-button>
+                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary" v-b-modal.item-payment-modal @click="payment_type='permit', selected_modal=row.item">Register Payment</b-button>
                                             <span :id="`tooltip-button-${row.item.number}`" class="d-inline-block" tabindex="0">
                                                 <b-button size="sm" class="mx-3" pill variant="outline-danger" @click="deletePermit(row.item.id)" :disabled="row.item.payments.length > 0">Remove</b-button>
                                             </span>
@@ -172,13 +183,27 @@
                 <b-button size="sm" variant="success" @click="reschedule">Reshedule Permit</b-button>
             </template>
         </b-modal>
+        <b-modal id="item-payments-modal" :title="`Payments For ${payment_type}`" size="lg" hide-footer>
+            <b-table :items="payment_types" :fields="payment_fields" :striped="true" :responsive="true" no-border-collapse sticky-header sort-icon-left>
+                <template v-slot:cell(#)="data">
+                    {{ data.index + 1 }}
+                </template>
+                <template v-slot:cell(payment_date)="row"> {{ row.item.date}} </template>
+                <template v-slot:cell(created_by)="row"> {{ row.item.user}} </template>
+                <template v-slot:cell(action)="row">
+                    <b-button size="sm" class="" @click="deleteItemPayment(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                </template>
+            </b-table>
+        </b-modal>
         <AddGuest :guest="guest" :mode="mode" />
+        <ItemPayment :model_type="payment_type" :selected_modal="selected_modal" />
     </div>
 </template>
 
 <script>
 import $ from 'jquery'
 import AddGuest from '@/components/Bookings/Modals/AddGuest.vue'
+import ItemPayment from '@/components/Bookings/Modals/ItemPayment.vue'
 
 export default {
     data() {
@@ -201,7 +226,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'balances_($)',
+                    key: 'balance',
                     sortable: true
                 },
                 {
@@ -272,17 +297,24 @@ export default {
             guest: this.resetGuestModal(),
             guest_items: [],
             reschedule_permit: {},
+            payment_types: [],
+            payment_type: '',
+            selected_modal: {},
             errors: {},
             mode: ''
         }
     },
     components: {
-        AddGuest
+        AddGuest,
+        ItemPayment
     },
     props: {
         booking: Object
     },
     methods: {
+        callBookings() {
+            this.$parent.getBooking()
+        },
         getPermits() {
             this.$http.get('/bookings/' + this.$route.params.id + '/permits')
                 .then(permits => {
@@ -356,6 +388,17 @@ export default {
                 if (result.value) {
                     this.$http.delete('/bookings/' + this.$route.params.id + '/payments/' + id).then(() => {
                         this.booking.payments = this.booking.payments.filter(item => item.id !== id)
+                        this.$swal.fire('Deleted!', 'Payment has been deleted.', 'success')
+                    })
+                }
+            })
+        },
+        deleteItemPayment(id) {
+            this.ConfirmDelete().then((result) => {
+                if (result.value) {
+                    this.$http.delete('/item-payments/' + id).then(() => {
+                        this.$bvModal.hide('item-payments-modal')
+                        this.$parent.getBooking()
                         this.$swal.fire('Deleted!', 'Payment has been deleted.', 'success')
                     })
                 }

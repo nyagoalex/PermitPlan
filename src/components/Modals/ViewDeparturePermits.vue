@@ -16,9 +16,12 @@
                 </template>
                 <template v-slot:cell(action)="row">
                     <div v-if="!row.item.allocated" class="text-right">
-                        <b-button size="sm" class="mr-1" v-b-modal.bookings-modal @click="reschedule_permit = row.item" pill variant="outline-info">Allocate</b-button>
+                        <span :id="`tooltip-button-tour-active-${row.item.id}`" class="d-inline-block" tabindex="0">
+                            <b-button size="sm" class="mr-1" v-b-modal.bookings-modal @click="reschedule_permit = row.item" pill variant="outline-info" :disabled="!tour.active">Allocate</b-button>
+                        </span>
                         <b-button size="sm" class="mr-1" v-b-modal.reschedule @click="reschedule_permit = row.item" pill variant="outline-dark">Reschedule</b-button>
                         <b-button size="sm" class="" @click="deletePermit(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                        <b-tooltip v-if="!tour.active" :target="`tooltip-button-tour-active-${row.item.id}`" triggers="hover" variant="info">Can't Allocate Permit, Tour Is Inactive </b-tooltip>
                     </div>
                 </template>
             </b-table>

@@ -40,10 +40,10 @@
                     <b-button pill size="sm" class="mx-3" variant="outline-warning" v-if="row.item.active" @click="deactivateTour(row.item.id)">Deactivate</b-button>
                     <b-button pill size="sm" class="mx-3" variant="outline-success" v-else @click="activateTour(row.item.id)">Activate</b-button>
                     <b-button size="sm" class="mx-3" pill variant="outline-info" @click="editTourModal(row.item)">Edit</b-button>
-                    <span :id="`tooltip-button-${row.item.id}`" class="d-inline-block" tabindex="0">
-                        <b-button size="sm" class="mx-3" pill variant="outline-danger">Remove</b-button>
+                    <span :id="`tooltip-button-remove-group-${row.item.id}`" class="d-inline-block" tabindex="0">
+                        <b-button size="sm" class="mx-3" pill variant="outline-danger" :disabled="!row.item.deletable" @click="deleteTour(row.item.id)">Remove</b-button>
                     </span>
-                    <b-tooltip v-if="false" :target="`tooltip-button-${row.item.id}`" triggers="hover" variant="danger">Tour Has Allocated Pemits</b-tooltip>
+                    <b-tooltip v-if="!row.item.deletable" :target="`tooltip-button-remove-group-${row.item.id}`" triggers="hover" variant="danger">Tour Has Allocated Pemits</b-tooltip>
                     <b-tooltip v-if="row.item.permits_count == 0" :target="`tooltip-button-show-permits-${row.item.id}`" triggers="hover" variant="dark">Tour Has No Pemits</b-tooltip>
                 </div>
             </template>
@@ -183,6 +183,18 @@ export default {
                 arrival_date: '',
                 departure_date: ''
             }
+        },
+        deleteTour(id) {
+            this.ConfirmDelete().then((result) => {
+                if (result.value) {
+                    this.$http.delete('/departure-tours/' + id).then(() => {
+                        this.tours = this.tours.filter(item => item.id !== id)
+                        this.$swal.fire('Deleted!', 'Departure Tour has been deleted.', 'success')
+                    }).catch(errors => {
+                        this.toastError(errors.message)
+                    })
+                }
+            })
         }
     },
     mounted() {

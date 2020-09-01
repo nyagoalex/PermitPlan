@@ -1,67 +1,67 @@
 <template>
-<div id="settings">
-    <b-card no-body>
-        <b-tabs card pills vertical variant='success' id='setting-nav'>
-            <b-tab active>
-                <template v-slot:title>
-                    <b-icon icon="people-fill"></b-icon> Company Details
-                </template>
-                <b-card-text>
-                    <Company />
-                </b-card-text>
-            </b-tab>
-            <b-tab>
-                <template v-slot:title>
-                    <b-icon icon="person-plus-fill"></b-icon> Users
-                </template>
-                <b-card-text>
-                    <Users />
-                </b-card-text>
-            </b-tab>
-            <b-tab>
-                <template v-slot:title>
-                    <b-icon icon="tag-fill"></b-icon> Tracking Sectors
-                </template>
-                <b-card-text>
-                    <TrackingSectors />
-                </b-card-text>
-            </b-tab>
-            <b-tab>
-                <template v-slot:title>
-                    <b-icon icon="clock-history"></b-icon> Deposit Expiry
-                </template>
-                <b-card-text>
-                    <DepositExpiry />
-                </b-card-text>
-            </b-tab>
-            <b-tab title="$ Gorilla Permits Cost">
-                <b-card-text>
-                    <PermitCosts costTitle="gorilla tracking permits cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_permits" />
-                </b-card-text>
-            </b-tab>
-            <b-tab title="$ Chimp Permits Cost">
-                <b-card-text>
-                    <PermitCosts costTitle="chimp permits cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_permits" />
-                </b-card-text>
-            </b-tab>
-            <b-tab title="$ Gorilla Habituation Cost">
-                <b-card-text>
-                    <PermitCosts costTitle="gorilla habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_habituation" />
-                </b-card-text>
-            </b-tab>
-            <b-tab title="$ Chimp Habituation Cost">
-                <b-card-text>
-                    <PermitCosts costTitle="chimp habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_habituation" />
-                </b-card-text>
-            </b-tab>
-            <b-tab title="$ Golden Monkey Permits Cost">
-                <b-card-text>
-                    <PermitCosts costTitle="golden monkey permits" v-if="permit_costs" v-bind:costs="permit_costs.golden_monkey_permits" />
-                </b-card-text>
-            </b-tab>
-        </b-tabs>
-    </b-card>
-</div>
+    <div id="settings">
+        <b-card no-body>
+            <b-tabs card pills vertical variant='success' id='setting-nav'>
+                <b-tab active>
+                    <template v-slot:title>
+                        <b-icon icon="people-fill"></b-icon> Company Details
+                    </template>
+                    <b-card-text>
+                        <Company :company="company" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab>
+                    <template v-slot:title>
+                        <b-icon icon="person-plus-fill"></b-icon> Users
+                    </template>
+                    <b-card-text>
+                        <Users />
+                    </b-card-text>
+                </b-tab>
+                <b-tab>
+                    <template v-slot:title>
+                        <b-icon icon="tag-fill"></b-icon> Tracking Sectors
+                    </template>
+                    <b-card-text>
+                        <TrackingSectors />
+                    </b-card-text>
+                </b-tab>
+                <b-tab>
+                    <template v-slot:title>
+                        <b-icon icon="clock-history"></b-icon> Deposit Expiry
+                    </template>
+                    <b-card-text>
+                        <DepositExpiry :company="company" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="$ Gorilla Permits Cost">
+                    <b-card-text>
+                        <PermitCosts costTitle="gorilla tracking permits cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_permits" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="$ Chimp Permits Cost">
+                    <b-card-text>
+                        <PermitCosts costTitle="chimp permits cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_permits" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="$ Gorilla Habituation Cost">
+                    <b-card-text>
+                        <PermitCosts costTitle="gorilla habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.gorilla_habituation" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="$ Chimp Habituation Cost">
+                    <b-card-text>
+                        <PermitCosts costTitle="chimp habituation cost" v-if="permit_costs" v-bind:costs="permit_costs.chimpanzee_habituation" />
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="$ Golden Monkey Permits Cost">
+                    <b-card-text>
+                        <PermitCosts costTitle="golden monkey permits" v-if="permit_costs" v-bind:costs="permit_costs.golden_monkey_permits" />
+                    </b-card-text>
+                </b-tab>
+            </b-tabs>
+        </b-card>
+    </div>
 </template>
 
 <script>
@@ -75,7 +75,8 @@ export default {
     name: 'company',
     data() {
         return {
-            permit_costs: false
+            permit_costs: false,
+            company: {}
         }
     },
     components: {
@@ -99,6 +100,11 @@ export default {
                     // this.error = error.response
                     // this.loading = false
                 })
+        },
+        getCompanyDetails() {
+            this.$http.get('/settings').then(settings => {
+                this.company = settings.data.data
+            })
         }
     },
     created: function () {
@@ -106,6 +112,7 @@ export default {
             // Code that will run only after the
             // entire view has been rendered
             this.getCosts()
+            this.getCompanyDetails()
         })
     }
 }
