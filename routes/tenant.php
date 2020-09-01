@@ -292,13 +292,13 @@ Route::middleware([
                 },
                 # payments for items of booking
                 Route::group(
-                    ['prefix' => 'item-payment/{type_model}/{id}'],
+                    ['prefix' => 'item-payments/{type_model}/{id}'],
                     function () {
                         Route::post('/', 'ItemPaymentController@store')->name('booking.item.payment.create');
                         Route::get('/', 'ItemPaymentController@index')->name('booking.item.payment.all');
-                        Route::delete('/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete');
                     }
                 ),
+                Route::delete('/item-payments/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete'),
                   
                 Route::group(
                     ['prefix' => 'departure-tours'],

@@ -93,6 +93,7 @@ class DepartureTourController extends Controller
     {
         DB::beginTransaction();
         $tour = DepartureTour::findOrFail($id);
+        abort_unless($tour->deletable, Response::HTTP_BAD_REQUEST, 'Action Failed, Departure Tour Has Allocated Permits');
         $tour->delete();
         DB::commit();
         return new DepartureTourResource($tour);

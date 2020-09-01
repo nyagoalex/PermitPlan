@@ -25,6 +25,7 @@ class DepartureTourResource extends JsonResource
             "updated_at" => $this->updated_at->format('D, d M Y'),
             "permits" => DepartureTourPermitResource::collection($this->permits),
             "permits_count" => $this->permits_count,
+            "deletable" => $this->deletable,
         ];
     }
 }

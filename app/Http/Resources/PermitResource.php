@@ -26,11 +26,13 @@ class PermitResource extends JsonResource
             "rescheduled" => $this->rescheduled,
             "rescheduled_from" =>Carbon::parse($this->rescheduled_from)->format('D, d M Y'),
             "expired" => $this->expired,
-            "expired_date" => $this->expired_date,
+            "expired_date" =>  ($this->expired_date) ? Carbon::parse($this->expired_date)->format('D, d M Y') : null,
             "created_at" => $this->created_at->format('D, d M Y'),
             "updated_at" => $this->updated_at->format('D, d M Y'),
             "tracking_date_format" => Carbon::parse($this->tracking_date)->format('D, d M Y'),
-            "payments" => [4]
+            "payments" => PaymentResource::collection($this->payments),
+            "balance" => $this->balance,
+            "payment_status" => $this->payment_status
         ];
     }
 }

@@ -46,5 +46,10 @@ class DepartureTour extends Model
         return $this->hasMany(DepartureTourPermit::class, 'group_tour_id');
     }
 
+    public function getDeletableAttribute()
+    {
+        return $this->permits->WhereNotNull('allocated_permit_id')->count() == 0;
+    }
+
 
 }

@@ -72,4 +72,35 @@ class Permit extends Model
     {
         return is_null($this->expired_date) ? false : Carbon::parse($this->expired_date)->isPast();
     }
+    /**
+     * Get all of the post's comments.
+     */
+    public function getPaidAttribute()
+    {
+        return round($this->payments->sum('amount'), 2);
+    }
+    /**
+     * Get all of the post's comments.
+     */
+    public function getBalanceAttribute()
+    {
+        return round(($this->cost - $this->paid), 2);
+    }
+    /**
+     * Get all of the post's comments.
+     */
+    public function getPaymentStatusAttribute()
+    {
+        if ($this->balance <= 0) {
+            return 'Cleared';
+        }
+        if ($this->paid > 0) {
+            if($this->expired) {
+                return 'Deposit Expired';
+            }
+            return 'Deposited';
+        }
+        return 'Tentative';
+    }
+
 }

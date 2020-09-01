@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\PaymentResource;
+use App\Models\ItemPayment;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +37,22 @@ class ItemPaymentController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
         $model = $this->getTypeModel($type_model, $model_id);
+
+        $amount = $data['amount'];
+        if($type_model == 'permit') {
+            abort_if($amount > $model->balance, Response::HTTP_BAD_REQUEST, "Action Failed, Permit Over Payment Amount:{$amount} Bal:{$model->balance}");
+
+            if($model->paid > 0) {
+                abort_unless($amount == $model->balance, Response::HTTP_BAD_REQUEST, "Action Failed, Full Payment Of Balance {$model->balance} Only Allowed For Second Payment");
+            }
+            if(!in_array($amount, [$model->cost, round($model->cost * 0.3, 2), round($model->cost * 0.7, 2)])) {
+                abort(Response::HTTP_BAD_REQUEST, "Action Failed, Full Balance, 30% or 70% Payment Allowed");
+            }
+            $settings = Setting::first();
+            $model->expired_date = today()->addDays($settings->permit_expiry_in_days)->format('Y-m-d');
+            $model->save();
+        }
+
         $payment = $model->payments()->create($data);
         DB::commit();
         return new PaymentResource($payment);
@@ -46,11 +64,10 @@ class ItemPaymentController extends Controller
      * @param  \App\Models\Permit  $permit
      * @return \Illuminate\Http\Response
      */
-    public function destroy($type_model, $model_id, $payment_id)
+    public function destroy($payment_id)
     {
         DB::beginTransaction();
-        $model = $this->getTypeModel($type_model, $model_id);
-        $payment = $model->payments()->findOrFail($payment_id);
+        $payment = ItemPayment::findOrFail($payment_id);
         $payment->delete();
         DB::commit();
         return new PaymentResource($payment);
@@ -59,8 +76,8 @@ class ItemPaymentController extends Controller
     private function getTypeModel($type, $model_id)
     {
         $types = [
-            'permit' => "App\Models\Permits",
-            'guest' => "App\Models\Guests",
+            'permit' => "App\Models\Permit",
+            'guest' => "App\Models\Guest",
         ];
 
         abort_unless(isset($types[$type]), Response::HTTP_UNPROCESSABLE_ENTITY, "Invalid Model Type. Options allowed:permit,guest,group,joint. Received:{$type}");
