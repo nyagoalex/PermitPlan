@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PermitRequest;
 use App\Http\Resources\PermitResource;
+use App\Models\Booking;
 use App\Models\Permit;
+use App\Notifications\PermitNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class PermitController extends Controller
@@ -34,16 +37,20 @@ class PermitController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $request->validated();
-        $data['booking_id'] = $booking_id;
-
+        $booking = Booking::findOrFail($booking_id);
         $i = 1;
+        $permit_numbers = [];
         while($i <= $data['no_of_permits']) {
             $data['number'] =$this->nextNumber(Permit::query(), 'number', 'PT');
-            $permit = Permit::create($data);
+            $booking->permits()->create($data);
             $i++;
+            array_push($permit_numbers, $data['number']);
         }
+        
+        $details = "Added Permits: ". implode(", ",$permit_numbers);
+        $booking->notify(new PermitNotification($booking, $details));
         DB::commit();
-        return new PermitResource($permit);
+        return new PermitResource(Permit::whereBookingId($booking_id)->first());
     }
 
     /**
@@ -60,6 +67,9 @@ class PermitController extends Controller
         $data = request()->validate(['tracking_date' => "required|date_format:Y-m-d"]);
         $data['rescheduled_from'] = $permit->tracking_date;
         $permit->update($data);
+
+        $details = "Resheduled, Permit {$permit->number} From ". $data['rescheduled_from']." To ". $permit->tracking_date;
+        $permit->booking->notify(new PermitNotification($permit, $details));
         DB::commit();
         return new PermitResource($permit);
     }
@@ -75,6 +85,9 @@ class PermitController extends Controller
         DB::beginTransaction();
         $permit = Permit::whereBookingId($booking_id)->findOrFail($permit_id);
         $permit->delete();
+
+        $details = "Deleted, Permit ". $permit->number;
+        $permit->booking->notify(new PermitNotification($permit, $details));
         DB::commit();
         return new PermitResource($permit);
     }

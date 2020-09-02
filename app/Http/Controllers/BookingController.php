@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingSingleResource;
+use App\Http\Resources\NotificationResource;
 use App\Models\Booking;
+use App\Notifications\BookingNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,6 +96,8 @@ class BookingController extends Controller
         $booking = Booking::findOrFail($booking_id);
         $data = $request->validated();
         $booking->update($data);
+        $details = "Updated, Booking";
+        $booking->notify(new BookingNotification($booking, $details));
         DB::commit();
         return new BookingResource($booking);
     }
@@ -126,6 +130,9 @@ class BookingController extends Controller
         #deactivation process
         $booking->status = 'cancelled';
         $booking->save();
+
+        $details = "Booking Cancelled";
+        $booking->notify(new BookingNotification($booking, $details));
         DB::commit();
         return new BookingSingleResource($booking);
     }
@@ -139,6 +146,8 @@ class BookingController extends Controller
         #activation process
         $booking->status = 'confirmed';
         $booking->save();
+        $details = "Booking Confirmed";
+        $booking->notify(new BookingNotification($booking, $details));
         DB::commit();
         return new BookingSingleResource($booking);
     }
@@ -149,7 +158,30 @@ class BookingController extends Controller
         $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
         $data = request()->validate(['comment' => "nullable|string"]);
         $booking->update($data);
+        $details = "Updated Booking Comment";
+        $booking->notify(new BookingNotification($booking, $details));
         DB::commit();
         return new BookingSingleResource($booking);
+    }
+
+    public function notifications($booking_id)
+    {
+        $per_page = $this->getPerPage();
+        $booking = Booking::findOrFail($booking_id);
+        $notifications = $booking->notifications()->latest()->paginate($per_page);
+        return NotificationResource::collection($notifications);
+    }
+
+    /**
+     * mark notifications as unread
+     *
+     * @return mixed
+     */
+    public function markNotificationAsRead($boking_id, $id)
+    {
+        $booking = Booking::FindOrFail($boking_id);
+        $notif = $booking->notifications()->findOrFail($id);
+        $notif->markAsRead();
+        return new  NotificationResource($notif);
     }
 }

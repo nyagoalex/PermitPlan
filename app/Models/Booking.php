@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Booking extends Model
 {
-    use UsesUuid, Searchable;
+    use UsesUuid, Searchable, Notifiable;
     
     public $searchable = [
         'number','ref','city', 'client_name'

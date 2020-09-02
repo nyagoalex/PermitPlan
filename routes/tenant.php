@@ -220,6 +220,8 @@ Route::middleware([
                     Route::patch('/{booking_id}/comment', 'BookingController@comment')->name('booking.comment');
                     Route::post('/{booking_id}/confirm', 'BookingController@confirm')->name('booking.confirm');
                     Route::post('/{booking_id}/cancel', 'BookingController@cancel')->name('booking.cancel');
+                    Route::get('/{booking_id}/notifications', 'BookingController@notifications')->name('booking.notifications');
+                    Route::get('/{booking_id}/notifications/{id}', 'BookingController@markNotificationAsRead')->name('booking.notifications.markasread');
 
                     Route::group(
                         ['prefix' => '{booking_id}/payments'],

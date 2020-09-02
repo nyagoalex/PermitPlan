@@ -31,6 +31,8 @@ class BookingResource extends JsonResource
             "total_cost" => $this->total_cost,
             "total_paid" => $this->total_paid,
             "balance" => $this->balance,
+            "arrival_date_readable" => Carbon::parse($this->arrival_date)->format('D, d M Y'),
+            "departure_date_readable" => Carbon::parse($this->departure_date)->format('D, d M Y'),
         ];
     }
 }
