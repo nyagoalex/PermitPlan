@@ -25,7 +25,7 @@
             </div>
             <small>
                 Balance:<span class="mr-2 text-info">{{selected_modal.balance}}</span>
-                <span v-if="selected_modal.payments.length == 0">
+                <span v-if="selected_modal.cost == selected_modal.balance">
                     30%:<span class="mr-2 text-info">{{(selected_modal.balance * 0.3).toFixed(2)}}</span>
                     70%:<span class="mr-2 text-info">{{(selected_modal.balance * 0.7).toFixed(2)}}</span>
                 </span>

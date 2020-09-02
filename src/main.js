@@ -107,6 +107,14 @@ Vue.prototype.$http = baseAxios
 Vue.mixin({
     mixins: [myMixin]
 })
+Vue.filter('truncate', function (text, length, suffix = '...') {
+    if (text.length > length) {
+        return text.substring(0, length) + suffix
+    } else {
+        return text
+    }
+})
+
 new Vue({
     created() {
         console.log('Component is created')

@@ -1,6 +1,6 @@
 <template>
     <div class="bg-light m-3 pt-5">
-        <b-row class="mx-0">
+        <b-row class="mx-0" align-v="end">
             <b-col>
                 <b-breadcrumb class="py-0 px-3 mb-0" style="background-color:inherit;" :items="breadcrumb_items"></b-breadcrumb>
             </b-col>
@@ -18,24 +18,17 @@
                 <b-button size="sm" pill variant="success" class="mx-3" @click="confirm">Confirm</b-button>
             </b-col>
         </b-row>
-        <b-row class="mx-0" style="background-color:#e9ecef;">
+        <b-row class="mx-0" style="background-color:#e9ecef;" align-v="end">
             <b-col>
                 <div class="pl-3 head-t p-2 text-left">
                     {{booking.number}}<small>({{booking.ref}})</small> - <span style="font-size:26px;color:#666;">{{booking.client_name}}</span>
                 </div>
             </b-col>
             <b-col col lg="2">
-                <b-dropdown id="dropdown-1" text="Booking Action" class="m-md-2" variant="outline-success">
-                    <b-dropdown-item-button v-b-modal.new-permit>
-                        <b-icon icon="plus-circle-fill"></b-icon> Add Permit
-                    </b-dropdown-item-button>
-                    <b-dropdown-divider></b-dropdown-divider>
-                    <b-dropdown-item v-b-modal.new-guest>Add Guest</b-dropdown-item>
-                    <b-dropdown-divider></b-dropdown-divider>
-                    <b-dropdown-item v-b-modal.invoice-details>Add Invoice Details</b-dropdown-item>
-                    <b-dropdown-divider></b-dropdown-divider>
-                    <b-dropdown-item v-b-modal.invoice-preview active>Preview Invoice</b-dropdown-item>
-                </b-dropdown>
+                <b-button size="md" pill variant="success" class="m-md-2" v-b-modal.invoice-preview active>
+                    <b-icon icon="eye"></b-icon>
+                    Preview Invoice
+                </b-button>
             </b-col>
         </b-row>
         <b-row class="mt-3 mx-0">
@@ -49,7 +42,7 @@
         <AddPermit />
         <AddInvoiceDetails />
         <OverallPayment :balance="booking.balance" />
-        <InvoicePreview />
+        <InvoicePreview v-bind:booking="booking" />
         <EditBooking v-bind:booking="booking" />
     </div>
 </template>

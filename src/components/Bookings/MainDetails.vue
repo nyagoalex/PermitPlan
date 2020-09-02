@@ -136,38 +136,35 @@
         </div>
         <br>
 
-        <div class="pl-3 pr-3">
-            <h6 class="container w-100" style="font-size:20px;color:purple;"><strong>Recent Activity</strong></h6>
+        <div class="pl-3">
+            <h6 class="container w-100 ">
+                <strong style="font-size:20px;color:purple;">Recent Activity {{next_notify_link}}</strong>
+                <small class="float-right text-primary mr-3" style="cursor: pointer;">Mark All as Read</small>
+            </h6>
 
-            <div class="container">
-                <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
+            <div class="container" v-infinite-scroll="getNotifications" infinite-scroll-disabled="notify_busy" infinite-scroll-distance="10" style="max-height:450px; overflow-y: auto;">
+                <div v-for="(notification, index) in notifications" v-bind:key="index" :class="[{ read: notification.read, unread: !notification.read }, 'card mb-2', 'hover-shadow-lg', 'notif-div']" @click=" markAsRead(index)" :id="`popover-1-${notification.id}`">
                     <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
-
-                        <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Aaliyah Haworth</span></div>
-                        <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
-                        <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
+                        <b-icon v-bind="mainProps" :icon="notification.read? 'check': 'exclamation'" variant="white" :class="{'rounded-circle':true,
+                            'bg-success':notification.type == 'booking',
+                            'bg-dark':notification.type == 'permit',
+                            'bg-info':notification.type == 3,
+                            'bg-warning':notification.type == 4,
+                            'bg-danger':notification.type == 5,
+                            'bg-light':notification.type == 6}"></b-icon>
+                        <div class="col-lg-2 col-8 pl-0 pl-md-3 pt-3 pt-lg-0 text-left" style="color: black; font-size:14px; text-transform: capitalize;">{{notification.type}}</div>
+                        <div class="col col-lg-2 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">{{notification.created_at}}</span></div>
+                        <div class="col-12 col-lg-7 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
                             <div class="col col-lg-11 position-static px-0">
                                 <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
-                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
+                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">
+                                        {{ notification.data.message | truncate(80) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card mb-2 hover-shadow-lg" style="display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid #eff2f7;border-radius: .25rem;">
-                    <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
-
-                        <div class="col-lg-2 col-8 pl-0 pl-md-2 pt-3 pt-lg-0"><span class="h6 text-sm">Alex Nyago</span></div>
-                        <div class="col col-lg-1 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">Dec 25</span></div>
-                        <div class="col-12 col-lg-8 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
-                            <div class="col col-lg-11 position-static px-0">
-                                <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
-                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">Today we are happy to announce Bit's public Beta support for Vue components between different apps.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <b-popover :target="`popover-1-${notification.id}`" placement="top" :title="notification.type" triggers="hover focus" :content="`Placement ${notification.data.message}`"></b-popover>
                 </div>
             </div>
         </div>
@@ -204,10 +201,18 @@
 import $ from 'jquery'
 import AddGuest from '@/components/Bookings/Modals/AddGuest.vue'
 import ItemPayment from '@/components/Bookings/Modals/ItemPayment.vue'
+import infiniteScroll from 'vue-infinite-scroll'
 
 export default {
     data() {
         return {
+            mainProps: {
+                width: 40,
+                height: 40,
+                class: 'm1'
+            },
+            notify_busy: false,
+            notifications: [],
             permit_fields: [ // prettier-ignore
                 {
                     key: '#',
@@ -301,8 +306,12 @@ export default {
             payment_type: '',
             selected_modal: {},
             errors: {},
-            mode: ''
+            mode: '',
+            next_notify_link: 1
         }
+    },
+    directives: {
+        infiniteScroll
     },
     components: {
         AddGuest,
@@ -403,6 +412,29 @@ export default {
                     })
                 }
             })
+        },
+        getNotifications() {
+            if (this.next_notify_link) {
+                this.notify_busy = true
+                const filters = {
+                    page: this.next_notify_link
+                }
+                this.$http.get('/bookings/' + this.$route.params.id + '/notifications', {
+                    params: filters
+                }).then(notifications => {
+                    this.notifications.push(...notifications.data.data)
+                    const next = notifications.data.links.next
+                    this.next_notify_link = next ? this.next_notify_link + 1 : null
+                })
+                this.notify_busy = false
+            }
+        },
+        markAsRead(index) {
+            const id = this.notifications[index].id
+            this.$http.get('/bookings/' + this.$route.params.id + '/notifications/' + id)
+                .then(() => {
+                    this.$set(this.notifications[index], 'read', true)
+                })
         }
     },
     mounted() {
@@ -588,5 +620,33 @@ export default {
 
 .header-small {
     font-size: 13px;
+}
+
+.notif-div {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    background-clip: border-box !important;
+    border: 1px solid #eff2f7 !important;
+    border-radius: .25rem !important;
+    cursor: pointer;
+    transition-duration: .3s, 1s;
+    transition-timing-function: linear, ease-in;
+}
+
+.notif-div:hover {
+    background-color: lavender !important;
+    box-shadow: 10px 10px 10px grey;
+    -webkit-transform: translateX(-3px);
+    transform: translateX(-3px);
+}
+
+.read {
+    background-color: #fff !important;
+}
+
+.unread {
+    background-color: #f2f3f5 !important;
 }
 </style>
