@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GuestRequest;
 use App\Http\Resources\GuestResource;
 use App\Models\Guest;
+use App\Notifications\GuestNotification;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GuestController extends Controller
 {
+    use HelperTrait;
    /**
      * Display a listing of the resource.
      *
@@ -34,6 +37,9 @@ class GuestController extends Controller
         $data = $request->validated();
         $data['booking_id'] = $booking_id;
         $guest = Guest::create($data);
+
+        $details = "Added Guest ".$guest->fullName." Of ".$this->getAge($guest->dob)."old";
+        $guest->booking->notify(new GuestNotification($guest, $details));
         DB::commit();
         return new GuestResource($guest);
     }
@@ -51,6 +57,9 @@ class GuestController extends Controller
         $guest = Guest::whereBookingId($booking_id)->findOrFail($guest_id);
         $data = $request->validated();
         $guest->update($data);
+
+        $details = "Udated Guest ".$guest->fullName."'s Details";
+        $guest->booking->notify(new GuestNotification($guest, $details));
         DB::commit();
         return new GuestResource($guest);
     }
@@ -66,6 +75,9 @@ class GuestController extends Controller
         DB::beginTransaction();
         $guest = Guest::whereBookingId($booking_id)->findOrFail($guest_id);
         $guest->delete();
+
+        $details = "Deleted Guest ".$guest->fullName;
+        $guest->booking->notify(new GuestNotification($guest, $details));
         DB::commit();
         return new GuestResource($guest);
     }

@@ -49,6 +49,7 @@ Route::middleware([
     Route::group(
         ['middleware' =>  ['auth:api']],
         function () {
+            Route::post('logo', 'SettingController@logo')->name('settings.logo');
             Route::get('settings', 'SettingController@index')->name('settings.get');
             Route::patch('settings', 'SettingController@update')->name('settings.update');
         
@@ -208,6 +209,16 @@ Route::middleware([
                     Route::patch('/', 'SeasonalRoomCostController@update')->name('cost.update');
                 }
             );
+
+            Route::group(
+                ['prefix' => 'lodges/{lodge_id}/photos'],
+                function () {
+                    Route::get('/', 'LodgePhotoController@index')->name('lodge.photos.all');
+                    Route::post('/', 'LodgePhotoController@store')->name('lodge.photos.create');
+                    Route::patch('/{photo_id}', 'LodgePhotoController@update')->name('lodge.photos.update');
+                    Route::delete('/{photo_id}', 'LodgePhotoController@destroy')->name('lodge.photos.delete');
+                }
+            );
     
             Route::group(
                 ['prefix' => 'bookings'],
@@ -221,7 +232,8 @@ Route::middleware([
                     Route::post('/{booking_id}/confirm', 'BookingController@confirm')->name('booking.confirm');
                     Route::post('/{booking_id}/cancel', 'BookingController@cancel')->name('booking.cancel');
                     Route::get('/{booking_id}/notifications', 'BookingController@notifications')->name('booking.notifications');
-                    Route::get('/{booking_id}/notifications/{id}', 'BookingController@markNotificationAsRead')->name('booking.notifications.markasread');
+                    Route::post('/{booking_id}/notifications/{id}/markasread', 'BookingController@markNotificationAsRead')->name('booking.notifications.markasread');
+                    Route::post('/{booking_id}/notifications/markallasread', 'BookingController@markAllNotificationAsRead')->name('booking.notifications.markallasread');
 
                     Route::group(
                         ['prefix' => '{booking_id}/payments'],

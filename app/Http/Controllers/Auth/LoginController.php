@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Resources\SettingResource;
 use App\Http\Resources\UserResource;
+use App\Models\Setting;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,10 +47,15 @@ class LoginController extends  AccessTokenController
             abort(Response::HTTP_UNAUTHORIZED, "Login Failed! Invalid Username Or Password");
         }
 
-        $user = auth()->user();
-		$user['access_token'] = $user->createToken('authToken')->accessToken;
-
-        return response()->json(['data' => $user], 200);
+        $auth = auth()->user();
+        $user = [
+            'id' => $auth->id,
+            'full_name' => $auth->full_name,
+            'access_token' => $auth->createToken('authToken')->accessToken, 
+        ];
+        $data['user'] =  $user;
+        $data['settings'] =  new SettingResource(Setting::first());
+        return response()->json(['data' => $data], 200);
     }
 
         /**

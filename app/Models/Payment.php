@@ -34,4 +34,11 @@ class Payment extends Model
     {
         return $this->belongsTo(User::class);
     }
+   /**
+     * Get all of the post's comments.
+     */
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }

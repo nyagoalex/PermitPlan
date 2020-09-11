@@ -184,4 +184,15 @@ class BookingController extends Controller
         $notif->markAsRead();
         return new  NotificationResource($notif);
     }
+    /**
+     * mark notifications as unread
+     *
+     * @return mixed
+     */
+    public function markAllNotificationAsRead($boking_id)
+    {
+        $booking = Booking::FindOrFail($boking_id);
+        $booking->unreadNotifications->markAsRead();
+        return NotificationResource::collection($booking->notifications);
+    }
 }

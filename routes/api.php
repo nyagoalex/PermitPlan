@@ -20,3 +20,4 @@ Route::get('/nnn', function () {
     $r = ['domain' => 'name'];
     return response()->json([ 'data' => $r ]);
 });
+Route::get('/file/{filename}', 'LodgePhotoController@show')->name('lodge.photos.show');

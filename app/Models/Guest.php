@@ -31,4 +31,12 @@ class Guest extends Model
     {
         return  ucwords($this->first_name. ' '. $this->last_name);
     }
+
+    /**
+     * Get all of the post's comments.
+     */
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }

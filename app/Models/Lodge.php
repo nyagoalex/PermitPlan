@@ -52,6 +52,11 @@ class Lodge extends Model
     {
         return $this->hasMany(LodgeFacility::class)->orderBy('name');
     }
+
+    public function photos()
+    {
+        return $this->hasMany(LodgePhoto::class);
+    }
     public function roomCosts()
     {
         return $this->hasManyThrough(SeasonalRoomCost::class, Room::class);

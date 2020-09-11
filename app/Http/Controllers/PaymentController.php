@@ -7,6 +7,7 @@ use App\Http\Resources\PaymentResource;
 use App\Http\Resources\PermitResource;
 use App\Models\Booking;
 use App\Models\Payment;
+use App\Notifications\PaymentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,10 @@ class PaymentController extends Controller
         // do not pay beyond the balance
         abort_if($data['amount'] > $booking->balance, Response::HTTP_BAD_REQUEST, "Action Failed, Booking Over Payment Amount:{$data['amount']} Bal:{$booking->balance}");
         $payment = $booking->payments()->create($data);
+
+        $booking->refresh();
+        $details = "Made Payment Of ".$data['amount'].", New Booking Balance Is ".$booking->balance;
+        $booking->notify(new PaymentNotification($payment, $details));
         DB::commit();
         return new PaymentResource($payment);
     }
@@ -57,6 +62,10 @@ class PaymentController extends Controller
         DB::beginTransaction();
         $payment = Payment::whereBookingId($booking_id)->findOrFail($payment_id);
         $payment->delete();
+
+        $booking = $payment->booking;
+        $details = "Deleted Payment Of ".$payment->amount." New Booking Balance Is ".$booking->balance;
+        $booking->notify(new PaymentNotification($payment, $details));
         DB::commit();
         return new PaymentResource($payment);
     }
