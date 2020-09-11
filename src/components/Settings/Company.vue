@@ -1,17 +1,18 @@
 <template>
     <div>
 
+        <!-- <img class="m1" src="@/assets/image/avatar.jpg" rounded="circle" width="90" height="90" alt="Logo"> -->
+
         <b-row class="float-left"> <strong> COMPANY DETAILS </strong></b-row><br>
         <div class="row">
             <div class="col-md-7 col-sm-12 text-left signup-form ">
                 <b-form @submit.prevent="updateCompany" class="inner-form">
                     <div class="bg-light rounded-lg mb-4">
                         <div class="media align-items-center">
-
-                            <img id="c-img-logo" src="@/assets/image/avatar.jpg" width="90" alt="Logo">
+                            <b-img class="m1 bg-secondary text-center" v-bind:src="company.logo" rounded="circle" width="90" height="90" alt="Logo"></b-img>
                             <div class="media-body pl-3">
-                                <b-button class="btn btn-sm mb-2" type="button" data-toggle="file" data-target="#logo">Change Logo</b-button>
-                                <input type="file" name="logo" id="logo" accept="image/*" hidden>
+                                <b-button pill size="sm" @click="$refs.logo.click()" variant="outline-dark">Change Logo</b-button>
+                                <input type="file" ref="logo" @change="uploadLogo" accept="image/*" hidden>
                                 <div class="mb-0  text-muted"><small>Upload JPG, GIF or PNG image. 300 x 300 required.</small></div>
                             </div>
                         </div>
@@ -99,6 +100,8 @@ export default {
             //     registration_no: '',
             //     email: ''
             // },
+            uploadPercentage: 0,
+            progressVariant: 'success',
             loading: false,
             errors: {}
         }
@@ -112,6 +115,7 @@ export default {
             this.errors = {}
             this.$http.patch('/settings', this.company)
                 .then(response => {
+                    localStorage.setItem('settings', JSON.stringify(response.data.data))
                     this.company = response.data.data
                     this.toastSuccess('Company Details Successfully Updated')
                 })
@@ -122,6 +126,25 @@ export default {
                 .finally(() => {
                     this.loading = false
                 })
+        },
+        uploadLogo() {
+            this.uploadPercentage = 0
+            this.progressVariant = 'success'
+            const logo = this.$refs.logo.files[0]
+            const formData = new FormData()
+            formData.append('photo', logo)
+            this.$http.post('/logo', formData, {
+                onUploadProgress: function (progressEvent) {
+                    this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100))
+                }.bind(this)
+            }).then(response => {
+                localStorage.setItem('settings', JSON.stringify(response.data.data))
+                this.company = response.data.data
+                this.alertAddSuccess()
+            }).catch(errors => {
+                this.toastError(errors.message)
+                this.progressVariant = 'danger'
+            })
         }
     }
 }

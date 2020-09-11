@@ -60,11 +60,6 @@ export default {
         },
         generateReport() {
             this.$refs.html2Pdf.generatePdf()
-        },
-        getCompanyDetails() {
-            this.$http.get('/settings').then(settings => {
-                this.company = settings.data.data
-            })
         }
     },
     filters: {
@@ -73,7 +68,7 @@ export default {
         }
     },
     mounted: function () {
-        this.getCompanyDetails()
+        this.company = JSON.parse(localStorage.getItem('settings'))
     }
 }
 </script>

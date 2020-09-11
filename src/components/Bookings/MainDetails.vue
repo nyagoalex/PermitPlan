@@ -139,7 +139,7 @@
         <div class="pl-3">
             <h6 class="container w-100 ">
                 <strong style="font-size:20px;color:purple;">Recent Activity {{next_notify_link}}</strong>
-                <small class="float-right text-primary mr-3" style="cursor: pointer;">Mark All as Read</small>
+                <small class="float-right text-primary mr-3" style="cursor: pointer;" @click="markAllAsRead">Mark All as Read</small>
             </h6>
 
             <div class="container" v-infinite-scroll="getNotifications" infinite-scroll-disabled="notify_busy" infinite-scroll-distance="10" style="max-height:450px; overflow-y: auto;">
@@ -148,8 +148,9 @@
                         <b-icon v-bind="mainProps" :icon="notification.read? 'check': 'exclamation'" variant="white" :class="{'rounded-circle':true,
                             'bg-success':notification.type == 'booking',
                             'bg-dark':notification.type == 'permit',
-                            'bg-info':notification.type == 3,
-                            'bg-warning':notification.type == 4,
+                            'bg-info':notification.type == 'payment',
+                            'bg-warning':notification.type == 'guest',
+                            'bg-secondary':notification.type == 4,
                             'bg-danger':notification.type == 5,
                             'bg-light':notification.type == 6}"></b-icon>
                         <div class="col-lg-2 col-8 pl-0 pl-md-3 pt-3 pt-lg-0 text-left" style="color: black; font-size:14px; text-transform: capitalize;">{{notification.type}}</div>
@@ -430,10 +431,19 @@ export default {
             }
         },
         markAsRead(index) {
-            const id = this.notifications[index].id
-            this.$http.get('/bookings/' + this.$route.params.id + '/notifications/' + id)
-                .then(() => {
-                    this.$set(this.notifications[index], 'read', true)
+            if (!this.notifications[index].read) {
+                const id = this.notifications[index].id
+                this.$http.post('/bookings/' + this.$route.params.id + '/notifications/' + id + '/markasread')
+                    .then(() => {
+                        this.$set(this.notifications[index], 'read', true)
+                    })
+            }
+        },
+        markAllAsRead() {
+            this.$http.post('/bookings/' + this.$route.params.id + '/notifications/markallasread')
+                .then(notifications => {
+                    this.notifications = notifications.data.data
+                    this.next_notify_link = null
                 })
         }
     },

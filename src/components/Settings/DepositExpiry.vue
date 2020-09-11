@@ -50,6 +50,7 @@ export default {
             this.errors = {}
             this.$http.patch('/settings', this.company)
                 .then(response => {
+                    localStorage.setItem('settings', JSON.stringify(response.data.data))
                     this.company = response.data.data
                     this.toastSuccess('Expiry Period Successfully Updated')
                 })

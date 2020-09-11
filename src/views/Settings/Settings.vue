@@ -100,19 +100,12 @@ export default {
                     // this.error = error.response
                     // this.loading = false
                 })
-        },
-        getCompanyDetails() {
-            this.$http.get('/settings').then(settings => {
-                this.company = settings.data.data
-            })
         }
     },
     created: function () {
         this.$nextTick(function () {
-            // Code that will run only after the
-            // entire view has been rendered
             this.getCosts()
-            this.getCompanyDetails()
+            this.company = JSON.parse(localStorage.getItem('settings'))
         })
     }
 }

@@ -1,57 +1,57 @@
 <template>
-<div class="row">
-    <div class="col-md-7 col-sm-12 p-5">
-        <div class="pt-5 ">
-            <h2 style="font-size:45px;color:#B03A2E;"><small class="float-left" style="font-size:28px;color:#7E5109;">Halo,</small><br> Tukwaniriza ku Safariplan</h2>
+    <div class="row">
+        <div class="col-md-7 col-sm-12 p-5">
+            <div class="pt-5 ">
+                <h2 style="font-size:45px;color:#B03A2E;"><small class="float-left" style="font-size:28px;color:#7E5109;">Halo,</small><br> Tukwaniriza ku Safariplan</h2>
 
-            <hr>
+                <hr>
 
-            <span class="p-2 float-left" style="color:#7E5109;font-family:none;font-size:23px;"><i>simpliefied safari planning</i></span>
-            <p class="pt-5"><a href="http://www.lacel.tech" target="_blank" style="color:#95A5A6;">&copy;
+                <span class="p-2 float-left" style="color:#7E5109;font-family:none;font-size:23px;"><i>simpliefied safari planning</i></span>
+                <p class="pt-5"><a href="http://www.lacel.tech" target="_blank" style="color:#95A5A6;">&copy;
 
-                    {{ new Date().getFullYear() }} Lacel Techologies</a></p>
+                        {{ new Date().getFullYear() }} Lacel Techologies</a></p>
+            </div>
+
         </div>
 
+        <div class="col-md-5 col-sm-12 text-center signup-form">
+            <form @submit.prevent="handleSubmit" class="inner-form">
+                <img class="" src="@/assets/image/pplanw.png" alt="" width="150" height="55">
+                <h2 class="">sign in to your Account</h2>
+                <b-input-group class="mt-5">
+                    <template v-slot:prepend>
+                        <b-input-group-text>
+                            <b-icon class="text-success" icon="person-fill"></b-icon>
+                        </b-input-group-text>
+                    </template>
+                    <b-form-input type="text" v-model="username" name="username" :class="{ 'is-invalid': submitted && !username }" placeholder="username"></b-form-input>
+                    <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
+                </b-input-group>
+                <b-input-group class="mt-5">
+                    <template v-slot:prepend>
+                        <b-input-group-text>
+                            <b-icon class="text-success" icon="person-fill"></b-icon>
+                        </b-input-group-text>
+                    </template>
+                    <b-form-input type="password" v-model="password" name="password" :class="{ 'is-invalid': submitted && !password }" placeholder="password"></b-form-input>
+                    <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
+                </b-input-group>
+                <div class="checkbox mb-3 mt-4 text-left">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <b-overlay :show="loading" rounded opacity="0.6" spinner-small class="d-inline-block">
+                        <button class="btn btn-success" style="padding:10px 45px;font-size:20px;" :disabled="loading">SignIn <b-icon icon="arrow-right"></b-icon></button>
+                    </b-overlay>
+                    <div v-if="error" class="alert alert-danger">{{error}}</div>
+                </div>
+                <div class="text-center">Create new Company? <a :href="registerUrl">Sign Up</a></div>
+            </form>
+        </div>
     </div>
-
-    <div class="col-md-5 col-sm-12 text-center signup-form">
-        <form @submit.prevent="handleSubmit" class="inner-form">
-            <img class="" src="@/assets/image/pplanw.png" alt="" width="150" height="55">
-            <h2 class="">sign in to your Account</h2>
-            <b-input-group class="mt-5">
-                <template v-slot:prepend>
-                    <b-input-group-text>
-                        <b-icon class="text-success" icon="person-fill"></b-icon>
-                    </b-input-group-text>
-                </template>
-                <b-form-input type="text" v-model="username" name="username" :class="{ 'is-invalid': submitted && !username }" placeholder="username"></b-form-input>
-                <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
-            </b-input-group>
-            <b-input-group class="mt-5">
-                <template v-slot:prepend>
-                    <b-input-group-text>
-                        <b-icon class="text-success" icon="person-fill"></b-icon>
-                    </b-input-group-text>
-                </template>
-                <b-form-input type="password" v-model="password" name="password" :class="{ 'is-invalid': submitted && !password }" placeholder="password"></b-form-input>
-                <div v-show="submitted && !password" class="invalid-feedback">Password is required</div>
-            </b-input-group>
-            <div class="checkbox mb-3 mt-4 text-left">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-            </div>
-            <hr>
-            <div class="form-group">
-                <b-overlay :show="loading" rounded opacity="0.6" spinner-small class="d-inline-block">
-                    <button class="btn btn-success" style="padding:10px 45px;font-size:20px;" :disabled="loading">SignIn <b-icon icon="arrow-right"></b-icon></button>
-                </b-overlay>
-                <div v-if="error" class="alert alert-danger">{{error}}</div>
-            </div>
-            <div class="text-center">Create new Company? <a :href="registerUrl">Sign Up</a></div>
-        </form>
-    </div>
-</div>
 </template>
 
 <script>
@@ -72,7 +72,7 @@ export default {
             loading: false,
             returnUrl: '',
             error: '',
-            registerUrl: 'http://' + process.env.VUE_APP_DOMAIN + ':8081/register'
+            registerUrl: process.env.VUE_APP_PROTOCOL + process.env.VUE_APP_DOMAIN + ':8081/register'
         }
     },
     created() {
@@ -100,14 +100,15 @@ export default {
             }
             this.loading = true
             this.$http.post('/auth/token', param)
-                .then(user => {
-                    localStorage.setItem('user', JSON.stringify(user.data))
+                .then(response => {
+                    localStorage.setItem('user', JSON.stringify(response.data.data.user))
+                    localStorage.setItem('settings', JSON.stringify(response.data.data.settings))
                     this.$http.defaults.headers.common.Authorization = authHeader()
                     router.push(this.returnUrl)
-                    return user
+                    return true
                 })
                 .catch(error => {
-                    localStorage.removeItem('user') // remove user from local storage to log user out
+                    localStorage.clear() // remove user from local storage to log user out
                     this.loading = false
                     this.error = error.message
                 })

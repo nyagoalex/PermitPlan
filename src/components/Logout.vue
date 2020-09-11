@@ -5,31 +5,33 @@
 <script>
 import router from '@/router'
 export const Logout = {
-  logout
+    logout
 }
 export default {
-  name: 'Logout',
-  // isLoggedIn: true,
-  props: {
-    msg: String
-  },
-  methods: {
-    logout: function () {
-      const http = this.$http
-      logout(http)
+    name: 'Logout',
+    // isLoggedIn: true,
+    props: {
+        msg: String
+    },
+    methods: {
+        logout: function () {
+            const http = this.$http
+            logout(http)
+        }
     }
-  }
 }
 
-function logout (http) {
-  console.log('logout')
-  http.post('/auth/logout')
-    .finally(function () {
-      localStorage.removeItem('user')
-      delete http.defaults.headers.common.Authorization
-      if (router.currentRoute.name !== 'Login') {
-        router.push({ name: 'Login' })
-      }
-    })
+function logout(http) {
+    console.log('logout')
+    http.post('/auth/logout')
+        .finally(function () {
+            localStorage.clear()
+            delete http.defaults.headers.common.Authorization
+            if (router.currentRoute.name !== 'Login') {
+                router.push({
+                    name: 'Login'
+                })
+            }
+        })
 }
 </script>

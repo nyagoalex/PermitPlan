@@ -1,7 +1,9 @@
 <template>
     <div>
         <b-navbar toggleable="lg" variant="faded" type="light" class="bg-white shadow-lg" style="max-height:60px;">
-            <b-navbar-brand @click="$router.push({name: 'Dashboard'})" style="cursor:pointer"><img src="@/assets/image/pplanw.png" alt="Kitten" width="130" height="50"></b-navbar-brand>
+            <b-navbar-brand @click="$router.push({name: 'Dashboard'})" style="cursor:pointer">
+                <img src="@/assets/image/pplanw.png" alt="Kitten" width="130" height="50">
+            </b-navbar-brand>
 
             <b-navbar-nav>
                 <b-nav-item @click="$router.push({name: 'Dashboard'})">Dashbord</b-nav-item>
@@ -29,7 +31,7 @@
                     <!-- Using 'button-content' slot -->
                     <template v-slot:button-content>
                         <!-- <em>User</em> -->
-                        <img v-bind="mainProps" rounded="circle" src="@/assets/image/user-ic.png" alt="">
+                        <b-img v-bind="mainProps" v-bind:src="logo" alt="Logo"></b-img>
                     </template>
                     <b-dropdown-item @click="$router.push({name: 'Profile'})">Profile</b-dropdown-item>
                     <b-dropdown-item @click="$router.push({name: 'Settings'})">Settings</b-dropdown-item>
@@ -56,10 +58,12 @@ export default {
             mainProps: {
                 width: 35,
                 height: 35,
-                class: 'm1'
+                class: 'm1 bg-success text-center',
+                rounded: 'circle'
             },
             search: '',
-            awaitingSearch: false
+            awaitingSearch: false,
+            logo: ''
         }
     },
     components: {
@@ -76,6 +80,9 @@ export default {
             }
             this.awaitingSearch = true
         }
+    },
+    mounted() {
+        this.logo = JSON.parse(localStorage.getItem('settings')).logo
     }
 }
 </script>
