@@ -53,6 +53,7 @@ Route::middleware([
             Route::get('settings', 'SettingController@index')->name('settings.get');
             Route::patch('settings', 'SettingController@update')->name('settings.update');
         
+            Route::get('reports/permits-total', 'ReportController@permits')->name('reports.get');
             Route::group(
                 ['prefix' => 'users'],
                 function () {
