@@ -1,8 +1,8 @@
 <template>
-<div id="app">
-    <navComponent v-if="!nav_allowed_routes.includes(this.$route.name)" />
-    <router-view></router-view>
-</div>
+    <div id="app">
+        <navComponent v-if="!nav_allowed_routes.includes(this.$route.name)" />
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ import navComponent from '@/components/nav.vue'
 export default {
     data() {
         return {
-            nav_allowed_routes: ['Login', 'Register', 'NotFound', null]
+            nav_allowed_routes: ['Login', 'Register', 'ItineraryPreview', 'NotFound', null]
         }
     },
     name: 'app',

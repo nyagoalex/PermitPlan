@@ -1,50 +1,50 @@
 <template>
-<b-container class="bg-white text-left mt-3 fluid">
-    <div class="">
-        <!-- <ol class="breadcrumb">
+    <b-container class="bg-white text-left mt-3 fluid">
+        <div class="">
+            <!-- <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="accommodation">Lodges + Hotels</a></li>
           <li class="breadcrumb-item"><a href="#"><span class="l-name-label">
                       lodge name</span> (<span class="l-location-label">
                       location</span>)</a></li>
           <li class="breadcrumb-item active" aria-current="page">Details</li>
       </ol> -->
-        <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
-        <div class="">
-            <div class="bg-grey2 p-2" style="border-radius:4px;">
+            <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
+            <div class="">
+                <div class="bg-grey2 p-2" style="border-radius:4px;">
 
-                <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})">
-                            <b-icon icon="arrow-left"></b-icon>
-                        </a></span><span class="l-name-label">
-                        lodge name </span></span>
-                <span class="ml-4">
-                    <star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating>
-                </span>
+                    <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})">
+                                <b-icon icon="arrow-left"></b-icon>
+                            </a></span><span class="l-name-label">
+                            lodge name </span></span>
+                    <span class="ml-4">
+                        <star-rating :rating="star_rating" :increment="0.01" :star-size="20" :fixed-points="2" @rating-selected="setRating" :inline="true"></star-rating>
+                    </span>
+                </div>
+            </div>
+            <div class="pt-3">
+
+                <b-tabs fill>
+                    <b-tab class="nav-item" title="Lodge Details">
+                        <Details :lodge="lodge" />
+                    </b-tab>
+                    <b-tab class="nav-item" title="The Rooms">
+                        <Rooms :rooms="lodge.rooms" />
+                    </b-tab>
+                    <b-tab class="nav-item" title="Rates & Seasons">
+                        <Rates :seasons="lodge.seasons" :contracted_rating="lodge.contracted_rating" />
+                    </b-tab>
+
+                    <b-tab class="nav-item" title="Photos">
+                        <Photos />
+                    </b-tab>
+
+                    <b-tab class="nav-item" title="Facilities & Activities">
+                        <Activities :activities="lodge.activities" :facilities="lodge.facilities" />
+                    </b-tab>
+                </b-tabs>
             </div>
         </div>
-        <div class="pt-3">
-
-            <b-tabs fill>
-                <b-tab class="nav-item" title="Lodge Details">
-                    <Details :lodge="lodge" />
-                </b-tab>
-                <b-tab class="nav-item" title="The Rooms">
-                    <Rooms :rooms="lodge.rooms" />
-                </b-tab>
-                <b-tab class="nav-item" title="Rates & Seasons">
-                    <Rates :seasons="lodge.seasons" :contracted_rating="lodge.contracted_rating" />
-                </b-tab>
-
-                <b-tab class="nav-item" title="Photos">
-                    <Photos />
-                </b-tab>
-
-                <b-tab class="nav-item" title="Facilities & Activities">
-                    <Activities :activities="lodge.activities" :facilities="lodge.facilities" />
-                </b-tab>
-            </b-tabs>
-        </div>
-    </div>
-</b-container>
+    </b-container>
 </template>
 
 <script>
@@ -86,7 +86,7 @@ export default {
             })
         },
         breadcrumbItems: function () {
-            return [
+            return [ // prettier-ignore
                 {
                     text: 'Dashboard',
                     to: {

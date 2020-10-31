@@ -106,8 +106,17 @@
 
                     <dt>Day to day Itinerary (Coming Soon) <i class="plus-icon"></i></dt>
                     <dd>
-                        <div class="contents">
-                            <p>coming soon</p>
+                        <div class="contents p-3">
+                            <div>
+                                <a href="#" @click="previewItinerary">
+                                    <b-icon icon="arrow-left"></b-icon> edit itinerary
+                                </a>
+                                <a href="#" @click="previewItinerary" class="float-right"> view details <b-icon icon="arrow-right"></b-icon></a>
+                            </div>
+                            <div>
+                                <b-button pill variant="outline-secondary" class="m-2" @click="previewItinerary"><span style=" color: black;"> DAY 1</span> - Depart for Bwindi Forest</b-button>
+                                <b-button pill variant="outline-secondary" class="m-2"><span style="color: black;"> DAY 1</span> - Depart for Bwindi Forest</b-button>
+                            </div>
                         </div>
                     </dd>
 
@@ -445,6 +454,15 @@ export default {
                     this.notifications = notifications.data.data
                     this.next_notify_link = null
                 })
+        },
+        previewItinerary() {
+            const routeData = this.$router.resolve({
+                name: 'ItineraryPreview',
+                params: {
+                    id: 1
+                }
+            })
+            window.open(routeData.href, '_blank')
         }
     },
     mounted() {
