@@ -17,6 +17,7 @@ import Vehicles from '@/views/Vehicles.vue'
 import Guides from '@/views/Guides.vue'
 import Calenda from '@/views/Calenda.vue'
 import ItineraryPreview from '@/views/Itinerary/Preview.vue'
+import ItineraryDetails from '@/views/Itinerary/Details.vue'
 
 Vue.use(VueRouter)
 
@@ -110,6 +111,11 @@ const routes = [
         path: '/itineraries/:id/preview',
         name: 'ItineraryPreview',
         component: ItineraryPreview
+    },
+    {
+        path: '/itineraries/:id/details',
+        name: 'ItineraryDetails',
+        component: ItineraryDetails
     },
     { // catch all 404 - define at the very end
         path: '*',

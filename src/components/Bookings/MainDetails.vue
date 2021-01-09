@@ -1,126 +1,332 @@
+<!-- @format -->
+
 <template>
     <div class="col-md-9 p-0 pr-2 col-sm-12">
         <div class="pl-4 pr-4">
-            <div class="accordion-panel  text-left">
+            <div class="accordion-panel text-left">
                 <div class="buttons-wrapper">
                     <i class="plus-icon"></i>
-                    <div class="open-btn">
-                        Open all
-                    </div>
-                    <div class="close-btn hidden">
-                        Close all
-                    </div>
+                    <div class="open-btn">Open all</div>
+                    <div class="close-btn hidden">Close all</div>
                 </div>
 
                 <dl class="accordion">
                     <dt>Permits <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
+                            <div class="mt-3 header-small pt-3 bg-white p-3">
+                                <b-button
+                                    size="sm"
+                                    pill
+                                    variant="outline-dark"
+                                    class="float-right"
+                                    v-b-modal.new-permit
+                                    >+ Permits</b-button
+                                >
 
-                            <div class="mt-3 header-small pt-3 bg-white  p-3">
-                                <b-button size="sm" pill variant="outline-dark" class="float-right" v-b-modal.new-permit>+ Permits</b-button>
-
-                                <b-table :items="booking.permits" :fields="permit_fields" :striped="true" :responsive="true" no-border-collapse sticky-header @row-clicked="permit=>$set(permit, '_showDetails', !permit._showDetails)" sort-by="number" sort-icon-left>
+                                <b-table
+                                    :items="booking.permits"
+                                    :fields="permit_fields"
+                                    :striped="true"
+                                    :responsive="true"
+                                    no-border-collapse
+                                    sticky-header
+                                    @row-clicked="
+                                        (permit) =>
+                                            $set(
+                                                permit,
+                                                '_showDetails',
+                                                !permit._showDetails
+                                            )
+                                    "
+                                    sort-by="number"
+                                    sort-icon-left
+                                >
                                     <template v-slot:cell(#)="data">
                                         {{ data.index + 1 }}
                                     </template>
-                                    <template v-slot:cell(type)="row"> {{ row.item.permit_type_name}} </template>
-                                    <template v-slot:cell(preffered_sector)="row"> {{ row.item.sector}} </template>
-                                    <template v-slot:cell(tracking_date)="row"> {{ row.item.tracking_date_format}} </template>
+                                    <template v-slot:cell(type)="row">
+                                        {{ row.item.permit_type_name }}
+                                    </template>
+                                    <template v-slot:cell(preffered_sector)="row">
+                                        {{ row.item.sector }}
+                                    </template>
+                                    <template v-slot:cell(tracking_date)="row">
+                                        {{ row.item.tracking_date_format }}
+                                    </template>
                                     <template v-slot:cell(payment_status)="row">
-                                        <span :id="`tooltip-button-payment-status-${row.item.id}`" :class="{
-                                            'text-success': row.item.payment_status == 'Cleared',
-                                            'text-info': row.item.payment_status == 'Deposited',
-                                            'text-danger': row.item.payment_status == 'Deposit Expired',
-                                            'text-dark': row.item.payment_status == 'Tentative',
-                                            }">
-                                            {{ row.item.payment_status}}
+                                        <span
+                                            :id="`tooltip-button-payment-status-${row.item.id}`"
+                                            :class="{
+                                                'text-success':
+                                                    row.item.payment_status == 'Cleared',
+                                                'text-info':
+                                                    row.item.payment_status ==
+                                                    'Deposited',
+                                                'text-danger':
+                                                    row.item.payment_status ==
+                                                    'Deposit Expired',
+                                                'text-dark':
+                                                    row.item.payment_status == 'Tentative'
+                                            }"
+                                        >
+                                            {{ row.item.payment_status }}
                                         </span>
-                                        <b-tooltip v-if="row.item.payment_status == 'Deposited' || row.item.payment_status == 'Deposit Expired'" :target="`tooltip-button-payment-status-${row.item.id}`" triggers="hover" variant="secondary">Expires on {{ row.item.expired_date}}</b-tooltip>
+                                        <b-tooltip
+                                            v-if="
+                                                row.item.payment_status == 'Deposited' ||
+                                                row.item.payment_status ==
+                                                    'Deposit Expired'
+                                            "
+                                            :target="`tooltip-button-payment-status-${row.item.id}`"
+                                            triggers="hover"
+                                            variant="secondary"
+                                            >Expires on
+                                            {{ row.item.expired_date }}</b-tooltip
+                                        >
                                     </template>
                                     <template v-slot:row-details="row">
                                         <b-row>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-dark" v-b-modal.reschedule @click="reschedule_permit = row.item">Reschedule</b-button>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary" v-b-modal.item-payments-modal @click="payment_type='permit', payment_types=row.item.payments">Show Payments</b-button>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary" v-b-modal.item-payment-modal @click="payment_type='permit', selected_modal=row.item">Register Payment</b-button>
-                                            <span :id="`tooltip-button-${row.item.number}`" class="d-inline-block" tabindex="0">
-                                                <b-button size="sm" class="mx-3" pill variant="outline-danger" @click="deletePermit(row.item.id)" :disabled="row.item.payments.length > 0">Remove</b-button>
+                                            <b-button
+                                                size="sm"
+                                                class="mx-3"
+                                                pill
+                                                variant="outline-dark"
+                                                v-b-modal.reschedule
+                                                @click="reschedule_permit = row.item"
+                                                >Reschedule</b-button
+                                            >
+                                            <b-button
+                                                size="sm"
+                                                class="mx-3"
+                                                pill
+                                                variant="outline-secondary"
+                                                v-b-modal.item-payments-modal
+                                                @click="
+                                                    ;(payment_type = 'permit'),
+                                                        (payment_types =
+                                                            row.item.payments)
+                                                "
+                                                >Show Payments</b-button
+                                            >
+                                            <b-button
+                                                size="sm"
+                                                class="mx-3"
+                                                pill
+                                                variant="outline-secondary"
+                                                v-b-modal.item-payment-modal
+                                                @click="
+                                                    ;(payment_type = 'permit'),
+                                                        (selected_modal = row.item)
+                                                "
+                                                >Register Payment</b-button
+                                            >
+                                            <span
+                                                :id="`tooltip-button-${row.item.number}`"
+                                                class="d-inline-block"
+                                                tabindex="0"
+                                            >
+                                                <b-button
+                                                    size="sm"
+                                                    class="mx-3"
+                                                    pill
+                                                    variant="outline-danger"
+                                                    @click="deletePermit(row.item.id)"
+                                                    :disabled="
+                                                        row.item.payments.length > 0
+                                                    "
+                                                    >Remove</b-button
+                                                >
                                             </span>
-                                            <b-tooltip :target="`tooltip-button-${row.item.number}`" triggers="hover" variant="danger">Permit Has Payments</b-tooltip>
-                                            <small class="mx-3" v-if="row.item.rescheduled">Rescheduled from: <b style="color: #b97455;">{{row.item.rescheduled_from}}</b></small>
+                                            <b-tooltip
+                                                :target="`tooltip-button-${row.item.number}`"
+                                                triggers="hover"
+                                                variant="danger"
+                                                >Permit Has Payments</b-tooltip
+                                            >
+                                            <small
+                                                class="mx-3"
+                                                v-if="row.item.rescheduled"
+                                                >Rescheduled from:
+                                                <b style="color: #b97455">{{
+                                                    row.item.rescheduled_from
+                                                }}</b></small
+                                            >
                                         </b-row>
                                     </template>
                                 </b-table>
                             </div>
                         </div>
-
                     </dd>
                     <dt>Payments <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
+                            <div class="mt-3 pt-3 header-small bg-white p-3">
+                                <b-button
+                                    v-b-modal.overall_payment_modal
+                                    size="sm"
+                                    pill
+                                    variant="outline-secondary"
+                                    class="float-right"
+                                    >+ add payment</b-button
+                                >
 
-                            <div class="mt-3 pt-3 header-small bg-white  p-3">
-                                <b-button v-b-modal.overall_payment_modal size="sm" pill variant="outline-secondary" class="float-right">+ add payment</b-button>
-
-                                <b-table :items="booking.payments" :fields="payment_fields" :striped="true" :responsive="true" no-border-collapse sticky-header @row-clicked="payment=>$set(payment, '_showDetails', !payment._showDetails)" sort-by="number" sort-icon-left>
+                                <b-table
+                                    :items="booking.payments"
+                                    :fields="payment_fields"
+                                    :striped="true"
+                                    :responsive="true"
+                                    no-border-collapse
+                                    sticky-header
+                                    @row-clicked="
+                                        (payment) =>
+                                            $set(
+                                                payment,
+                                                '_showDetails',
+                                                !payment._showDetails
+                                            )
+                                    "
+                                    sort-by="number"
+                                    sort-icon-left
+                                >
                                     <template v-slot:cell(#)="data">
                                         {{ data.index + 1 }}
                                     </template>
-                                    <template v-slot:cell(payment_date)="row"> {{ row.item.date}} </template>
-                                    <template v-slot:cell(created_by)="row"> {{ row.item.user}} </template>
+                                    <template v-slot:cell(payment_date)="row">
+                                        {{ row.item.date }}
+                                    </template>
+                                    <template v-slot:cell(paid_in_by)="row">
+                                        {{ row.item.user }}
+                                    </template>
                                     <template v-slot:cell(action)="row">
-                                        <b-button size="sm" class="" @click="deletePayment(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                                        <b-button
+                                            size="sm"
+                                            class=""
+                                            @click="deletePayment(row.item.id)"
+                                            pill
+                                            variant="outline-danger"
+                                            >Delete</b-button
+                                        >
                                     </template>
                                 </b-table>
-
                             </div>
-                            <br>
+                            <br />
                         </div>
                     </dd>
 
                     <dt>Guests <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
-
-                            <div class="mt-3 header-small pt-3 bg-white  p-3">
-                                <b-button size="sm" pill variant="outline-dark" class="float-right" @click="newGuestModal">+ Guest</b-button>
-                                <b-table :items="booking.guests" :fields="guest_fields" :striped="true" :responsive="true" no-border-collapse sticky-header @row-clicked="guest=>$set(guest, '_showDetails', !guest._showDetails)" sort-by="number" sort-icon-left>
+                            <div class="mt-3 header-small pt-3 bg-white p-3">
+                                <b-button
+                                    size="sm"
+                                    pill
+                                    variant="outline-dark"
+                                    class="float-right"
+                                    @click="newGuestModal"
+                                    >+ Guest</b-button
+                                >
+                                <b-table
+                                    :items="booking.guests"
+                                    :fields="guest_fields"
+                                    :striped="true"
+                                    :responsive="true"
+                                    no-border-collapse
+                                    sticky-header
+                                    @row-clicked="
+                                        (guest) =>
+                                            $set(
+                                                guest,
+                                                '_showDetails',
+                                                !guest._showDetails
+                                            )
+                                    "
+                                    sort-by="number"
+                                    sort-icon-left
+                                >
                                     <template v-slot:cell(#)="data">
                                         {{ data.index + 1 }}
                                     </template>
-                                    <template v-slot:cell(name)="row"> {{ row.item.full_name}} </template>
+                                    <template v-slot:cell(name)="row">
+                                        {{ row.item.full_name }}
+                                    </template>
                                     <template v-slot:cell(action)="row">
                                         <div>
-                                            <b-button size="sm" class="mx-3" pill variant="outline-secondary" @click="editGuestModal(row.item)">Edit</b-button>
-                                            <span :id="`tooltip-button-${row.item.id}`" class="d-inline-block float-right" tabindex="0">
-                                                <b-button size="sm" class="" @click="deleteGuest(row.item.id)" pill variant="outline-danger" :disabled="row.item.payments.length > 0">Remove</b-button>
+                                            <b-button
+                                                size="sm"
+                                                class="mx-3"
+                                                pill
+                                                variant="outline-secondary"
+                                                @click="editGuestModal(row.item)"
+                                                >Edit</b-button
+                                            >
+                                            <span
+                                                :id="`tooltip-button-${row.item.id}`"
+                                                class="d-inline-block float-right"
+                                                tabindex="0"
+                                            >
+                                                <b-button
+                                                    size="sm"
+                                                    class=""
+                                                    @click="deleteGuest(row.item.id)"
+                                                    pill
+                                                    variant="outline-danger"
+                                                    :disabled="
+                                                        row.item.payments.length > 0
+                                                    "
+                                                    >Remove</b-button
+                                                >
                                             </span>
-                                            <b-tooltip :target="`tooltip-button-${row.item.id}`" triggers="hover" variant="danger">Guest Has Payments</b-tooltip>
+                                            <b-tooltip
+                                                :target="`tooltip-button-${row.item.id}`"
+                                                triggers="hover"
+                                                variant="danger"
+                                                >Guest Has Payments</b-tooltip
+                                            >
                                         </div>
                                     </template>
                                 </b-table>
-
                             </div>
                         </div>
                     </dd>
 
-                    <dt>Day to day Itinerary (Coming Soon) <i class="plus-icon"></i></dt>
+                    <dt>Day to day Itinerary <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents p-3">
                             <div>
-                                <a href="#" @click="previewItinerary">
+                                <a
+                                    href=""
+                                    @click="
+                                        $router.push({
+                                            name: 'ItineraryDetails',
+                                            params: { id: 22 }
+                                        })
+                                    "
+                                >
                                     <b-icon icon="arrow-left"></b-icon> edit itinerary
                                 </a>
-                                <a href="#" @click="previewItinerary" class="float-right"> view details <b-icon icon="arrow-right"></b-icon></a>
+                                <a href="#" @click="previewItinerary" class="float-right">
+                                    preview <b-icon icon="arrow-right"></b-icon
+                                ></a>
                             </div>
                             <div>
-                                <b-button pill variant="outline-secondary" class="m-2" @click="previewItinerary"><span style=" color: black;"> DAY 1</span> - Depart for Bwindi Forest</b-button>
-                                <b-button pill variant="outline-secondary" class="m-2"><span style="color: black;"> DAY 1</span> - Depart for Bwindi Forest</b-button>
+                                <b-button
+                                    pill
+                                    variant="outline-secondary"
+                                    class="m-2"
+                                    @click="previewItinerary"
+                                    ><span style="color: black"> DAY 1</span> - Depart for
+                                    Bwindi Forest</b-button
+                                >
+                                <b-button pill variant="outline-secondary" class="m-2"
+                                    ><span style="color: black"> DAY 1</span> - Depart for
+                                    Bwindi Forest</b-button
+                                >
                             </div>
                         </div>
                     </dd>
 
-                    <dt>Accommodation (Coming Soon) <i class="plus-icon"></i></dt>
+                    <dt>Accommodation summary <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
                             <p>coming soon</p>
@@ -134,73 +340,226 @@
                         </div>
                     </dd>
 
-                    <dt>Guide & Vehicle (Coming Soon) <i class="plus-icon"></i></dt>
+                    <dt>Guide & Vehicle <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
-                            <p>coming soon</p>
+                            <div class="mt-3 header-small pt-3 bg-white p-3">
+                                <b-button
+                                    size="sm"
+                                    pill
+                                    variant="outline-dark"
+                                    class="float-right"
+                                    v-b-modal.allocate-guides-modal
+                                    >+ Guide</b-button
+                                >
+                                <b-table
+                                    :items="booking_guide"
+                                    :fields="booking_guide_fields"
+                                    :striped="true"
+                                    :responsive="true"
+                                    no-border-collapse
+                                    sticky-header
+                                    sort-by="name"
+                                    sort-icon-left
+                                >
+                                    <template v-slot:cell(#)="data">
+                                        {{ data.index + 1 }}
+                                    </template>
+                                    <template v-slot:cell(action)="row">
+                                        <div>
+                                            <b-button
+                                                size="sm"
+                                                class=""
+                                                @click="deleteGuest(row.item.id)"
+                                                pill
+                                                variant="outline-danger"
+                                                >Remove</b-button
+                                            >
+                                        </div>
+                                    </template>
+                                </b-table>
+                            </div>
                         </div>
                     </dd>
                 </dl>
             </div>
         </div>
-        <br>
+        <br />
 
         <div class="pl-3">
-            <h6 class="container w-100 ">
-                <strong style="font-size:20px;color:purple;">Recent Activity {{next_notify_link}}</strong>
-                <small class="float-right text-primary mr-3" style="cursor: pointer;" @click="markAllAsRead">Mark All as Read</small>
+            <h6 class="container w-100">
+                <strong style="font-size: 20px; color: purple"
+                    >Recent Activity {{ next_notify_link }}</strong
+                >
+                <small
+                    class="float-right text-primary mr-3"
+                    style="cursor: pointer"
+                    @click="markAllAsRead"
+                    >Mark All as Read</small
+                >
             </h6>
 
-            <div class="container" v-infinite-scroll="getNotifications" infinite-scroll-disabled="notify_busy" infinite-scroll-distance="10" style="max-height:450px; overflow-y: auto;">
-                <div v-for="(notification, index) in notifications" v-bind:key="index" :class="[{ read: notification.read, unread: !notification.read }, 'card mb-2', 'hover-shadow-lg', 'notif-div']" @click=" markAsRead(index)" :id="`popover-1-${notification.id}`">
-                    <div class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0">
-                        <b-icon v-bind="mainProps" :icon="notification.read? 'check': 'exclamation'" variant="white" :class="{'rounded-circle':true,
-                            'bg-success':notification.type == 'booking',
-                            'bg-dark':notification.type == 'permit',
-                            'bg-info':notification.type == 'payment',
-                            'bg-warning':notification.type == 'guest',
-                            'bg-secondary':notification.type == 4,
-                            'bg-danger':notification.type == 5,
-                            'bg-light':notification.type == 6}"></b-icon>
-                        <div class="col-lg-2 col-8 pl-0 pl-md-3 pt-3 pt-lg-0 text-left" style="color: black; font-size:14px; text-transform: capitalize;">{{notification.type}}</div>
-                        <div class="col col-lg-2 text-right px-0 order-lg-4 pt-3 pt-lg-0"><span class="text-muted text-sm">{{notification.created_at}}</span></div>
-                        <div class="col-12 col-lg-7 d-flex align-items-center position-static pb-3 py-lg-3 px-0">
+            <div
+                class="container"
+                v-infinite-scroll="getNotifications"
+                infinite-scroll-disabled="notify_busy"
+                infinite-scroll-distance="10"
+                style="max-height: 450px; overflow-y: auto"
+            >
+                <div
+                    v-for="(notification, index) in notifications"
+                    v-bind:key="index"
+                    :class="[
+                        { read: notification.read, unread: !notification.read },
+                        'card mb-2',
+                        'hover-shadow-lg',
+                        'notif-div'
+                    ]"
+                    @click="markAsRead(index)"
+                    :id="`popover-1-${notification.id}`"
+                >
+                    <div
+                        class="card-body d-flex align-items-center flex-wrap flex-lg-nowrap py-0"
+                    >
+                        <b-icon
+                            v-bind="mainProps"
+                            :icon="notification.read ? 'check' : 'exclamation'"
+                            variant="white"
+                            :class="{
+                                'rounded-circle': true,
+                                'bg-success': notification.type == 'booking',
+                                'bg-dark': notification.type == 'permit',
+                                'bg-info': notification.type == 'payment',
+                                'bg-warning': notification.type == 'guest',
+                                'bg-secondary': notification.type == 4,
+                                'bg-danger': notification.type == 5,
+                                'bg-light': notification.type == 6
+                            }"
+                        ></b-icon>
+                        <div
+                            class="col-lg-2 col-8 pl-0 pl-md-3 pt-3 pt-lg-0 text-left"
+                            style="
+                                color: black;
+                                font-size: 14px;
+                                text-transform: capitalize;
+                            "
+                        >
+                            {{ notification.type }}
+                        </div>
+                        <div class="col col-lg-2 text-right px-0 order-lg-4 pt-3 pt-lg-0">
+                            <span class="text-muted text-sm">{{
+                                notification.created_at
+                            }}</span>
+                        </div>
+                        <div
+                            class="col-12 col-lg-7 d-flex align-items-center position-static pb-3 py-lg-3 px-0"
+                        >
                             <div class="col col-lg-11 position-static px-0">
-                                <div class="d-flex flex-wrap flex-lg-nowrap align-items-center">
-                                    <div class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2">
+                                <div
+                                    class="d-flex flex-wrap flex-lg-nowrap align-items-center"
+                                >
+                                    <div
+                                        class="col-12 col-lg pl-0 text-limit text-left text-sm text-muted d-none d-sm-block pl-lg-2"
+                                    >
                                         {{ notification.data.message | truncate(80) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <b-popover :target="`popover-1-${notification.id}`" placement="top" :title="notification.type" triggers="hover focus" :content="`Placement ${notification.data.message}`"></b-popover>
+                    <b-popover
+                        :target="`popover-1-${notification.id}`"
+                        placement="top"
+                        :title="notification.type"
+                        triggers="hover focus"
+                        :content="`Placement ${notification.data.message}`"
+                    ></b-popover>
                 </div>
             </div>
         </div>
-        <b-modal id="reschedule" :title="`Reschedule Permit: ${reschedule_permit.number}`">
+        <b-modal
+            id="reschedule"
+            :title="`Reschedule Permit: ${reschedule_permit.number}`"
+        >
             <div class="form-group">
-                <input type="date" class="form-control place" v-model="reschedule_permit.tracking_date" :class="{ 'is-invalid': errors.tracking_date}">
+                <input
+                    type="date"
+                    class="form-control place"
+                    v-model="reschedule_permit.tracking_date"
+                    :class="{ 'is-invalid': errors.tracking_date }"
+                />
                 <ul class="list-unstyled invalid-feedback" v-if="errors.tracking_date">
-                    <li v-for="(error) in errors.tracking_date" :key="error">{{ error }}</li>
+                    <li v-for="error in errors.tracking_date" :key="error">
+                        {{ error }}
+                    </li>
                 </ul>
             </div>
-            <template v-slot:modal-footer="{ cancel}">
+            <template v-slot:modal-footer="{ cancel }">
                 <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="reschedule">Reshedule Permit</b-button>
+                <b-button size="sm" variant="success" @click="reschedule"
+                    >Reshedule Permit</b-button
+                >
             </template>
         </b-modal>
-        <b-modal id="item-payments-modal" :title="`Payments For ${payment_type}`" size="lg" hide-footer>
-            <b-table :items="payment_types" :fields="payment_fields" :striped="true" :responsive="true" no-border-collapse sticky-header sort-icon-left>
+        <b-modal
+            id="item-payments-modal"
+            :title="`Payments For ${payment_type}`"
+            size="lg"
+            hide-footer
+        >
+            <b-table
+                :items="payment_types"
+                :fields="payment_fields"
+                :striped="true"
+                :responsive="true"
+                no-border-collapse
+                sticky-header
+                sort-icon-left
+            >
                 <template v-slot:cell(#)="data">
                     {{ data.index + 1 }}
                 </template>
-                <template v-slot:cell(payment_date)="row"> {{ row.item.date}} </template>
-                <template v-slot:cell(created_by)="row"> {{ row.item.user}} </template>
+                <template v-slot:cell(payment_date)="row"> {{ row.item.date }} </template>
+                <template v-slot:cell(paid_in_by)="row"> {{ row.item.user }} </template>
                 <template v-slot:cell(action)="row">
-                    <b-button size="sm" class="" @click="deleteItemPayment(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                    <b-button
+                        size="sm"
+                        class=""
+                        @click="deleteItemPayment(row.item.id)"
+                        pill
+                        variant="outline-danger"
+                        >Delete</b-button
+                    >
                 </template>
             </b-table>
+        </b-modal>
+        <b-modal id="allocate-guides-modal" title="Allocate Guide" size="lg" hide-footer>
+            <b-table
+                :items="guides"
+                :fields="all_guides_fields"
+                :striped="true"
+                :responsive="true"
+                no-border-collapse
+                sticky-header
+                sort-icon-left
+            >
+                <template v-slot:cell(#)="data">
+                    {{ data.index + 1 }}
+                </template>
+                <template v-slot:cell(payment_date)="row"> {{ row.item.date }} </template>
+                <template v-slot:cell(paid_in_by)="row"> {{ row.item.user }} </template>
+                <template v-slot:cell(action)="row">
+                    <b-button
+                        size="sm"
+                        class=""
+                        @click="allocateGuide(row.item.id)"
+                        pill
+                        variant="outline-info"
+                        >Allocate</b-button
+                    >
+                </template>
+            </b-table>
+            {{ guides }}
         </b-modal>
         <AddGuest :guest="guest" :mode="mode" />
         <ItemPayment :model_type="payment_type" :selected_modal="selected_modal" />
@@ -223,7 +582,8 @@ export default {
             },
             notify_busy: false,
             notifications: [],
-            permit_fields: [ // prettier-ignore
+            permit_fields: [
+                // prettier-ignore
                 {
                     key: '#',
                     sortable: false
@@ -259,7 +619,8 @@ export default {
             ],
             permit_items: [],
 
-            payment_fields: [ // prettier-ignore
+            payment_fields: [
+                // prettier-ignore
 
                 {
                     key: '#',
@@ -274,7 +635,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'created_by',
+                    key: 'paid_in_by',
                     sortable: true
                 },
                 {
@@ -283,7 +644,8 @@ export default {
                 }
             ],
 
-            guest_fields: [ // prettier-ignore
+            guest_fields: [
+                // prettier-ignore
                 {
                     key: '#',
                     sortable: false
@@ -309,10 +671,60 @@ export default {
                     sortable: false
                 }
             ],
+            booking_guide_fields: [
+                // prettier-ignore
+                {
+                    key: '#',
+                    sortable: false
+                },
+                {
+                    key: 'name',
+                    sortable: true
+                },
+                {
+                    key: 'vehicle',
+                    sortable: true
+                },
+                {
+                    key: 'action',
+                    sortable: false
+                }
+            ],
+            all_guides_fields: [
+                // prettier-ignore
+                {
+                    key: '#',
+                    sortable: false
+                },
+                {
+                    key: 'full_name',
+                    sortable: true
+                },
+                {
+                    key: 'code',
+                    sortable: true
+                },
+                {
+                    key: 'experience',
+                    sortable: true
+                },
+                {
+                    key: 'action',
+                    sortable: false
+                }
+            ],
+            booking_guide: [
+                // prettier-ignore
+                {
+                    name: 'name',
+                    vehicle: 'fgbjgf'
+                }
+            ],
             guest: this.resetGuestModal(),
             guest_items: [],
             reschedule_permit: {},
             payment_types: [],
+            guides: [],
             payment_type: '',
             selected_modal: {},
             errors: {},
@@ -335,14 +747,16 @@ export default {
             this.$parent.getBooking()
         },
         getPermits() {
-            this.$http.get('/bookings/' + this.$route.params.id + '/permits')
-                .then(permits => {
+            this.$http
+                .get('/bookings/' + this.$route.params.id + '/permits')
+                .then((permits) => {
                     this.permit_items = permits.data.data
                 })
         },
         getGuests() {
-            this.$http.get('/bookings/' + this.$route.params.id + '/guests')
-                .then(guest => {
+            this.$http
+                .get('/bookings/' + this.$route.params.id + '/guests')
+                .then((guest) => {
                     this.booking.guests = guest.data.data
                 })
         },
@@ -352,13 +766,14 @@ export default {
             const param = {
                 tracking_date: this.reschedule_permit.tracking_date
             }
-            this.$http.patch('/bookings/' + this.$route.params.id + '/permits/' + id, param)
-                .then(booking => {
+            this.$http
+                .patch('/bookings/' + this.$route.params.id + '/permits/' + id, param)
+                .then((booking) => {
                     this.toastSuccess('Successfully Updated')
                     this.$bvModal.hide('reschedule')
                     this.$parent.getBooking()
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     this.errors = errors.errors
                     this.toastError(errors.message)
                 })
@@ -385,30 +800,54 @@ export default {
         deleteGuest(id) {
             this.ConfirmDelete().then((result) => {
                 if (result.value) {
-                    this.$http.delete('/bookings/' + this.$route.params.id + '/guests/' + id).then(() => {
-                        this.booking.guests = this.booking.guests.filter(item => item.id !== id)
-                        this.$swal.fire('Deleted!', 'Guest has been deleted.', 'success')
-                    })
+                    this.$http
+                        .delete('/bookings/' + this.$route.params.id + '/guests/' + id)
+                        .then(() => {
+                            this.booking.guests = this.booking.guests.filter(
+                                (item) => item.id !== id
+                            )
+                            this.$swal.fire(
+                                'Deleted!',
+                                'Guest has been deleted.',
+                                'success'
+                            )
+                        })
                 }
             })
         },
         deletePermit(id) {
             this.ConfirmDelete().then((result) => {
                 if (result.value) {
-                    this.$http.delete('/bookings/' + this.$route.params.id + '/permits/' + id).then(() => {
-                        this.booking.permits = this.booking.permits.filter(item => item.id !== id)
-                        this.$swal.fire('Deleted!', 'Permit has been deleted.', 'success')
-                    })
+                    this.$http
+                        .delete('/bookings/' + this.$route.params.id + '/permits/' + id)
+                        .then(() => {
+                            this.booking.permits = this.booking.permits.filter(
+                                (item) => item.id !== id
+                            )
+                            this.$swal.fire(
+                                'Deleted!',
+                                'Permit has been deleted.',
+                                'success'
+                            )
+                        })
                 }
             })
         },
         deletePayment(id) {
             this.ConfirmDelete().then((result) => {
                 if (result.value) {
-                    this.$http.delete('/bookings/' + this.$route.params.id + '/payments/' + id).then(() => {
-                        this.booking.payments = this.booking.payments.filter(item => item.id !== id)
-                        this.$swal.fire('Deleted!', 'Payment has been deleted.', 'success')
-                    })
+                    this.$http
+                        .delete('/bookings/' + this.$route.params.id + '/payments/' + id)
+                        .then(() => {
+                            this.booking.payments = this.booking.payments.filter(
+                                (item) => item.id !== id
+                            )
+                            this.$swal.fire(
+                                'Deleted!',
+                                'Payment has been deleted.',
+                                'success'
+                            )
+                        })
                 }
             })
         },
@@ -418,7 +857,11 @@ export default {
                     this.$http.delete('/item-payments/' + id).then(() => {
                         this.$bvModal.hide('item-payments-modal')
                         this.$parent.getBooking()
-                        this.$swal.fire('Deleted!', 'Payment has been deleted.', 'success')
+                        this.$swal.fire(
+                            'Deleted!',
+                            'Payment has been deleted.',
+                            'success'
+                        )
                     })
                 }
             })
@@ -429,28 +872,40 @@ export default {
                 const filters = {
                     page: this.next_notify_link
                 }
-                this.$http.get('/bookings/' + this.$route.params.id + '/notifications', {
-                    params: filters
-                }).then(notifications => {
-                    this.notifications.push(...notifications.data.data)
-                    const next = notifications.data.links.next
-                    this.next_notify_link = next ? this.next_notify_link + 1 : null
-                })
+                this.$http
+                    .get('/bookings/' + this.$route.params.id + '/notifications', {
+                        params: filters
+                    })
+                    .then((notifications) => {
+                        this.notifications.push(...notifications.data.data)
+                        const next = notifications.data.links.next
+                        this.next_notify_link = next ? this.next_notify_link + 1 : null
+                    })
                 this.notify_busy = false
             }
         },
         markAsRead(index) {
             if (!this.notifications[index].read) {
                 const id = this.notifications[index].id
-                this.$http.post('/bookings/' + this.$route.params.id + '/notifications/' + id + '/markasread')
+                this.$http
+                    .post(
+                        '/bookings/' +
+                            this.$route.params.id +
+                            '/notifications/' +
+                            id +
+                            '/markasread'
+                    )
                     .then(() => {
                         this.$set(this.notifications[index], 'read', true)
                     })
             }
         },
         markAllAsRead() {
-            this.$http.post('/bookings/' + this.$route.params.id + '/notifications/markallasread')
-                .then(notifications => {
+            this.$http
+                .post(
+                    '/bookings/' + this.$route.params.id + '/notifications/markallasread'
+                )
+                .then((notifications) => {
                     this.notifications = notifications.data.data
                     this.next_notify_link = null
                 })
@@ -463,9 +918,15 @@ export default {
                 }
             })
             window.open(routeData.href, '_blank')
+        },
+        getGuides() {
+            this.$http.get('/guides').then((guides) => {
+                this.guides = guides.data.data
+            })
         }
     },
     mounted() {
+        this.getGuides()
         $(document).ready(function () {
             var bodyEl = $('body')
             var accordionDT = $('.accordion').find('dt')
@@ -493,7 +954,9 @@ export default {
             function openAll() {
                 openBtn.on('click', function (argument) {
                     accordionDD.each(function (argument) {
-                        var eachNewHeight = $(this).children('.contents').outerHeight(true)
+                        var eachNewHeight = $(this)
+                            .children('.contents')
+                            .outerHeight(true)
                         $(this).css({
                             height: eachNewHeight
                         })
@@ -527,7 +990,8 @@ export default {
                     // remove existing classes & add class to clicked target
                     if (!el.hasClass('is-open')) {
                         el.addClass('is-open')
-                    } else { // if we are on clicked target then remove the class
+                    } else {
+                        // if we are on clicked target then remove the class
                         el.removeClass('is-open')
                     }
                 })
@@ -544,7 +1008,6 @@ export default {
 <style>
 /*bookings details accordion panel*/
 .accordion-panel {
-
     margin: 0px auto;
     /*  max-width: 560px;*/
 }
@@ -564,16 +1027,16 @@ export default {
     border-radius: 3px;
     border: 1px solid #eff2f7;
 
-    box-shadow: 0 0 1.25rem rgba(31, 45, 61, .05);
+    box-shadow: 0 0 1.25rem rgba(31, 45, 61, 0.05);
 }
 
 .accordion-panel .accordion dd {
     height: 0;
     overflow: hidden;
-    transition: height .35s ease-out;
+    transition: height 0.35s ease-out;
     margin-left: 0;
     margin-bottom: 5px;
-    background: #F4F4F4;
+    background: #f4f4f4;
 }
 
 .accordion-panel .accordion .contents {
@@ -657,9 +1120,9 @@ export default {
     word-wrap: break-word !important;
     background-clip: border-box !important;
     border: 1px solid #eff2f7 !important;
-    border-radius: .25rem !important;
+    border-radius: 0.25rem !important;
     cursor: pointer;
-    transition-duration: .3s, 1s;
+    transition-duration: 0.3s, 1s;
     transition-timing-function: linear, ease-in;
 }
 

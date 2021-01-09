@@ -26,7 +26,7 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 Vue.use(Vuelidate)
-
+Vue.use(require('vue-moment'))
 Vue.config.productionTip = false
 
 const subdir = () => {
