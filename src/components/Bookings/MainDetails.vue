@@ -198,6 +198,15 @@
                                     <template v-slot:cell(paid_in_by)="row">
                                         {{ row.item.user }}
                                     </template>
+                                    <template v-slot:cell(method)="row">
+                                        {{ row.item.method.replace('_', ' ') }}
+                                        <small v-if="row.item.method == 'cheque'"
+                                            >(cheque no: {{ row.item.cheque_no }})</small
+                                        >
+                                        <small v-if="row.item.method == 'bank_transfer'"
+                                            >(ref no: {{ row.item.ref_no }})</small
+                                        >
+                                    </template>
                                     <template v-slot:cell(action)="row">
                                         <b-button
                                             size="sm"
@@ -632,6 +641,10 @@ export default {
                 },
                 {
                     key: 'amount',
+                    sortable: true
+                },
+                {
+                    key: 'method',
                     sortable: true
                 },
                 {
