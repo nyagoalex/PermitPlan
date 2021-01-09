@@ -14,7 +14,7 @@ class Payment extends Model
     * @var array
     */
    protected $fillable = [
-       'booking_id','user_id','amount', 'date'
+       'booking_id','user_id','amount', 'date', 'cheque_no','ref_no','method'
    ];
 
    /**

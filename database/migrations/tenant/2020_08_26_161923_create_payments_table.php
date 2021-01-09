@@ -19,6 +19,9 @@ class CreatePaymentsTable extends Migration
             $table->uuid('user_id');
             $table->float('amount', 9, 2)->default(0);
             $table->date("date");
+            $table->decimal("cheque_no", 20, 0)->unique()->nullable();
+            $table->decimal("ref_no", 20, 0)->nullable();
+            $table->enum("method", ['cash','bank_transfer','credit_card','cheque','complementary']);
             $table->timestamps();
 
             $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');

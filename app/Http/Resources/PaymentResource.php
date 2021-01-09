@@ -19,7 +19,10 @@ class PaymentResource extends JsonResource
             "id" => $this->id,
             "amount" => $this->amount,
             "date" => Carbon::parse($this->date)->format('D, d M Y'),
-            "user" => $this->user->fullname
+            "user" => $this->user->fullname,
+            "method" => $this->method,
+            "cheque_no" => $this->cheque_no,
+            "ref_no" => $this->ref_no,
         ];
     }
 }
