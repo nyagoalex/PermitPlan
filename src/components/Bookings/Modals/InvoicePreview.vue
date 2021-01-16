@@ -1,13 +1,30 @@
+<!-- @format -->
+
 <template>
     <b-modal id="invoice-preview" hide-header size="xl">
         <InvoiceGist :company="company" :booking="booking" />
-        <template v-slot:modal-footer="{ cancel}">
+        <template v-slot:modal-footer="{ cancel }">
             <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" type="submit" variant="info" @click="print">Print Invoice</b-button>
-            <b-button size="sm" type="submit" variant="success" @click="generateReport">Save Invoice To PDF</b-button>
+            <b-button size="sm" type="submit" variant="info" @click="print"
+                >Print Invoice</b-button
+            >
+            <b-button size="sm" type="submit" variant="success" @click="generateReport"
+                >Save Invoice To PDF</b-button
+            >
         </template>
 
-        <vue-html2pdf :show-layout="false" :enable-download="true" :paginate-elements-by-height="2500" :filename="number" :pdf-quality="2" :manual-pagination="false" pdf-format="letter" pdf-orientation="landscape" pdf-content-width="auto" ref="html2Pdf">
+        <vue-html2pdf
+            :show-layout="false"
+            :enable-download="true"
+            :paginate-elements-by-height="2500"
+            :filename="number"
+            :pdf-quality="2"
+            :manual-pagination="false"
+            pdf-format="letter"
+            pdf-orientation="landscape"
+            pdf-content-width="auto"
+            ref="html2Pdf"
+        >
             <section slot="pdf-content">
                 <InvoiceGist :company="company" :booking="booking" />
             </section>
@@ -22,7 +39,8 @@ import InvoiceGist from '@/components/Bookings/Modals/InvoiceGist.vue'
 export default {
     data() {
         return {
-            items: [ // prettier-ignore
+            items: [
+                // prettier-ignore
                 {
                     description: 'Website design',
                     quantity: 1,
@@ -48,7 +66,9 @@ export default {
     },
     computed: {
         number() {
-            return this.booking.number.replace('B', '')
+            return this.booking.number === undefined
+                ? null
+                : this.booking.number.replace('B', '')
         }
     },
     props: {

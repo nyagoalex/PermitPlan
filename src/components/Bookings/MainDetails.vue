@@ -19,6 +19,18 @@
                                     size="sm"
                                     pill
                                     variant="outline-dark"
+                                    class="float-left"
+                                    v-b-modal.transfered-permits-modal
+                                    :disabled="
+                                        !booking.transfered_permits ||
+                                        !booking.transfered_permits.length
+                                    "
+                                    >View Transferd Permits</b-button
+                                >
+                                <b-button
+                                    size="sm"
+                                    pill
+                                    variant="outline-dark"
                                     class="float-right"
                                     v-b-modal.new-permit
                                     >+ Permits</b-button
@@ -92,8 +104,17 @@
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-dark"
+                                                v-b-modal.transfer-permit
+                                                @click="selected_permit = row.item"
+                                                >Transfer</b-button
+                                            >
+                                            <b-button
+                                                size="sm"
+                                                class="mx-3"
+                                                pill
+                                                variant="outline-dark"
                                                 v-b-modal.reschedule
-                                                @click="reschedule_permit = row.item"
+                                                @click="selected_permit = row.item"
                                                 >Reschedule</b-button
                                             >
                                             <b-button
@@ -486,15 +507,12 @@
                 </div>
             </div>
         </div>
-        <b-modal
-            id="reschedule"
-            :title="`Reschedule Permit: ${reschedule_permit.number}`"
-        >
+        <b-modal id="reschedule" :title="`Reschedule Permit: ${selected_permit.number}`">
             <div class="form-group">
                 <input
                     type="date"
                     class="form-control place"
-                    v-model="reschedule_permit.tracking_date"
+                    v-model="selected_permit.tracking_date"
                     :class="{ 'is-invalid': errors.tracking_date }"
                 />
                 <ul class="list-unstyled invalid-feedback" v-if="errors.tracking_date">
@@ -507,6 +525,33 @@
                 <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
                 <b-button size="sm" variant="success" @click="reschedule"
                     >Reshedule Permit</b-button
+                >
+            </template>
+        </b-modal>
+        <b-modal
+            id="transfer-permit"
+            :title="`Transfer Permit: ${selected_permit.number}`"
+        >
+            <div class="form-group">
+                Select Booking
+                <model-select
+                    :options="this.toBookings"
+                    placeholder="select Booking"
+                    class="form-control"
+                    v-model="to_booking_id"
+                    :class="{ 'is-invalid': errors.to_booking_id }"
+                >
+                </model-select>
+                <ul class="list-unstyled invalid-feedback" v-if="errors.to_booking_id">
+                    <li v-for="error in errors.to_booking_id" :key="error">
+                        {{ error }}
+                    </li>
+                </ul>
+            </div>
+            <template v-slot:modal-footer="{ cancel }">
+                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="sm" variant="success" @click="transferPermit"
+                    >Transfer Permit</b-button
                 >
             </template>
         </b-modal>
@@ -568,10 +613,75 @@
                     >
                 </template>
             </b-table>
-            {{ guides }}
+        </b-modal>
+        <b-modal
+            id="transfered-permits-modal"
+            title="Transfered Permits"
+            size="xl"
+            hide-footer
+        >
+            <b-table
+                :items="booking.transfered_permits"
+                :fields="transfered_permit_fields"
+                :striped="true"
+                :responsive="true"
+                no-border-collapse
+                sticky-header
+                sort-icon-left
+            >
+                <template v-slot:cell(#)="data">
+                    {{ data.index + 1 }}
+                </template>
+                <template v-slot:cell(type)="row">
+                    {{ row.item.permit_type_name }}
+                </template>
+                <template v-slot:cell(preffered_sector)="row">
+                    {{ row.item.sector }}
+                </template>
+                <template v-slot:cell(tracking_date)="row">
+                    {{ row.item.tracking_date_format }}
+                </template>
+                <template v-slot:cell(transfered_to)="row">
+                    <a
+                        href=""
+                        @click="
+                            $router.push({
+                                name: 'BookingDetails',
+                                params: { id: row.item.booking.id }
+                            })
+                        "
+                    >
+                        {{ row.item.booking.number }} - {{ row.item.booking.ref }}
+                    </a>
+                </template>
+                <template v-slot:cell(payment_status)="row">
+                    <span
+                        :id="`tooltip-button-payment-status-${row.item.id}`"
+                        :class="{
+                            'text-success': row.item.payment_status == 'Cleared',
+                            'text-info': row.item.payment_status == 'Deposited',
+                            'text-danger': row.item.payment_status == 'Deposit Expired',
+                            'text-dark': row.item.payment_status == 'Tentative'
+                        }"
+                    >
+                        {{ row.item.payment_status }}
+                    </span>
+                    <b-tooltip
+                        v-if="
+                            row.item.payment_status == 'Deposited' ||
+                            row.item.payment_status == 'Deposit Expired'
+                        "
+                        :target="`tooltip-button-payment-status-${row.item.id}`"
+                        triggers="hover"
+                        variant="secondary"
+                        >Expires on {{ row.item.expired_date }}</b-tooltip
+                    >
+                </template>
+            </b-table>
         </b-modal>
         <AddGuest :guest="guest" :mode="mode" />
         <ItemPayment :model_type="payment_type" :selected_modal="selected_modal" />
+        {{ booking.transfered_permits }}
     </div>
 </template>
 
@@ -580,6 +690,7 @@ import $ from 'jquery'
 import AddGuest from '@/components/Bookings/Modals/AddGuest.vue'
 import ItemPayment from '@/components/Bookings/Modals/ItemPayment.vue'
 import infiniteScroll from 'vue-infinite-scroll'
+import { ModelSelect } from 'vue-search-select'
 
 export default {
     data() {
@@ -623,6 +734,45 @@ export default {
                 },
                 {
                     key: 'tracking_date',
+                    sortable: true
+                }
+            ],
+            transfered_permit_fields: [
+                // prettier-ignore
+                {
+                    key: '#',
+                    sortable: false
+                },
+                {
+                    key: 'number',
+                    sortable: true
+                },
+                {
+                    key: 'type',
+                    sortable: true
+                },
+                {
+                    key: 'cost',
+                    sortable: true
+                },
+                {
+                    key: 'balance',
+                    sortable: true
+                },
+                {
+                    key: 'payment_status',
+                    sortable: true
+                },
+                {
+                    key: 'preffered_sector',
+                    sortable: true
+                },
+                {
+                    key: 'tracking_date',
+                    sortable: true
+                },
+                {
+                    key: 'transfered_to',
                     sortable: true
                 }
             ],
@@ -735,14 +885,16 @@ export default {
             ],
             guest: this.resetGuestModal(),
             guest_items: [],
-            reschedule_permit: {},
+            selected_permit: {},
             payment_types: [],
             guides: [],
             payment_type: '',
             selected_modal: {},
             errors: {},
             mode: '',
-            next_notify_link: 1
+            next_notify_link: 1,
+            to_booking_id: null,
+            toBookings: []
         }
     },
     directives: {
@@ -750,7 +902,8 @@ export default {
     },
     components: {
         AddGuest,
-        ItemPayment
+        ItemPayment,
+        ModelSelect
     },
     props: {
         booking: Object
@@ -775,15 +928,36 @@ export default {
         },
         reschedule() {
             this.errors = {}
-            const id = this.reschedule_permit.id
+            const id = this.selected_permit.id
             const param = {
-                tracking_date: this.reschedule_permit.tracking_date
+                tracking_date: this.selected_permit.tracking_date
             }
             this.$http
                 .patch('/bookings/' + this.$route.params.id + '/permits/' + id, param)
                 .then((booking) => {
                     this.toastSuccess('Successfully Updated')
                     this.$bvModal.hide('reschedule')
+                    this.$parent.getBooking()
+                })
+                .catch((errors) => {
+                    this.errors = errors.errors
+                    this.toastError(errors.message)
+                })
+        },
+        transferPermit() {
+            this.errors = {}
+            const id = this.selected_permit.id
+            const param = {
+                to_booking_id: this.to_booking_id
+            }
+            this.$http
+                .post(
+                    '/bookings/' + this.$route.params.id + '/permits/' + id + '/transfer',
+                    param
+                )
+                .then((booking) => {
+                    this.toastSuccess('Successfully Transfred')
+                    this.$bvModal.hide('transfer-permit')
                     this.$parent.getBooking()
                 })
                 .catch((errors) => {
@@ -936,10 +1110,27 @@ export default {
             this.$http.get('/guides').then((guides) => {
                 this.guides = guides.data.data
             })
+        },
+        getBookingsExcept() {
+            this.$http
+                .get('/bookings', {
+                    params: {
+                        except: this.$route.params.id
+                    }
+                })
+                .then((bookings) => {
+                    this.toBookings = bookings.data.data.map(function (num) {
+                        return {
+                            value: num.id,
+                            text: num.number + ' (' + num.ref + ') - ' + num.client_name
+                        }
+                    })
+                })
         }
     },
     mounted() {
         this.getGuides()
+        this.getBookingsExcept()
         $(document).ready(function () {
             var bodyEl = $('body')
             var accordionDT = $('.accordion').find('dt')
