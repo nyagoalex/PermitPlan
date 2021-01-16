@@ -34,6 +34,11 @@ class Booking extends Model
         return $this->hasMany(Permit::class);
     }
 
+    public function transferedPermits()
+    {
+        return $this->hasManyThrough(Permit::class, PermitTransfer::class, 'from_booking_id', 'id', 'id', 'permit_id');
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class)->orderBy('date', 'DESC');

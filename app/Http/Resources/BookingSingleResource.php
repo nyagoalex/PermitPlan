@@ -24,6 +24,7 @@ class BookingSingleResource extends BookingResource
                 "created_at" => $this->created_at->format('D, d M Y'),
                 "updated_at" => $this->updated_at->format('D, d M Y'),
                 "permits" => PermitResource::collection($this->permits),
+                "transfered_permits" => PermitResource::collection($this->transferedPermits),
                 "payments" => PaymentResource::collection($this->payments),
                 "guests" => GuestResource::collection($this->guests),
                 "number_of_days" => Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->arrival_date))

@@ -252,6 +252,7 @@ Route::middleware([
                             Route::post('/', 'PermitController@store')->name('booking.permit.create');
                             Route::patch('/{permit_id}', 'PermitController@reshedule')->name('booking.permit.reshedule');
                             Route::delete('/{permit_id}', 'PermitController@destroy')->name('booking.permit.delete');
+                            Route::post('/{permit_id}/transfer', 'PermitController@transfer')->name('booking.permit.transfer');
                         }
                     );
                     

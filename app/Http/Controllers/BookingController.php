@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookingRequest;
+use App\Http\Resources\BookingExceptResource;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingSingleResource;
 use App\Http\Resources\NotificationResource;
@@ -50,7 +51,32 @@ class BookingController extends Controller
             }
         });
         $query->search(request('search'));
+
+        if (request()->filled('except')) {
+            $query  = Booking::query();
+            $query->whereIn('status', ['confirmed', 'tentative']);
+            $query->where('id', '!=', request('except'));
+            $bookings = $query->orderBy($order_column, $sort)->get();
+            return BookingExceptResource::collection($bookings);
+        }
+
         $bookings = $query->orderBy($order_column, $sort)->paginate($per_page);
+        return BookingResource::collection($bookings);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getBookingsExcept()
+    {
+        $sort = $this->getSort();
+        $order_column = $this->getOrderColumn("number");
+        $query  = Booking::query();
+        $query->whereIn('status', ['confirmed', 'tentative']);
+        
+        $bookings = $query->orderBy($order_column, $sort)->get();
         return BookingResource::collection($bookings);
     }
 

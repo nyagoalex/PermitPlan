@@ -32,7 +32,8 @@ class PermitResource extends JsonResource
             "tracking_date_format" => Carbon::parse($this->tracking_date)->format('D, d M Y'),
             "payments" => PaymentResource::collection($this->payments),
             "balance" => $this->balance,
-            "payment_status" => $this->payment_status
+            "payment_status" => $this->payment_status,
+            'booking' => $this->booking->only('id', 'number', 'ref')
         ];
     }
 }

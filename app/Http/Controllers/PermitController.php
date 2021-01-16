@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PermitRequest;
+use App\Http\Requests\PermitTransferRequest;
 use App\Http\Resources\PermitResource;
 use App\Models\Booking;
 use App\Models\Permit;
+use App\Models\PermitTransfer;
 use App\Notifications\PermitNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class PermitController extends Controller
 {
@@ -88,6 +91,33 @@ class PermitController extends Controller
 
         $details = "Deleted, Permit ". $permit->number;
         $permit->booking->notify(new PermitNotification($permit, $details));
+        DB::commit();
+        return new PermitResource($permit);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Permit  $permit
+     * @return \Illuminate\Http\Response
+     */
+    public function transfer(PermitTransferRequest $request, $booking_id, $permit_id)
+    {
+        DB::beginTransaction();
+        $permit = Permit::whereBookingId($booking_id)->findOrFail($permit_id);
+        $data = $request->validated();
+
+        abort_if($booking_id == $data['to_booking_id'], Response::HTTP_BAD_REQUEST, "Action Failed, Transfer To And From Bokkings Should Be Different");
+
+        PermitTransfer::create([
+            'to_booking_id' => $data['to_booking_id'],
+            'from_booking_id' => $booking_id,
+            'permit_id' => $permit_id
+        ]);
+
+        #update permit
+        $permit->booking_id = $data['to_booking_id'];
+        $permit->save();
         DB::commit();
         return new PermitResource($permit);
     }
