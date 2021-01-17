@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Lodge;
 
 use App\Http\Resources\LodgePhotoResource;
 use App\Models\Lodge;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
-class LodgePhotoController extends Controller
+class LodgePhotoController
 {
     use HelperTrait;
     /**

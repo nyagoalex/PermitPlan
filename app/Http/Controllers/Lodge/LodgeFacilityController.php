@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Lodge;
 
-use App\Http\Resources\LodgeActivityResource;
+use App\Http\Resources\LodgeFacilityResource;
 use App\Models\Lodge;
-use App\Models\LodgeActivity;
+use App\Models\LodgeFacility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class LodgeActivityController extends Controller
+class LodgeFacilityController
 {
    /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class LodgeActivityController extends Controller
      */
     public function index($lodge_id)
     {
-        $activity = LodgeActivity::whereLodgeId($lodge_id)->get();
-        return LodgeActivityResource::collection($activity);
+        $activity = LodgeFacility::whereLodgeId($lodge_id)->get();
+        return LodgeFacilityResource::collection($activity);
     }
 
     /**
@@ -34,53 +34,53 @@ class LodgeActivityController extends Controller
         Lodge::findOrFail($lodge_id);
         $data = $this->validateData();
         $data['lodge_id'] = $lodge_id;
-        $activity = LodgeActivity::create($data);
+        $activity = LodgeFacility::create($data);
         DB::commit();
-        return new LodgeActivityResource($activity);
+        return new LodgeFacilityResource($activity);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LodgeActivity  $activity
+     * @param  \App\Models\LodgeFacility  $activity
      * @return \Illuminate\Http\Response
      */
     public function show($lodge_id, $id)
     {
-        $activity = LodgeActivity::whereLodgeId($lodge_id)->findOrFail($id);
-        return new LodgeActivityResource($activity);
+        $activity = LodgeFacility::whereLodgeId($lodge_id)->findOrFail($id);
+        return new LodgeFacilityResource($activity);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LodgeActivity  $activity
+     * @param  \App\Models\LodgeFacility  $activity
      * @return \Illuminate\Http\Response
      */
     public function update($lodge_id, $id)
     {
         DB::beginTransaction();
-        $activity = LodgeActivity::whereLodgeId($lodge_id)->findOrFail($id);
+        $activity = LodgeFacility::whereLodgeId($lodge_id)->findOrFail($id);
         $data = $this->validateData();
         $activity->update($data);
         DB::commit();
-        return new LodgeActivityResource($activity);
+        return new LodgeFacilityResource($activity);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LodgeActivity  $activity
+     * @param  \App\Models\LodgeFacility  $activity
      * @return \Illuminate\Http\Response
      */
     public function destroy($lodge_id, $id)
     {
         DB::beginTransaction();
-        $activity = LodgeActivity::whereLodgeId($lodge_id)->findOrFail($id);
+        $activity = LodgeFacility::whereLodgeId($lodge_id)->findOrFail($id);
         $activity->delete();
         DB::commit();
-        return new LodgeActivityResource($activity);
+        return new LodgeFacilityResource($activity);
     }
 
     private function validateData()

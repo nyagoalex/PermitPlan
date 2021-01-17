@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Lodge;
 
-use App\Http\Resources\RoomResource;
+use App\Http\Resources\SeasonResource;
 use App\Models\Lodge;
-use App\Models\Room;
+use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class RoomController extends Controller
+class SeasonController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class RoomController extends Controller
      */
     public function index($lodge_id)
     {
-        $rooms = Room::whereLodgeId($lodge_id)->get();
-        return RoomResource::collection($rooms);
+        $seasons = Season::whereLodgeId($lodge_id)->get();
+        return SeasonResource::collection($seasons);
     }
 
     /**
@@ -34,60 +34,62 @@ class RoomController extends Controller
         Lodge::findOrFail($lodge_id);
         $data = $this->validateData();
         $data['lodge_id'] = $lodge_id;
-        $room = Room::create($data);
+        $season = Season::create($data);
         DB::commit();
-        return new RoomResource($room);
+        return new SeasonResource($season);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Room  $room
+     * @param  \App\Models\Season  $season
      * @return \Illuminate\Http\Response
      */
     public function show($lodge_id, $id)
     {
-        $room = Room::whereLodgeId($lodge_id)->findOrFail($id);
-        return new RoomResource($room);
+        $season = Season::whereLodgeId($lodge_id)->findOrFail($id);
+        return new SeasonResource($season);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Room  $room
+     * @param  \App\Models\Season  $season
      * @return \Illuminate\Http\Response
      */
     public function update($lodge_id, $id)
     {
         DB::beginTransaction();
-        $room = Room::whereLodgeId($lodge_id)->findOrFail($id);
+        $season = Season::whereLodgeId($lodge_id)->findOrFail($id);
         $data = $this->validateData();
-        $room->update($data);
+        $season->update($data);
         DB::commit();
-        return new RoomResource($room);
+        return new SeasonResource($season);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Room  $room
+     * @param  \App\Models\Season  $season
      * @return \Illuminate\Http\Response
      */
     public function destroy($lodge_id, $id)
     {
         DB::beginTransaction();
-        $room = Room::whereLodgeId($lodge_id)->findOrFail($id);
-        $room->delete();
+        $season = Season::whereLodgeId($lodge_id)->findOrFail($id);
+        $season->delete();
         DB::commit();
-        return new RoomResource($room);
+        return new SeasonResource($season);
     }
 
     private function validateData()
     {
         $request = Request();
         return $request->validate([
-            'name' => "required|string|min:3|max:250"
+            'name' => "required|string|min:3|max:250",
+            'from_date' => "required|date_format:Y-m-d",
+            'to_date' => "required|date_format:Y-m-d",
         ]);
     }
 }

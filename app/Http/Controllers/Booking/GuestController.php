@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Booking;
 
 use App\Http\Requests\GuestRequest;
 use App\Http\Resources\GuestResource;
+use App\Models\Booking;
 use App\Models\Guest;
 use App\Notifications\GuestNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
-class GuestController extends Controller
+class GuestController
 {
     use HelperTrait;
    /**
@@ -35,6 +37,14 @@ class GuestController extends Controller
         #insert new user
         DB::beginTransaction();
         $data = $request->validated();
+        $booking = Booking::findOrFail($booking_id);
+
+        // checks the number of persons is not exceeded
+        abort_if(
+            (count($booking->guests) + 1)  > $booking->no_of_persons, 
+            Response::HTTP_UNPROCESSABLE_ENTITY, 
+            "Action Failed, Maximum Number {$booking->no_of_persons} Of Guest Exceeded");
+
         $data['booking_id'] = $booking_id;
         $guest = Guest::create($data);
 

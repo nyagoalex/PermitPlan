@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Booking;
 
-use App\Models\BookingActivity;
+use App\Models\BookingAccomodation;
 use Illuminate\Http\Request;
 
-class BookingActivityController
+class BookingAccomodationController
 {
     /**
      * Display a listing of the resource.
@@ -32,10 +32,10 @@ class BookingActivityController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BookingActivity  $bookingActivity
+     * @param  \App\Models\BookingAccomodation  $bookingAccomodation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BookingActivity $bookingActivity)
+    public function update(Request $request, BookingAccomodation $bookingAccomodation)
     {
         //
     }
@@ -43,10 +43,10 @@ class BookingActivityController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BookingActivity  $bookingActivity
+     * @param  \App\Models\BookingAccomodation  $bookingAccomodation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BookingActivity $bookingActivity)
+    public function destroy(BookingAccomodation $bookingAccomodation)
     {
         //
     }

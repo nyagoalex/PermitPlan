@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Booking;
 
-use App\Models\BookingItenerary;
+use App\Models\BookingGuide;
 use Illuminate\Http\Request;
 
-class BookingIteneraryController extends Controller
+class BookingGuideController
 {
     /**
      * Display a listing of the resource.
@@ -29,24 +29,13 @@ class BookingIteneraryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\BookingItenerary  $bookingItenerary
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BookingItenerary $bookingItenerary)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BookingItenerary  $bookingItenerary
+     * @param  \App\Models\BookingGuide  $bookingGuide
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BookingItenerary $bookingItenerary)
+    public function update(Request $request, BookingGuide $bookingGuide)
     {
         //
     }
@@ -54,10 +43,10 @@ class BookingIteneraryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BookingItenerary  $bookingItenerary
+     * @param  \App\Models\BookingGuide  $bookingGuide
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BookingItenerary $bookingItenerary)
+    public function destroy(BookingGuide $bookingGuide)
     {
         //
     }

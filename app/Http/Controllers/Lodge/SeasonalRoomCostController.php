@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Lodge;
 
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\SeasonalRoomCostResource;
@@ -9,7 +9,7 @@ use App\Models\SeasonalRoomCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SeasonalRoomCostController extends Controller
+class SeasonalRoomCostController
 {
     /**
      * Display a listing of the resource.
