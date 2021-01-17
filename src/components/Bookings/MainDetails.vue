@@ -254,6 +254,7 @@
                                     variant="outline-dark"
                                     class="float-right"
                                     @click="newGuestModal"
+                                    :disabled="no_of_guests >= booking.no_of_persons"
                                     >+ Guest</b-button
                                 >
                                 <b-table
@@ -907,6 +908,11 @@ export default {
     },
     props: {
         booking: Object
+    },
+    computed: {
+        no_of_guests() {
+            return this.booking.guests === undefined ? 0 : this.booking.guests.length
+        }
     },
     methods: {
         callBookings() {
