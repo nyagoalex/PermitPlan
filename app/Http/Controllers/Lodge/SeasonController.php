@@ -7,6 +7,7 @@ use App\Models\Lodge;
 use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class SeasonController
 {
@@ -34,6 +35,16 @@ class SeasonController
         Lodge::findOrFail($lodge_id);
         $data = $this->validateData();
         $data['lodge_id'] = $lodge_id;
+
+        $from_date =  $data['from_date'];
+        $to_date =  $data['to_date'];
+        $season_overlap = Season::whereRaw("from_date <= '{$from_date}' and to_date >= '{$to_date}'")
+            ->orWhereRaw("from_date >= '{$from_date}' and to_date <= '{$to_date}'")
+            ->orWhereRaw("from_date <= '{$from_date}' and to_date > '{$from_date}'")
+            ->orWhereRaw("from_date < '{$to_date}' and to_date >= '{$to_date}'")
+        ->exists();
+        // checks if seasons overlap
+        abort_if($season_overlap, Response::HTTP_UNPROCESSABLE_ENTITY, 'Season Dates Overlap If Existing Seasons');
         $season = Season::create($data);
         DB::commit();
         return new SeasonResource($season);
