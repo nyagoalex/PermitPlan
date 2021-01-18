@@ -4,7 +4,11 @@
     <div>
         <b-row class="bg-light pt-2 px-3" align-v="end">
             <b-col>
-                <b-breadcrumb class="py-0 px-3 mb-0" style="background-color: inherit" :items="breadcrumb_items"></b-breadcrumb>
+                <b-breadcrumb
+                    class="py-0 px-3 mb-0"
+                    style="background-color: inherit"
+                    :items="breadcrumb_items"
+                ></b-breadcrumb>
             </b-col>
             <b-col>
                 <small><b style="color: #6bccdf">Booking number</b></small>
@@ -13,7 +17,17 @@
                 <small><b style="color: #b97455">Booking number -booking ref</b></small>
             </b-col>
             <b-col class="text-right">
-                <b-button size="sm" pill variant="primary" class="glow mx-3" v-b-popover.hover.bottomleft="'Click to update  all itinerary details'" @click="saveAll">Update</b-button>
+                <b-button
+                    size="sm"
+                    pill
+                    variant="primary"
+                    class="glow mx-3"
+                    v-b-popover.hover.bottomleft="
+                        'Click to update  all itinerary details'
+                    "
+                    @click="saveAll"
+                    >Update</b-button
+                >
             </b-col>
         </b-row>
         <div v-if="!itinerary.days.length" class="my-5 text-center">
@@ -21,41 +35,124 @@
         </div>
         <b-row class="pl-3 mt-4">
             <b-col cols="2" class="pr-1">
-                <draggable v-model="itinerary.days" v-bind="dragOptions1" @start="drag = true" @end="drag = false" class="to-scroll">
-                    <div class="my-1" v-for="(day, index) in itinerary.days" :key="index" :item="day" v-b-popover.hover.top="'Drag to reorder'">
-                        <b-button pill size="sm" class="w-75" :variant="sel_day_index === index ? 'secondary' : 'outline-secondary'" @click="daySelect(index)">Day {{ day.priority }} </b-button>
+                <draggable
+                    v-model="itinerary.days"
+                    v-bind="dragOptions1"
+                    @start="drag = true"
+                    @end="drag = false"
+                    class="to-scroll"
+                >
+                    <div
+                        class="my-1"
+                        v-for="(day, index) in itinerary.days"
+                        :key="index"
+                        :item="day"
+                        v-b-popover.hover.top="'Drag to reorder'"
+                    >
+                        <b-button
+                            pill
+                            size="sm"
+                            class="w-75"
+                            :variant="
+                                sel_day_index === index
+                                    ? 'secondary'
+                                    : 'outline-secondary'
+                            "
+                            @click="daySelect(index)"
+                            >Day {{ day.priority }}
+                        </b-button>
                         <b-button variant="link">
-                            <b-icon icon="trash" aria-hidden="true" @click="removeDay(index)" variant="danger"></b-icon>
+                            <b-icon
+                                icon="trash"
+                                aria-hidden="true"
+                                @click="removeDay(index)"
+                                variant="danger"
+                            ></b-icon>
                         </b-button>
                     </div>
                 </draggable>
-                <b-button pill variant="info" class="mx-3 mt-3" @click="addDay">Add Day</b-button>
+                <b-button pill variant="info" class="mx-3 mt-3" @click="addDay"
+                    >Add Day</b-button
+                >
             </b-col>
             <b-col cols="5" v-if="!!sel_day">
                 <div class="p-0">
                     <div class="heading text-center" slot="header">
                         <h4>Day {{ sel_day.priority }} - {{ sel_day.name }}</h4>
                     </div>
-                    <draggable v-model="sel_day.items" v-bind="dragOptions2" @start="drag = true" @end="drag = false" class="to-scroll">
-                        <div class="card task-item" v-for="(item, index) in sel_day.items" :key="index" :item="item" v-b-popover.hover.top="'Drag to reorder'">
+                    <draggable
+                        v-model="sel_day.items"
+                        v-bind="dragOptions2"
+                        @start="drag = true"
+                        @end="drag = false"
+                        class="to-scroll"
+                    >
+                        <div
+                            class="card task-item"
+                            v-for="(item, index) in sel_day.items"
+                            :key="index"
+                            :item="item"
+                            v-b-popover.hover.top="'Drag to reorder'"
+                        >
                             <div class="card-body">
                                 <b-row>
                                     <b-col cols="2">
-                                        <b-icon font-scale="3" icon="exclamation-circle-fill" variant="success"></b-icon>
+                                        <b-icon
+                                            font-scale="3"
+                                            icon="exclamation-circle-fill"
+                                            variant="success"
+                                        ></b-icon>
                                     </b-col>
                                     <b-col class="text-left px-0">
-                                        <span style="font-size: 1.3rem; text-transform: capitalize"> {{ item.type }}</span>
+                                        <span
+                                            style="
+                                                font-size: 1.3rem;
+                                                text-transform: capitalize;
+                                            "
+                                        >
+                                            {{ item.type }}</span
+                                        >
                                         <small class="ml-3">
-                                            <b-icon icon="stopwatch" variant="success"></b-icon> {{ item.duration }} mins <b-icon class="ml-1" icon="person" variant="success"></b-icon> {{ item.children }} children <b-icon class="ml-1" icon="people" variant="success"></b-icon> {{ item.adults }} adults </small
+                                            <b-icon
+                                                icon="stopwatch"
+                                                variant="success"
+                                            ></b-icon>
+                                            {{ item.duration }} mins
+                                            <b-icon
+                                                class="ml-1"
+                                                icon="person"
+                                                variant="success"
+                                            ></b-icon>
+                                            {{ item.children }} children
+                                            <b-icon
+                                                class="ml-1"
+                                                icon="people"
+                                                variant="success"
+                                            ></b-icon>
+                                            {{ item.adults }} adults </small
                                         ><br />
-                                        <label class="text-muted">{{ item.text | truncate(100) }}</label>
+                                        <label class="text-muted">{{
+                                            item.text | truncate(100)
+                                        }}</label>
                                     </b-col>
                                     <b-col cols="1" class="p-0">
                                         <b-button variant="link">
-                                            <b-icon icon="pen" variant="info" v-b-modal.edit-day-activity @click=";(sel_activity = item), (use_range = false)"></b-icon>
+                                            <b-icon
+                                                icon="pen"
+                                                variant="info"
+                                                v-b-modal.edit-day-activity
+                                                @click="
+                                                    ;(sel_activity = item),
+                                                        (use_range = false)
+                                                "
+                                            ></b-icon>
                                         </b-button>
                                         <b-button variant="link">
-                                            <b-icon icon="x" variant="danger" @click="removeDayActivity(index)"></b-icon>
+                                            <b-icon
+                                                icon="x"
+                                                variant="danger"
+                                                @click="removeDayActivity(index)"
+                                            ></b-icon>
                                         </b-button>
                                     </b-col>
                                 </b-row>
@@ -70,42 +167,89 @@
                         <h4>{{ actSelected }}</h4>
                     </b-col>
                     <b-col cols="4">
-                        <b-form-select v-model="actSelected" :options="actOptions"></b-form-select>
+                        <b-form-select
+                            v-model="actSelected"
+                            :options="actOptions"
+                        ></b-form-select>
                     </b-col>
                 </div>
-                <RoadTransferComp v-if="actSelected === 'road transfers'" :addDayActivity="addDayActivity" />
-                <FlightTransferComp v-if="actSelected === 'flight transfers'" :addDayActivity="addDayActivity" />
-                <AccomodationsComp v-if="actSelected === 'accomodations'" :addDayActivity="addDayActivity" />
+                <RoadTransferComp
+                    v-if="actSelected === 'road transfers'"
+                    :addDayActivity="addDayActivity"
+                />
+                <FlightTransferComp
+                    v-if="actSelected === 'flight transfers'"
+                    :addDayActivity="addDayActivity"
+                />
+                <AccomodationsComp
+                    v-if="actSelected === 'accomodations'"
+                    :addDayActivity="addDayActivity"
+                />
+                <ActivitiesComp
+                    v-if="actSelected === 'activities'"
+                    :addDayActivity="addDayActivity"
+                />
             </b-col>
         </b-row>
-        <b-modal id="edit-day-activity" :title="`Update ${sel_activity.type} Activity`" hide-footer>
+        <b-modal
+            id="edit-day-activity"
+            :title="`Update ${sel_activity.type} Activity`"
+            hide-footer
+        >
             <form>
-                <b-form-checkbox class="float-right" v-model="use_range" switch> use range </b-form-checkbox>
+                <b-form-checkbox class="float-right" v-model="use_range" switch>
+                    use range
+                </b-form-checkbox>
                 <div class="form-group" v-show="!use_range">
                     <label>Duration </label>
                     <b-input-group append="minutes" class="mb-2 mr-sm-2 mb-sm-0">
-                        <b-input type="number" class="form-control" placeholder="30" v-model="sel_activity.duration"></b-input>
+                        <b-input
+                            type="number"
+                            class="form-control"
+                            placeholder="30"
+                            v-model="sel_activity.duration"
+                        ></b-input>
                     </b-input-group>
                 </div>
                 <br />
                 <div class="form-row" v-if="use_range">
                     <div class="form-group col-md-6">
                         <label>Start Time</label>
-                        <input type="time" class="form-control" placeholder="0" v-model="start_time" />
+                        <input
+                            type="time"
+                            class="form-control"
+                            placeholder="0"
+                            v-model="start_time"
+                        />
                     </div>
                     <div class="form-group col-md-6">
                         <label>End Time</label>
-                        <input type="time" class="form-control" placeholder="0" v-model="end_time" />
+                        <input
+                            type="time"
+                            class="form-control"
+                            placeholder="0"
+                            v-model="end_time"
+                        />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>Children</label>
-                        <input type="number" class="form-control" placeholder="0" v-model="sel_activity.children" />
+                        <input
+                            type="number"
+                            class="form-control"
+                            placeholder="0"
+                            v-model="sel_activity.children"
+                        />
                     </div>
                     <div class="form-group col-md-6">
                         <label>Adults</label>
-                        <input type="number" class="form-control" placeholder="0" v-model="sel_activity.adults" />
+                        <input
+                            type="number"
+                            class="form-control"
+                            placeholder="0"
+                            v-model="sel_activity.adults"
+                        />
                     </div>
                 </div>
             </form>
@@ -119,6 +263,7 @@ import { itinerary } from '@/Constants/itinerary.js'
 import RoadTransferComp from '@/components/ItineraryDetails/RoadTransfers.vue'
 import FlightTransferComp from '@/components/ItineraryDetails/FlightTransfers.vue'
 import AccomodationsComp from '@/components/ItineraryDetails/Accomodations.vue'
+import ActivitiesComp from '@/components/ItineraryDetails/Activities.vue'
 
 export default {
     name: 'itinerary_details',
@@ -162,7 +307,8 @@ export default {
         draggable,
         RoadTransferComp,
         FlightTransferComp,
-        AccomodationsComp
+        AccomodationsComp,
+        ActivitiesComp
     },
     methods: {
         async getItinerary() {
@@ -302,7 +448,12 @@ export default {
             var starttime = this.$moment(this.start_time, 'HH:mm')
             var duration = endtime.diff(starttime, 'minutes')
             if (duration < 0) {
-                this.toastError('End time: ' + this.end_time + ' is selected is less than start time: ' + this.start_time)
+                this.toastError(
+                    'End time: ' +
+                        this.end_time +
+                        ' is selected is less than start time: ' +
+                        this.start_time
+                )
                 this.end_time = oldVal
             }
             this.sel_activity.duration = duration
@@ -312,7 +463,12 @@ export default {
             var starttime = this.$moment(this.start_time, 'HH:mm')
             var duration = endtime.diff(starttime, 'minutes')
             if (duration < 0) {
-                this.toastError('Start time: ' + this.start_time + ' is selected is greater than end time: ' + this.end_time)
+                this.toastError(
+                    'Start time: ' +
+                        this.start_time +
+                        ' is selected is greater than end time: ' +
+                        this.end_time
+                )
                 this.start_time = oldVal
             }
             this.sel_activity.duration = duration

@@ -114,6 +114,9 @@ Vue.filter('truncate', function (text, length, suffix = '...') {
         return text
     }
 })
+Vue.filter('displayDate', function (date, format = 'dddd, Do MMM YYYY') {
+    return Vue.moment(date).format(format)
+})
 
 new Vue({
     created() {
