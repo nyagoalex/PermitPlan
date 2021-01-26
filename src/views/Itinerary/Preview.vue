@@ -1,14 +1,25 @@
+<!-- @format -->
+
 <template>
     <div>
         <b-row class="px-4 pt-4" style="font-size: 14px">
             <div class="col-md-2 text-left border-right">
-                <img src="@/assets/image/pplanw.png" alt="Kitten" width="130" height="50">
+                <img
+                    src="@/assets/image/pplanw.png"
+                    alt="Kitten"
+                    width="130"
+                    height="50"
+                />
             </div>
             <div class="col-md-3 text-left">
-                Brian Ahereza<br>
-                <small> <a href="mailto:hello@goexploresafaris.com">hello@goexploresafaris.com</a></small>
+                Brian Ahereza<br />
+                <small>
+                    <a href="mailto:hello@goexploresafaris.com"
+                        >hello@goexploresafaris.com</a
+                    ></small
+                >
             </div>
-            <div class="col-md-7 text-right pt-2" style="color: green;">
+            <div class="col-md-7 text-right pt-2" style="color: green">
                 <b-icon icon="printer-fill"></b-icon> PRINT
                 <b-icon icon="download" class="ml-3"></b-icon> EXPORT
             </div>
@@ -16,7 +27,7 @@
         <div class="pt-3 intinerary">
             <b-tabs content-class="mt-0" align="center">
                 <b-tab title="OVERVIEW" active>
-                    <Overview />
+                    <Overview :itinerary="itinerary" />
                 </b-tab>
                 <b-tab title="ITINERARY">
                     <DayByDayDetails />
@@ -25,17 +36,18 @@
                     <p>Map!</p>
                 </b-tab>
                 <b-tab title="STAYS">
-                    <Stays />
+                    <Stays :itinerary="itinerary" />
                 </b-tab>
                 <b-tab title="PRICING">
-                    <Pricing />
+                    <Pricing :itinerary="itinerary" />
                 </b-tab>
                 <b-tab title="ABOUT US">
                     <p>About us!</p>
                 </b-tab>
             </b-tabs>
         </div>
-        <hr style="width:75%;"><small>Premit plan 2018</small>
+        <hr style="width: 75%" />
+        <small>Premit plan 2018</small>
     </div>
 </template>
 
@@ -47,7 +59,8 @@ import DayByDayDetails from '@/components/PreviewItinerary/DayByDay.vue'
 export default {
     data() {
         return {
-            fixed: false
+            fixed: false,
+            itinerary: {}
         }
     },
     components: {
@@ -59,7 +72,17 @@ export default {
     methods: {
         handleScroll() {
             alert(6)
+        },
+        async getItinerary() {
+            await this.$http
+                .get('/itineraries/a937b681-0441-4f5f-b9c0-0b701e125c1d')
+                .then((itinerary) => {
+                    this.itinerary = itinerary.data.data
+                })
         }
+    },
+    mounted() {
+        this.getItinerary()
     }
 }
 </script>

@@ -325,17 +325,13 @@
                     <dd>
                         <div class="contents p-3">
                             <div>
-                                <a
-                                    href=""
-                                    @click="
-                                        $router.push({
-                                            name: 'ItineraryDetails',
-                                            params: { id: 22 }
-                                        })
-                                    "
+                                <span
+                                    class="text-info"
+                                    @click="bookingItinerary"
+                                    style="cursor: pointer"
                                 >
                                     <b-icon icon="arrow-left"></b-icon> edit itinerary
-                                </a>
+                                </span>
                                 <a href="#" @click="previewItinerary" class="float-right">
                                     preview <b-icon icon="arrow-right"></b-icon
                                 ></a>
@@ -1111,6 +1107,14 @@ export default {
                 }
             })
             window.open(routeData.href, '_blank')
+        },
+        bookingItinerary() {
+            this.$router.push({
+                name: 'ItineraryDetails',
+                params: {
+                    id: this.$route.params.id
+                }
+            })
         },
         getGuides() {
             this.$http.get('/guides').then((guides) => {

@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
     <b-modal id="new-booking" title="Add Booking" size="lg">
         <form>
@@ -5,26 +7,91 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label>Booking Reference</label>
-                        <input class="form-control place" placeholder="Eg. Edgar X20" v-model="booking.ref" :class="{ 'is-invalid': errors.ref}">
+                        <input
+                            class="form-control place"
+                            placeholder="Eg. Edgar X20"
+                            v-model="booking.ref"
+                            :class="{ 'is-invalid': errors.ref }"
+                        />
                         <ul class="list-unstyled invalid-feedback" v-if="errors.ref">
-                            <li v-for="(error) in errors.ref" :key="error">{{ error }}</li>
+                            <li v-for="error in errors.ref" :key="error">{{ error }}</li>
                         </ul>
                     </div>
 
                     <div class="form-group">
                         <label>Tour Name</label>
-                        <input class="form-control place" placeholder="Eg. 4 Days Bwindi Gorilla safari" v-model="booking.client_name" :class="{ 'is-invalid': errors.client_name}">
-                        <ul class="list-unstyled invalid-feedback" v-if="errors.client_name">
-                            <li v-for="(error) in errors.client_name" :key="error">{{ error }}</li>
+                        <input
+                            class="form-control place"
+                            placeholder="Eg. 4 Days Bwindi Gorilla safari"
+                            v-model="booking.client_name"
+                            :class="{ 'is-invalid': errors.client_name }"
+                        />
+                        <ul
+                            class="list-unstyled invalid-feedback"
+                            v-if="errors.client_name"
+                        >
+                            <li v-for="error in errors.client_name" :key="error">
+                                {{ error }}
+                            </li>
                         </ul>
                     </div>
                     <div class="form-group">
                         <label>No. of Persons</label>
-                        <input type="number" class="form-control place" placeholder="eg. 2" v-model="booking.no_of_persons" :class="{ 'is-invalid': errors.no_of_persons}">
-                        <ul class="list-unstyled invalid-feedback" v-if="errors.no_of_persons">
-                            <li v-for="(error) in errors.no_of_persons" :key="error">{{ error }}</li>
+                        <input
+                            type="number"
+                            class="form-control place"
+                            placeholder="eg. 2"
+                            v-model="booking.no_of_persons"
+                            :class="{ 'is-invalid': errors.no_of_persons }"
+                        />
+                        <ul
+                            class="list-unstyled invalid-feedback"
+                            v-if="errors.no_of_persons"
+                        >
+                            <li v-for="error in errors.no_of_persons" :key="error">
+                                {{ error }}
+                            </li>
                         </ul>
                     </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Arrival Date</label>
+                        <input
+                            type="date"
+                            class="form-control place"
+                            placeholder="input number"
+                            v-model="booking.arrival_date"
+                            :class="{ 'is-invalid': errors.arrival_date }"
+                        />
+                        <ul
+                            class="list-unstyled invalid-feedback"
+                            v-if="errors.arrival_date"
+                        >
+                            <li v-for="error in errors.arrival_date" :key="error">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure Date</label>
+                        <input
+                            type="date"
+                            class="form-control place"
+                            placeholder="input number"
+                            v-model="booking.departure_date"
+                            :class="{ 'is-invalid': errors.departure_date }"
+                        />
+                        <ul
+                            class="list-unstyled invalid-feedback"
+                            v-if="errors.departure_date"
+                        >
+                            <li v-for="error in errors.departure_date" :key="error">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="form-group">
                         <label>Source</label>
                         <select class="form-control place" v-model="source_selected">
@@ -33,53 +100,44 @@
                             <option value="Agent">Agent</option>
                         </select>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label>Arrival Date</label>
-                        <input type="date" class="form-control place" placeholder="input number" v-model="booking.arrival_date" :class="{ 'is-invalid': errors.arrival_date}">
-                        <ul class="list-unstyled invalid-feedback" v-if="errors.arrival_date">
-                            <li v-for="(error) in errors.arrival_date" :key="error">{{ error }}</li>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        <label>Departure Date</label>
-                        <input type="date" class="form-control place" placeholder="input number" v-model="booking.departure_date" :class="{ 'is-invalid': errors.departure_date}">
-                        <ul class="list-unstyled invalid-feedback" v-if="errors.departure_date">
-                            <li v-for="(error) in errors.departure_date" :key="error">{{ error }}</li>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        <label>Cost Per Person</label>
-                        <input type="number" class="form-control place" placeholder="Enter price per person" v-model="booking.cost_per_person" :class="{ 'is-invalid': errors.cost_per_person}">
-                        <ul class="list-unstyled invalid-feedback" v-if="errors.cost_per_person">
-                            <li v-for="(error) in errors.cost_per_person" :key="error">{{ error }}</li>
-                        </ul>
-                    </div>
 
                     <div class="form-group" v-if="source_selected == 'Agent'">
                         <label><small>Select agent</small></label>
-                        <model-select :options="this.agents" placeholder="select Agent" v-model="booking.agent_id" :class="{ 'is-invalid': errors.agent_id}">
+                        <model-select
+                            :options="this.agents"
+                            placeholder="select Agent"
+                            v-model="booking.agent_id"
+                            :class="{ 'is-invalid': errors.agent_id }"
+                        >
                         </model-select>
                         <ul class="list-unstyled invalid-feedback" v-if="errors.agent_id">
-                            <li v-for="(error) in errors.agent_id" :key="error">{{ error }}</li>
+                            <li v-for="error in errors.agent_id" :key="error">
+                                {{ error }}
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </form>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="success" :disabled="loading" ref="button" @click="addBooking">Add Booking</b-button>
+            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                >Cancel</b-button
+            >
+            <b-button
+                size="sm"
+                variant="success"
+                :disabled="loading"
+                ref="button"
+                @click="addBooking"
+                >Add Booking</b-button
+            >
         </template>
         <b-overlay :show="loading" opacity="0.6" no-wrap></b-overlay>
     </b-modal>
 </template>
 
 <script>
-import {
-    ModelSelect
-} from 'vue-search-select'
+import { ModelSelect } from 'vue-search-select'
 export default {
     data() {
         return {
@@ -106,7 +164,7 @@ export default {
             }
         },
         getAgents() {
-            this.$http.get('/agents').then(agents => {
+            this.$http.get('/agents').then((agents) => {
                 this.agents = agents.data.data.map(function (num) {
                     return {
                         value: num.id,
@@ -121,8 +179,9 @@ export default {
             if (this.source_selected !== 'Agent') {
                 this.booking.agent_id = null
             }
-            this.$http.post('/bookings', this.booking)
-                .then(response => {
+            this.$http
+                .post('/bookings', this.booking)
+                .then((response) => {
                     this.alertAddSuccess()
                     this.booking = this.resetModal()
                     this.$bvModal.hide('new-booking')
@@ -133,7 +192,7 @@ export default {
                         }
                     })
                 })
-                .catch(errors => {
+                .catch((errors) => {
                     this.errors = errors.errors
                     this.toastError(errors.message)
                 })

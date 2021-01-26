@@ -117,6 +117,11 @@ Vue.filter('truncate', function (text, length, suffix = '...') {
 Vue.filter('displayDate', function (date, format = 'dddd, Do MMM YYYY') {
     return Vue.moment(date).format(format)
 })
+Vue.filter('moneyFormat', function (money) {
+    money = money ?? 0
+    var nf = new Intl.NumberFormat()
+    return '$' + nf.format(money)
+})
 
 new Vue({
     created() {

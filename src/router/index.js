@@ -114,7 +114,7 @@ const routes = [
         component: ItineraryPreview
     },
     {
-        path: '/itineraries/:id/details',
+        path: '/bookings/:id/itinerary',
         name: 'ItineraryDetails',
         component: ItineraryDetails
     },

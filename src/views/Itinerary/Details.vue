@@ -11,11 +11,25 @@
                 ></b-breadcrumb>
             </b-col>
             <b-col>
-                <small><b style="color: #6bccdf">Booking number</b></small>
+                <small
+                    ><b style="color: #6bccdf"
+                        >Booking number: {{ booking.number }}</b
+                    ></small
+                >
             </b-col>
             <b-col>
-                <small><b style="color: #b97455">Booking number -booking ref</b></small>
+                <small
+                    ><b style="color: #b97455">booking ref: {{ booking.ref }}</b></small
+                >
             </b-col>
+            <b-col>
+                <small
+                    ><b style="color: #b97455"
+                        >Total Booking Cost: {{ total_cost | moneyFormat }}</b
+                    ></small
+                >
+            </b-col>
+
             <b-col class="text-right">
                 <b-button
                     size="sm"
@@ -71,14 +85,17 @@
                         </b-button>
                     </div>
                 </draggable>
-                <b-button pill variant="info" class="mx-3 mt-3" @click="addDay"
+                <b-button pill variant="info" class="mx-3 mt-3" v-b-modal.add-day-modal
                     >Add Day</b-button
                 >
             </b-col>
             <b-col cols="5" v-if="!!sel_day">
                 <div class="p-0">
                     <div class="heading text-center" slot="header">
-                        <h4>Day {{ sel_day.priority }} - {{ sel_day.name }}</h4>
+                        <h4>
+                            Day {{ sel_day.priority }} -
+                            {{ sel_day.name | truncate(50) }}
+                        </h4>
                     </div>
                     <draggable
                         v-model="sel_day.items"
@@ -131,6 +148,9 @@
                                             ></b-icon>
                                             {{ item.adults }} adults </small
                                         ><br />
+                                        <small class="text-muted">
+                                            Cost: {{ item.cost | moneyFormat }}</small
+                                        ><br />
                                         <label class="text-muted">{{
                                             item.text | truncate(100)
                                         }}</label>
@@ -175,20 +195,30 @@
                 </div>
                 <RoadTransferComp
                     v-if="actSelected === 'road transfers'"
-                    :addDayActivity="addDayActivity"
+                    :sel_day="sel_day"
                 />
                 <FlightTransferComp
                     v-if="actSelected === 'flight transfers'"
-                    :addDayActivity="addDayActivity"
+                    :sel_day="sel_day"
                 />
                 <AccomodationsComp
                     v-if="actSelected === 'accomodations'"
-                    :addDayActivity="addDayActivity"
+                    :sel_day="sel_day"
+                    :arrival_date="booking.arrival_date"
                 />
-                <ActivitiesComp
-                    v-if="actSelected === 'activities'"
-                    :addDayActivity="addDayActivity"
-                />
+                <ActivitiesComp v-if="actSelected === 'activities'" :sel_day="sel_day" />
+            </b-col>
+        </b-row>
+        <b-row class="mt-2">
+            <b-col>
+                <b-button size="sm" pill variant="outline-success"
+                    >use itinerary as template</b-button
+                >
+            </b-col>
+            <b-col>
+                <b-button size="sm" pill variant="outline-dark"
+                    >fill itinerary from template</b-button
+                >
             </b-col>
         </b-row>
         <b-modal
@@ -252,14 +282,57 @@
                         />
                     </div>
                 </div>
+            </form> </b-modal
+        ><b-modal id="add-day-modal" title="Add A Day">
+            <form>
+                <div class="form-group">
+                    <label>Name </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Day Title"
+                        v-model="new_day.name"
+                    />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea
+                        class="form-control"
+                        placeholder="Say something about the day"
+                        rows="6"
+                        v-model="new_day.description"
+                    ></textarea>
+                </div>
             </form>
+
+            <template v-slot:modal-footer="{ cancel }">
+                <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                    >Cancel</b-button
+                >
+                <b-overlay
+                    :show="loading"
+                    rounded
+                    opacity="0.6"
+                    spinner-small
+                    class="d-inline-block"
+                >
+                    <b-button
+                        size="sm"
+                        variant="success"
+                        :disabled="loading"
+                        @click="addDay"
+                        >Add Day</b-button
+                    >
+                </b-overlay>
+            </template>
         </b-modal>
     </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-import { itinerary } from '@/Constants/itinerary.js'
+// import { itinerary } from '@/Constants/itinerary.js'
 import RoadTransferComp from '@/components/ItineraryDetails/RoadTransfers.vue'
 import FlightTransferComp from '@/components/ItineraryDetails/FlightTransfers.vue'
 import AccomodationsComp from '@/components/ItineraryDetails/Accomodations.vue'
@@ -276,9 +349,10 @@ export default {
             loading: false,
             errors: {},
             season: {},
-            itinerary: itinerary,
+            itinerary: { days: [] },
             sel_day_index: 0,
             sel_day: null,
+            new_day: {},
             booking: {},
             breadcrumb_items: this.breadcrumbItems(),
             actSelected: 'accomodations',
@@ -312,52 +386,56 @@ export default {
     },
     methods: {
         async getItinerary() {
-            // await this.$http.get('/itineraries/' + this.$route.params.id).then(itinerary => {
-            //     this.itinerary = itinerary.data.data
-            // })
+            await this.$http.get('/bookings/' + this.$route.params.id).then((booking) => {
+                this.booking = booking.data.data
+                this.itinerary = booking.data.data.itinerary
+                this.daySelect()
+            })
         },
         daySelect(index = 0) {
             this.sel_day_index = index
             this.sel_day = this.itinerary.days[index]
-        },
-        addDayActivity(type) {
-            this.sel_day.items.push({
-                id: '1',
-                type: type,
-                priority: 0,
-                duration: 30,
-                children: 2,
-                adults: 4,
-                text: 'Transfer back to Kigali Airport.'
-            })
         },
         removeDayActivity(index) {
             this.sel_day.items.splice(index, 1)
             this.daySelect()
         },
         addDay() {
+            if (!this.new_day.name) {
+                this.toastError('title of order not specified')
+                return false
+            }
+            if (!this.new_day.description) {
+                this.toastError('description of order not specified')
+                return false
+            }
             const count = this.itinerary.days.length + 1
             this.itinerary.days.push({
-                id: count,
-                name: 'Day ' + count,
+                name: this.new_day.name,
+                description: this.new_day.description,
                 items: []
             })
             this.daySelect(count - 1)
+            this.new_day = {}
+            this.$bvModal.hide('add-day-modal')
         },
         removeDay(index) {
             this.itinerary.days.splice(index, 1)
             this.daySelect()
         },
         saveAll() {
-            alert(JSON.stringify(this.itinerary))
-            // this.$http.patch('/itineraries/' + this.$route.params.id, {
-            //     itinerary: this.itinerary
-            // }).then(() => {
-            //     this.toastSuccess('Itinerary Successfully Updated')
-            // })
+            // alert(JSON.stringify(this.itinerary))
+            this.itinerary.total_cost = this.total_cost
+            this.$http
+                .patch('/bookings/' + this.$route.params.id + '/itinerary', {
+                    itinerary: JSON.stringify(this.itinerary)
+                })
+                .then(() => {
+                    this.toastSuccess('Itinerary Successfully Updated')
+                })
         },
-        breadcrumbItems: function (bookingId = null) {
-            if (bookingId) {
+        breadcrumbItems: function () {
+            if (this.booking !== {}) {
                 return [
                     // prettier-ignore
                     {
@@ -377,7 +455,7 @@ export default {
                         to: {
                             name: 'BookingDetails',
                             params: {
-                                id: bookingId
+                                id: this.$route.params.id
                             }
                         }
                     },
@@ -425,13 +503,27 @@ export default {
                 ghostClass: 'ghost',
                 group: 'day-list'
             }
+        },
+        total_cost() {
+            var cost = 0
+            this.itinerary.days.forEach(function (day, index) {
+                cost += day.items.reduce(
+                    (partialSum, value) => partialSum + parseFloat(value.cost),
+                    0
+                )
+            })
+            return cost
         }
     },
     mounted() {
         this.daySelect()
+        this.getItinerary()
     },
     watch: {
-        'sel_day.items': function () {
+        'sel_day.items': function (newval) {
+            if (newval === undefined) {
+                return false
+            }
             this.sel_day.items.map(function (item, index) {
                 item.priority = index + 1
                 return item
@@ -514,7 +606,7 @@ export default {
     font-size: 0.9rem;
     cursor: grab;
     margin-bottom: 2px;
-    height: 6rem;
+    height: 6.3rem;
 }
 
 .to-scroll {
