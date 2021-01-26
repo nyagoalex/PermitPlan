@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ItineraryResource extends JsonResource
+class ItineraryPreview extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,12 @@ class ItineraryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'total_cost' => $this->total_cost,
+            "summary" => $this->summary->all(),
+            "stays" => $this->stays->toArray(),
+            "days" => $this->days
+        ];
     }
 }

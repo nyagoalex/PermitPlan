@@ -8,5 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Itinerary extends Model
 {
-    use UsesUuid;
+    use UsesUuid, Searchable;
+
+    public $searchable = [
+        'ref_no','title'
+    ];
+
+   /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ref_no', 'title', 'date', 'days'
+    ];
+
+    public function getDaysAttribute($value)
+    {
+        return json_decode($value);
+    }
 }

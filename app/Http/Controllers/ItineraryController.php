@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItineraryRequest;
+use App\Http\Resources\ItineraryPreview;
 use App\Http\Resources\ItineraryResource;
 use App\Models\Booking;
 use App\Models\Itinerary;
 use App\Models\Lodge;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ItineraryController extends Controller
 {
+    use HelperTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,18 @@ class ItineraryController extends Controller
      */
     public function index()
     {
-        //
+        $sort = $this->getSort();
+        $per_page = $this->getPerPage();
+        $order_column = $this->getOrderColumn("date");
+        $query  = Itinerary::query();
+        // $query->when(request()->filled('active'), function ($query){
+        //     $active = (request('active') === 'true') ? 1 : 0;
+        //     return $query->whereActive($active);
+        // });
+        $query->search(request('search'));
+        $agents = $query->orderBy($order_column, $sort)->paginate($per_page);
+        
+        return ItineraryResource::collection($agents);
     }
 
     /**
@@ -26,9 +42,15 @@ class ItineraryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItineraryRequest $request)
     {
-        //
+        #insert new user
+        DB::beginTransaction();
+        $data = $request->validated();
+        $data['ref_no'] =$this->nextNumber(Itinerary::query(), 'ref_no', 'IT');
+        $agent = Itinerary::create($data);
+        DB::commit();
+        return new ItineraryResource($agent);
     }
 
     /**
@@ -37,7 +59,7 @@ class ItineraryController extends Controller
      * @param  \App\Itinerary  $itinerary
      * @return \Illuminate\Http\Response
      */
-    public function show($itinerary_id)
+    public function preview($itinerary_id)
     {
         $booking = Booking::findOrFail($itinerary_id);
         $acc_cost = $act_cost = $r_trans_cost = $f_trans_cost = 0;
@@ -87,10 +109,19 @@ class ItineraryController extends Controller
         $booking['summary'] = $summary;
         $booking['stays'] = $stays;
         $booking['days'] = $days;
-        // dd(count($days));
-        return new ItineraryResource($booking);
+        return new ItineraryPreview($booking);
     }
-
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Itinerary  $itinerary
+     * @return \Illuminate\Http\Response
+     */
+    public function show($itinerary_id)
+    {
+        $itinerary = Itinerary::findOrFail($itinerary_id);
+        return new ItineraryResource($itinerary);
+    }
 
     /**
      * Update the specified resource in storage.

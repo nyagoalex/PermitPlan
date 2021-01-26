@@ -19,6 +19,7 @@ class CreateItinerariesTable extends Migration
             $table->string("title", 250);
             $table->date("date");
             $table->json('days');
+            $table->boolean("active")->default(false);
             $table->timestamps();
         });
     }

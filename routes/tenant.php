@@ -361,6 +361,7 @@ Route::middleware([
                     Route::post('/', 'ItineraryController@store')->name('itinerary.create');
                     Route::patch('/{itinerary_id}', 'ItineraryController@update')->name('itinerary.update');
                     Route::delete('/{itinerary_id}', 'ItineraryController@destroy')->name('itinerary.delete');
+                    Route::get('/{itinerary_id}/preview', 'ItineraryController@preview')->name('itinerary.preview');
                 }
             );
         }
