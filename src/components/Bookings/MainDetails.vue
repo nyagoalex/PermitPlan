@@ -1110,7 +1110,7 @@ export default {
         },
         bookingItinerary() {
             this.$router.push({
-                name: 'ItineraryDetails',
+                name: 'BookingItineraryDetails',
                 params: {
                     id: this.$route.params.id
                 }

@@ -17,8 +17,10 @@ import Vehicles from '@/views/Vehicles.vue'
 import Guides from '@/views/Guides.vue'
 import Calenda from '@/views/Calenda.vue'
 import ItineraryPreview from '@/views/Itinerary/Preview.vue'
-import ItineraryDetails from '@/views/Itinerary/Details.vue'
+import BookingItineraryDetails from '@/views/Itinerary/BookingItineraryDetails.vue'
 import Activities from '@/views/Activities.vue'
+import Itineraries from '@/views/Itineraries.vue'
+import OffTheSelfItineraryDetails from '@/views/Itinerary/OffTheSelfItineraryDetails.vue'
 
 Vue.use(VueRouter)
 
@@ -109,14 +111,24 @@ const routes = [
         component: Calenda
     },
     {
+        path: '/itineraries',
+        name: 'Itineraries',
+        component: Itineraries
+    },
+    {
+        path: '/itineraries/:id',
+        name: 'OffTheSelfItineraryDetails',
+        component: OffTheSelfItineraryDetails
+    },
+    {
         path: '/itineraries/:id/preview',
         name: 'ItineraryPreview',
         component: ItineraryPreview
     },
     {
         path: '/bookings/:id/itinerary',
-        name: 'ItineraryDetails',
-        component: ItineraryDetails
+        name: 'BookingItineraryDetails',
+        component: BookingItineraryDetails
     },
     {
         path: '/activities',

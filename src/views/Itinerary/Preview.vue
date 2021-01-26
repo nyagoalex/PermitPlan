@@ -75,7 +75,7 @@ export default {
         },
         async getItinerary() {
             await this.$http
-                .get('/itineraries/a937b681-0441-4f5f-b9c0-0b701e125c1d')
+                .get('/itineraries/a937b681-0441-4f5f-b9c0-0b701e125c1d/preview')
                 .then((itinerary) => {
                     this.itinerary = itinerary.data.data
                 })

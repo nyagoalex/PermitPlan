@@ -56,6 +56,9 @@
                     <b-dropdown-item @click="$router.push({ name: 'Activities' })"
                         >Activities</b-dropdown-item
                     >
+                    <b-dropdown-item @click="$router.push({ name: 'Itineraries' })"
+                        >Itineraries</b-dropdown-item
+                    >
                 </b-nav-item-dropdown>
             </b-navbar-nav>
             <!-- Right aligned nav items -->
