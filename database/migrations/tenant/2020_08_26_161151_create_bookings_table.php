@@ -22,7 +22,7 @@ class CreateBookingsTable extends Migration
             $table->uuid('agent_id')->nullable();
             $table->enum("status", ['confirmed', 'tentative', 'cancelled'])->default('tentative');
             $table->integer('no_of_persons');
-            $table->float('cost_per_person', 9, 2)->default(0);
+            $table->float('total_cost', 9, 2)->default(0);
             $table->date("arrival_date");
             $table->date("departure_date");
             $table->string("client_name");

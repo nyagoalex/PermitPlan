@@ -353,6 +353,16 @@ Route::middleware([
                     }
                 )
             );
+            Route::group(
+                ['prefix' => 'itineraries'],
+                function () {
+                    Route::get('/', 'ItineraryController@index')->name('itinerary.all');
+                    Route::get('/{itinerary_id}', 'ItineraryController@show')->name('itinerary.show');
+                    Route::post('/', 'ItineraryController@store')->name('itinerary.create');
+                    Route::patch('/{itinerary_id}', 'ItineraryController@update')->name('itinerary.update');
+                    Route::delete('/{itinerary_id}', 'ItineraryController@destroy')->name('itinerary.delete');
+                }
+            );
         }
     );
 });

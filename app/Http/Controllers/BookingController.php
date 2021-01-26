@@ -239,8 +239,11 @@ class BookingController extends Controller
             'itinerary' => "required|json",
         ]);
 
+        $itinerary= $data['itinerary'];
+        $total_cost = json_decode($itinerary)->total_cost;
         $booking = Booking::findOrFail($booking_id);
-        $booking->itinerary = $data['itinerary'];
+        $booking->itinerary = $itinerary;
+        $booking->total_cost = $total_cost;
         $booking->save();
         $details = "Updated, Itinerary";
         $booking->notify(new BookingNotification($booking, $details));

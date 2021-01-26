@@ -20,7 +20,7 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
-        'number','ref','user_id', 'agent_id', 'no_of_persons', 'cost_per_person', 'arrival_date', 'departure_date', 'client_name', 'comment', 'itinerary'
+        'number','ref','user_id', 'agent_id', 'no_of_persons', 'arrival_date', 'departure_date', 'client_name', 'comment', 'itinerary'
     ];
     protected $withCount = ['permits'];
 
@@ -69,10 +69,10 @@ class Booking extends Model
         return is_null($this->agent_id) ? 'direct' : 'Agent';
     }
 
-    public function getTotalCostAttribute()
-    {
-        return $this->no_of_persons * $this->cost_per_person;
-    }
+    // public function getTotalCostAttribute()
+    // {
+    //     return $this->no_of_persons * $this->cost_per_person;
+    // }
 
     public function getTotalPaidAttribute()
     {

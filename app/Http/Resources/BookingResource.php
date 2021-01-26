@@ -22,7 +22,7 @@ class BookingResource extends JsonResource
             'source' => $this->source,
             "status" => $this->status,
             'no_of_persons' => $this->no_of_persons,
-            'cost_per_person' => $this->cost_per_person,
+            // 'cost_per_person' => $this->cost_per_person,
             "arrival_date" => $this->arrival_date,
             "arrival" => is_null($this->arrival_date) ? 'never' : Carbon::parse($this->arrival_date)->diffForHumans(),
             "departure_date" => $this->departure_date,

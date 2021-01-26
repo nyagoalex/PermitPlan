@@ -38,10 +38,13 @@ class SeasonController
 
         $from_date =  $data['from_date'];
         $to_date =  $data['to_date'];
-        $season_overlap = Season::whereRaw("from_date <= '{$from_date}' and to_date >= '{$to_date}'")
+        $season_overlap = Season::whereLodgeId($lodge_id)
+        ->where(function($query) use ($from_date, $to_date) {
+            $query->whereRaw("from_date <= '{$from_date}' and to_date >= '{$to_date}'")
             ->orWhereRaw("from_date >= '{$from_date}' and to_date <= '{$to_date}'")
             ->orWhereRaw("from_date <= '{$from_date}' and to_date > '{$from_date}'")
-            ->orWhereRaw("from_date < '{$to_date}' and to_date >= '{$to_date}'")
+            ->orWhereRaw("from_date < '{$to_date}' and to_date >= '{$to_date}'");
+        })
         ->exists();
         // checks if seasons overlap
         abort_if($season_overlap, Response::HTTP_UNPROCESSABLE_ENTITY, 'Season Dates Overlap If Existing Seasons');
