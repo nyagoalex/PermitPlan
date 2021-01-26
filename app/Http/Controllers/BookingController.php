@@ -10,6 +10,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\Booking;
 use App\Notifications\BookingNotification;
 use App\Traits\HelperTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,6 +93,7 @@ class BookingController extends Controller
         $data = $request->validated();
         $data['number'] =$this->nextNumber(Booking::query(), 'number', 'B');
         $data['user_id'] = Auth::id();
+        $data['itinerary'] = json_encode(['days'=>[]]);
         $booking = Booking::create($data);
         DB::commit();
         return new BookingResource($booking);
@@ -220,5 +222,29 @@ class BookingController extends Controller
         $booking = Booking::FindOrFail($boking_id);
         $booking->unreadNotifications->markAsRead();
         return NotificationResource::collection($booking->notifications);
+    }
+
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Booking  $booking
+     * @return \Illuminate\Http\Response
+     */
+    public function updateItinerary(Request $request, $booking_id)
+    {
+        DB::beginTransaction();
+
+        $data = $request->validate([
+            'itinerary' => "required|json",
+        ]);
+
+        $booking = Booking::findOrFail($booking_id);
+        $booking->itinerary = $data['itinerary'];
+        $booking->save();
+        $details = "Updated, Itinerary";
+        $booking->notify(new BookingNotification($booking, $details));
+        DB::commit();
+        return new BookingResource($booking);
     }
 }

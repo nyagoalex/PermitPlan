@@ -27,7 +27,8 @@ class BookingSingleResource extends BookingResource
                 "transfered_permits" => PermitResource::collection($this->transferedPermits),
                 "payments" => PaymentResource::collection($this->payments),
                 "guests" => GuestResource::collection($this->guests),
-                "number_of_days" => Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->arrival_date))
+                "number_of_days" => Carbon::parse($this->departure_date)->diffInDays(Carbon::parse($this->arrival_date)),
+                "itinerary" => $this->itinerary
             ]
         );
     }

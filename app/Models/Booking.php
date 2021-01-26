@@ -20,7 +20,7 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
-        'number','ref','user_id', 'agent_id', 'no_of_persons', 'cost_per_person', 'arrival_date', 'departure_date', 'client_name', 'comment'
+        'number','ref','user_id', 'agent_id', 'no_of_persons', 'cost_per_person', 'arrival_date', 'departure_date', 'client_name', 'comment', 'itinerary'
     ];
     protected $withCount = ['permits'];
 
@@ -82,5 +82,10 @@ class Booking extends Model
     public function getBalanceAttribute()
     {
         return round(($this->total_cost - $this->total_paid), 2);
+    }
+
+    public function getItineraryAttribute($value)
+    {
+        return json_decode($value);
     }
 }

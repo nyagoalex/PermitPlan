@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\LodgeResource;
+use App\Http\Resources\lodgeSeasonalPricesResource;
 use App\Http\Resources\SingleLodgeResource;
 use App\Models\Lodge;
+use App\Models\Season;
 use App\Rules\PhoneValidator;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
@@ -13,6 +15,22 @@ use Illuminate\Support\Facades\DB;
 class LodgeController extends Controller
 {
     use HelperTrait;
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lodgeSeasonalPrices()
+    {
+        $sort = $this->getSort();
+        $per_page = $this->getPerPage();
+        $order_column = $this->getOrderColumn("name");
+        $query = Lodge::query();
+        $query->search(request('search'));
+        $lodges = $query->orderBy($order_column, $sort)->paginate($per_page);
+        return lodgeSeasonalPricesResource::collection($lodges);
+    }
+
     /**
      * Display a listing of the resource.
      *

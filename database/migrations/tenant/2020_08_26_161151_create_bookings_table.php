@@ -27,6 +27,7 @@ class CreateBookingsTable extends Migration
             $table->date("departure_date");
             $table->string("client_name");
             $table->text("comment")->nullable();
+            $table->json('itinerary');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

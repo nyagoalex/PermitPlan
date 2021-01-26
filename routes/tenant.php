@@ -168,6 +168,8 @@ Route::middleware([
                     Route::patch('/{lodge_id}/contracted-rating', 'LodgeController@updateContractedRating')->name('lodge.contractedrating');
                 }
             );
+
+            Route::get('/lodge-seasonal-prices', 'LodgeController@lodgeSeasonalPrices')->name('lodge.seasonal.prices');
     
             Route::group(
                 ['prefix' => 'lodges/{lodge_id}/rooms'],
@@ -245,7 +247,8 @@ Route::middleware([
                     Route::get('/{booking_id}/notifications', 'BookingController@notifications')->name('booking.notifications');
                     Route::post('/{booking_id}/notifications/{id}/markasread', 'BookingController@markNotificationAsRead')->name('booking.notifications.markasread');
                     Route::post('/{booking_id}/notifications/markallasread', 'BookingController@markAllNotificationAsRead')->name('booking.notifications.markallasread');
-
+                    Route::patch('/{booking_id}/itinerary', 'BookingController@updateItinerary')->name('booking.itinerary');
+                    
                     Route::group(
                         ['prefix' => '{booking_id}/payments'],
                         function () {
