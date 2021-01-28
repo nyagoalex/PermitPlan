@@ -14,6 +14,15 @@ class Itinerary extends Model
         'ref_no','title'
     ];
 
+          /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
    /**
      * The attributes that are mass assignable.
      *

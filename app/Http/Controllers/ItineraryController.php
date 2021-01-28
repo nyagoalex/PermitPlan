@@ -9,7 +9,7 @@ use App\Models\Booking;
 use App\Models\Itinerary;
 use App\Models\Lodge;
 use App\Traits\HelperTrait;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
 class ItineraryController extends Controller
@@ -26,14 +26,21 @@ class ItineraryController extends Controller
         $per_page = $this->getPerPage();
         $order_column = $this->getOrderColumn("date");
         $query  = Itinerary::query();
-        // $query->when(request()->filled('active'), function ($query){
-        //     $active = (request('active') === 'true') ? 1 : 0;
-        //     return $query->whereActive($active);
-        // });
+        $query->when(request()->filled('active'), function ($query){
+            $active = (request('active') === 'true') ? 1 : 0;
+            return $query->whereActive($active);
+        });
+        $query->when(request()->filled('start_date'), function ($query){
+            return $query->where('date', ">=", request('start_date'));
+        });
+        $query->when(request()->filled('end_date'), function ($query){
+            return $query->where('date', "<=", request('end_date'));
+        });
+
         $query->search(request('search'));
-        $agents = $query->orderBy($order_column, $sort)->paginate($per_page);
+        $itineraries = $query->orderBy($order_column, $sort)->paginate($per_page);
         
-        return ItineraryResource::collection($agents);
+        return ItineraryResource::collection($itineraries);
     }
 
     /**
@@ -48,9 +55,9 @@ class ItineraryController extends Controller
         DB::beginTransaction();
         $data = $request->validated();
         $data['ref_no'] =$this->nextNumber(Itinerary::query(), 'ref_no', 'IT');
-        $agent = Itinerary::create($data);
+        $itinerary = Itinerary::create($data);
         DB::commit();
-        return new ItineraryResource($agent);
+        return new ItineraryResource($itinerary);
     }
 
     /**
@@ -122,27 +129,64 @@ class ItineraryController extends Controller
         $itinerary = Itinerary::findOrFail($itinerary_id);
         return new ItineraryResource($itinerary);
     }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Itinerary  $itinerary
+     * @param  \App\Models\Itinerary  $itinerary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Itinerary $itinerary)
+    public function update(ItineraryRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        $itinerary = Itinerary::findOrFail($id);
+        $data = $request->validated();
+        $itinerary->update($data);
+        DB::commit();
+        return new ItineraryResource($itinerary);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Itinerary  $itinerary
+     * @param  \App\Models\Itinerary  $itinerary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Itinerary $itinerary)
+    public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        $itinerary = Itinerary::findOrFail($id);
+        $itinerary->delete();
+        DB::commit();
+        return new ItineraryResource($itinerary);
+    }
+
+    public function deactivate($id)
+    {
+        #checks if user exists
+        DB::beginTransaction();
+        $itinerary = Itinerary::findOrFail($id);
+
+        // checks the current status of the user
+        abort_unless($itinerary->active, Response::HTTP_BAD_REQUEST, 'itinerary already deactivated');
+
+        #deactivation process
+        $itinerary->active = false;
+        $itinerary->save();
+        DB::commit();
+        return new ItineraryResource($itinerary);
+    }
+
+    public function activate($id)
+    {
+        DB::beginTransaction();
+        $itinerary = Itinerary::findOrFail($id);
+        // checks the current status of the user
+        abort_if($itinerary->active, Response::HTTP_BAD_REQUEST, 'itinerary already active');
+        #activation process
+        $itinerary->active = true;
+        $itinerary->save();
+        DB::commit();
+        return new ItineraryResource($itinerary);
     }
 }
