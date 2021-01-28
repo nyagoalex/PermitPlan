@@ -336,18 +336,18 @@
                                     preview <b-icon icon="arrow-right"></b-icon
                                 ></a>
                             </div>
-                            <div>
+                            <div v-if="booking.itinerary">
                                 <b-button
+                                    v-for="day in booking.itinerary.days"
+                                    :key="day.name"
                                     pill
                                     variant="outline-secondary"
                                     class="m-2"
                                     @click="previewItinerary"
-                                    ><span style="color: black"> DAY 1</span> - Depart for
-                                    Bwindi Forest</b-button
-                                >
-                                <b-button pill variant="outline-secondary" class="m-2"
-                                    ><span style="color: black"> DAY 1</span> - Depart for
-                                    Bwindi Forest</b-button
+                                    ><span style="color: black">
+                                        DAY {{ day.priority }}</span
+                                    >
+                                    - {{ day.name }}</b-button
                                 >
                             </div>
                         </div>
@@ -678,7 +678,6 @@
         </b-modal>
         <AddGuest :guest="guest" :mode="mode" />
         <ItemPayment :model_type="payment_type" :selected_modal="selected_modal" />
-        {{ booking.transfered_permits }}
     </div>
 </template>
 

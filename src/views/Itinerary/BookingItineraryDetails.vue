@@ -48,7 +48,7 @@
 
         <b-row class="mt-2">
             <b-col>
-                <b-button size="sm" pill variant="outline-success"
+                <b-button size="sm" pill variant="outline-success" @click="useAsTemplate"
                     >use itinerary as template</b-button
                 >
             </b-col>
@@ -121,6 +121,31 @@ export default {
                 })
                 .then(() => {
                     this.toastSuccess('Itinerary Successfully Updated')
+                })
+        },
+        useAsTemplate(id) {
+            this.$swal
+                .fire({
+                    title: 'Use As Itinerary Template?',
+                    text: 'Are you sure you want to perform this action',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, use it!',
+                    reverseButtons: true
+                })
+                .then((result) => {
+                    if (result.value) {
+                        var data = {
+                            date: this.booking.arrival_date,
+                            title: 'Template from Booking Number ' + this.booking.number,
+                            days: JSON.stringify(this.itinerary.days)
+                        }
+                        this.$http.post('/itineraries', data).then((response) => {
+                            this.alertAddSuccess(
+                                'Itinerary succeessfully created as template'
+                            )
+                        })
+                    }
                 })
         }
     },

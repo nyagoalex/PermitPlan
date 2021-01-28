@@ -45,21 +45,80 @@
             </b-col>
         </b-row>
         <b-row class="bg-white pt-2 px-3 my-0 pb-0">
-            <b-col class="text-right">
-                <h4 class="text-muted">NO DAY BY DAY DETAILS ADDED YET</h4>
+            <b-col class="text-left">
+                <b-button
+                    pill
+                    size="sm"
+                    variant="outline-warning"
+                    v-b-popover.hover.bottomleft="'Click to activate itinerary'"
+                    v-if="itinerary.active"
+                    @click="deactivateItinerary"
+                    >Deactivate</b-button
+                >
+                <b-button
+                    pill
+                    size="sm"
+                    variant="outline-success"
+                    v-b-popover.hover.bottomleft="'Click to deactivate itinerary'"
+                    v-else
+                    @click="activateItinerary"
+                    >Activate</b-button
+                >
+            </b-col>
+            <b-col class="text-center" cols="6">
+                <h4 class="text-muted">{{ itinerary.title }}</h4>
             </b-col>
             <b-col class="text-right">
-                <b-button
-                    size="sm"
-                    pill
-                    variant="success"
-                    v-b-popover.hover.bottomleft="'Click to activate all itinerary'"
-                    @click="saveAll"
-                    >Activate</b-button
+                <b-button pill size="sm" variant="outline-dark" v-b-modal.edit-title-modal
+                    >Edit Start Date</b-button
                 >
             </b-col>
         </b-row>
         <GeneralDetails v-if="after_fetch" :itinerary="itinerary" />
+        <b-modal id="edit-title-modal" title="Edit Title and Start Date ">
+            <form>
+                <div class="form-group">
+                    <label>Name </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Itinerary Title"
+                        v-model="itinerary.title"
+                    />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        placeholder="Itinerary Start Date"
+                        v-model="itinerary.date"
+                    />
+                </div>
+            </form>
+
+            <template v-slot:modal-footer="{ cancel }">
+                <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                    >Cancel</b-button
+                >
+                <b-overlay
+                    :show="loading"
+                    rounded
+                    opacity="0.6"
+                    spinner-small
+                    class="d-inline-block"
+                >
+                    <b-button
+                        size="sm"
+                        variant="success"
+                        :disabled="loading"
+                        @click="saveAll"
+                        >Update</b-button
+                    >
+                </b-overlay>
+            </template>
+        </b-modal>
     </div>
 </template>
 
@@ -72,6 +131,7 @@ export default {
         return {
             itinerary: { days: [] },
             after_fetch: false,
+            loading: false,
             breadcrumb_items: [
                 // prettier-ignore
                 {
@@ -109,23 +169,69 @@ export default {
             this.after_fetch = true
         },
         saveAll() {
-            // alert(JSON.stringify(this.itinerary))
-            this.itinerary.total_cost = this.total_cost
-            // this.$http
-            //     .patch('/bookings/' + this.$route.params.id + '/itinerary', {
-            //         itinerary: JSON.stringify(this.itinerary)
-            //     })
-            //     .then(() => {
-            //         this.toastSuccess('Itinerary Successfully Updated')
-            //     })
+            this.loading = true
             var data = {
-                days: JSON.stringify(this.itinerary.days),
-                title: 'title',
-                date: '2021-01-02'
+                ...this.itinerary,
+                total_cost: this.total_cost,
+                days: JSON.stringify(this.itinerary.days)
             }
             this.$http.patch('/itineraries/' + this.$route.params.id, data).then(() => {
                 this.toastSuccess('Itinerary Successfully Updated')
+                this.loading = false
             })
+            this.$bvModal.hide('edit-title-modal')
+        },
+        deactivateItinerary(id) {
+            this.$swal
+                .fire({
+                    title: 'Deactivate Itinerary?',
+                    text: 'Are you sure you want to perform this action',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, deactivate it!',
+                    reverseButtons: true
+                })
+                .then((result) => {
+                    if (result.value) {
+                        this.$http
+                            .delete(
+                                '/itineraries/' + this.$route.params.id + '/deactivate'
+                            )
+                            .then(() => {
+                                this.itinerary.active = false
+                                this.$swal.fire(
+                                    'Deactivated!',
+                                    'Itinerary has been deactivated.',
+                                    'success'
+                                )
+                            })
+                    }
+                })
+        },
+        activateItinerary(id) {
+            this.$swal
+                .fire({
+                    title: 'Activate Itinerary?',
+                    text: 'Are you sure you want to perform this action',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, activate it!',
+                    reverseButtons: true
+                })
+                .then((result) => {
+                    if (result.value) {
+                        this.$http
+                            .post('/itineraries/' + this.$route.params.id + '/activate')
+                            .then(() => {
+                                this.itinerary.active = true
+                                this.$swal.fire(
+                                    'Activated!',
+                                    'Itinerary has been activated.',
+                                    'success'
+                                )
+                            })
+                    }
+                })
         }
     },
     computed: {

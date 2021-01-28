@@ -15,15 +15,20 @@
             :sort-desc.sync="sortDesc"
             sort-icon-left
             responsive="sm"
-            sticky-header
             @row-clicked="onRowClicked"
         >
             <template v-slot:table-caption>
                 <b-row>
                     <b-col><span class="font-weight-bold">Itineraries</span></b-col>
                     <b-col class="text-center">
-                        <b-button size="sm" variant="success">
-                            <b-icon icon="plus"></b-icon> Build New Itinerary
+                        <b-button
+                            size="sm"
+                            variant="success"
+                            v-b-modal.add-itinerary-modal
+                            @click="resetModal"
+                        >
+                            <b-icon icon="plus"></b-icon>
+                            Build New Itinerary
                         </b-button>
                     </b-col>
                     <b-col>
@@ -74,10 +79,25 @@
                             >Inactive</b-badge
                         >
                     </b-col>
+                    <b-col>
+                        <DateRangePickerSlot :changeDateRange="changeDateRange"
+                    /></b-col>
+                    <b-col>
+                        <b-badge
+                            pill
+                            variant="secondary"
+                            class="ml-2 float-right"
+                            @click="clearFilters"
+                            >clear filters</b-badge
+                        ></b-col
+                    >
                 </b-row>
             </template>
             <template v-slot:cell(#)="row">
                 {{ row.index + 1 }}
+            </template>
+            <template v-slot:cell(date)="row">
+                {{ row.date | displayDate }}
             </template>
             <template v-slot:cell(status)="row">
                 <b-badge pill variant="success" v-if="row.item.active">Active</b-badge>
@@ -94,21 +114,77 @@
                 @input="getItineraries(current_page)"
             ></b-pagination>
         </div>
+        <b-modal id="add-itinerary-modal" title="New Itinerary">
+            <form>
+                <div class="form-group">
+                    <label>Name </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Itinerary Title"
+                        v-model="itinerary.title"
+                        :class="{ 'is-invalid': errors.title }"
+                    />
+                    <ul class="list-unstyled invalid-feedback" v-if="errors.title">
+                        <li v-for="error in errors.title" :key="error">{{ error }}</li>
+                    </ul>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        placeholder="Itinerary Start Date"
+                        v-model="itinerary.date"
+                        :class="{ 'is-invalid': errors.date }"
+                    />
+                    <ul class="list-unstyled invalid-feedback" v-if="errors.date">
+                        <li v-for="error in errors.date" :key="error">{{ error }}</li>
+                    </ul>
+                </div>
+            </form>
+
+            <template v-slot:modal-footer="{ cancel }">
+                <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                    >Cancel</b-button
+                >
+                <b-overlay
+                    :show="loading"
+                    rounded
+                    opacity="0.6"
+                    spinner-small
+                    class="d-inline-block"
+                >
+                    <b-button
+                        size="sm"
+                        variant="success"
+                        :disabled="loading"
+                        @click="addIntinerary"
+                        >Create</b-button
+                    >
+                </b-overlay>
+            </template>
+        </b-modal>
     </div>
 </template>
 
 <script>
 import EventBus from '@/Events/EventBus.js'
+import DateRangePickerSlot from '@/components/DateRangePickerSlot.vue'
 
 export default {
     data() {
         return {
             sortBy: 'code',
             sortDesc: false,
+            loading: false,
             show_filters: false,
+            errors: {},
             filters: {
                 active: null,
-                search: null
+                search: null,
+                date_range: null
             },
             fields: [
                 // prettier-ignore
@@ -134,13 +210,14 @@ export default {
                 }
             ],
             itineraries: [],
-            // itinerary: this.resetModal(),
+            itinerary: this.resetModal(),
             mode: '',
             current_page: process.env.VUE_APP_CURRENTPAGE,
             per_page: process.env.VUE_APP_PERPAGE,
             total: process.env.VUE_APP_TOTALROWS
         }
     },
+    components: { DateRangePickerSlot },
     methods: {
         getItineraries(page = 1) {
             const filters = this.filters
@@ -164,94 +241,46 @@ export default {
                     id: item.id
                 }
             })
+        },
+        resetModal() {
+            return {
+                title: '',
+                date: '',
+                days: JSON.stringify([])
+            }
+        },
+        addIntinerary() {
+            this.loading = true
+            this.errors = {}
+            this.$http
+                .post('/itineraries', this.itinerary)
+                .then((response) => {
+                    this.alertAddSuccess()
+                    this.getItineraries()
+                    this.$bvModal.hide('add-itinerary-modal')
+                })
+                .catch((errors) => {
+                    this.errors = errors.errors
+                    this.toastError(errors.message)
+                })
+                .finally(() => {
+                    this.loading = false
+                })
+        },
+        changeDateRange(range) {
+            this.filters.start_date = this.$moment(range.startDate).format('YYYY-MM-DD')
+            this.filters.end_date = this.$moment(range.endDate).format('YYYY-MM-DD')
+            console.log()
+            this.getItineraries()
+        },
+        clearFilters() {
+            this.filters = {
+                active: null,
+                search: null,
+                date_range: null
+            }
+            this.getItineraries()
         }
-        // deleteItinerary(id) {
-        //     this.ConfirmDelete().then((result) => {
-        //         if (result.value) {
-        //             this.$http.delete('/itineraries/' + id).then(() => {
-        //                 this.itineraries = this.itineraries.filter(
-        //                     (item) => item.id !== id
-        //                 )
-        //                 this.$swal.fire(
-        //                     'Deleted!',
-        //                     'Itinerary has been deleted.',
-        //                     'success'
-        //                 )
-        //             })
-        //         }
-        //     })
-        // },
-        // deactivateItinerary(id) {
-        //     const index = this.itineraries.findIndex((item) => item.id === id)
-        //     this.$swal
-        //         .fire({
-        //             title: 'Deactivate Itinerary?',
-        //             text: 'Are you sure you want to perform this action',
-        //             icon: 'warning',
-        //             showCancelButton: true,
-        //             confirmButtonText: 'Yes, deactivate it!',
-        //             reverseButtons: true
-        //         })
-        //         .then((result) => {
-        //             if (result.value) {
-        //                 this.$http
-        //                     .delete('/itineraries/' + id + '/deactivate')
-        //                     .then(() => {
-        //                         this.$set(this.itineraries[index], 'active', false)
-        //                         this.$swal.fire(
-        //                             'Deactivated!',
-        //                             'Itinerary has been deactivated.',
-        //                             'success'
-        //                         )
-        //                     })
-        //             }
-        //         })
-        // },
-        // activateItinerary(id) {
-        //     const index = this.itineraries.findIndex((item) => item.id === id)
-        //     this.$swal
-        //         .fire({
-        //             title: 'Activate Itinerary?',
-        //             text: 'Are you sure you want to perform this action',
-        //             icon: 'warning',
-        //             showCancelButton: true,
-        //             confirmButtonText: 'Yes, activate it!',
-        //             reverseButtons: true
-        //         })
-        //         .then((result) => {
-        //             if (result.value) {
-        //                 this.$http.post('/itineraries/' + id + '/activate').then(() => {
-        //                     this.$set(this.itineraries[index], 'active', true)
-        //                     this.$swal.fire(
-        //                         'Activated!',
-        //                         'Itinerary has been activated.',
-        //                         'success'
-        //                     )
-        //                 })
-        //             }
-        //         })
-        // },
-        // newItineraryModal() {
-        //     this.itinerary = this.resetModal()
-        //     this.mode = 'create'
-        //     this.$bvModal.show('new-itinerary')
-        // },
-        // editItineraryModal(itinerary) {
-        //     this.itinerary = itinerary
-        //     this.mode = 'update'
-        //     this.$bvModal.show('new-itinerary')
-        // },
-        // resetModal() {
-        //     return {
-        //         name: '',
-        //         code: '',
-        //         country: '',
-        //         city: '',
-        //         phone: '',
-        //         no_of_booking: '',
-        //         email: ''
-        //     }
-        // }
     },
     mounted() {
         this.getItineraries()
