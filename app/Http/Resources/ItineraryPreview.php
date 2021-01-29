@@ -19,7 +19,10 @@ class ItineraryPreview extends JsonResource
             'total_cost' => $this->total_cost,
             "summary" => $this->summary->all(),
             "stays" => $this->stays->toArray(),
-            "days" => $this->days
+            "days" => $this->days,
+            "photos" => $this->photos,
+            "ref" => $this->ref,
+            "travelers" => $this->travelers,
         ];
     }
 }

@@ -73,6 +73,7 @@ class ItineraryController extends Controller
 
         $stays = collect([]);
         $days = $booking->itinerary->days;
+        $photos = collect([]);
         foreach ($days as $day) {
             // dd($day->priority);
             $stays_day = [
@@ -84,13 +85,14 @@ class ItineraryController extends Controller
                     $acc_cost += $item->cost;
                     $temp = $item;
                     $model = Lodge:: findOrFail($item->type_id);
+                    $lodge_photos = $model->photos->pluck('name');
                     $temp->name = $model->name;
                     $temp->country = $model->country;
                     $temp->location = $model->location;
-                    $temp->photos = $model->photos->pluck('name');
+                    $temp->photos = $lodge_photos;
                     $temp = collect($temp)->only('duration', 'children', 'adults', "name" ,"country","location","photos");
                     array_push($stays_day['items'], $temp);
-
+                    $photos->push($lodge_photos->all());
                 }
                 if ($item->type == "activities") {
                     $act_cost += $item->cost;
@@ -112,10 +114,13 @@ class ItineraryController extends Controller
         ])->sortByDesc(function ($item) {
             return $item['cost'];
         });
-
+        
+        $booking['ref'] = $booking->ref;
+        $booking['travelers'] = $booking->no_of_persons;
         $booking['summary'] = $summary;
         $booking['stays'] = $stays;
         $booking['days'] = $days;
+        $booking['photos'] = $photos->collapse()->unique()->shuffle()->take(10);
         return new ItineraryPreview($booking);
     }
     /**
