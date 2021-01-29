@@ -248,7 +248,8 @@ Route::middleware([
                     Route::post('/{booking_id}/notifications/{id}/markasread', 'BookingController@markNotificationAsRead')->name('booking.notifications.markasread');
                     Route::post('/{booking_id}/notifications/markallasread', 'BookingController@markAllNotificationAsRead')->name('booking.notifications.markallasread');
                     Route::patch('/{booking_id}/itinerary', 'BookingController@updateItinerary')->name('booking.itinerary');
-                    
+                    Route::get('/{booking_id}/preview', 'BookingController@preview')->name('booking.itinerary.preview');
+
                     Route::group(
                         ['prefix' => '{booking_id}/payments'],
                         function () {

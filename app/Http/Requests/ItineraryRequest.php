@@ -26,6 +26,7 @@ class ItineraryRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:250'],
             'date' => "required|date_format:Y-m-d",
+            'total_cost' => ["required", "numeric", "gte:0"],
             'days' => "required|json",
         ];
     }

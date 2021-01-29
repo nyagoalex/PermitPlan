@@ -6,6 +6,7 @@ use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingExceptResource;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingSingleResource;
+use App\Http\Resources\ItineraryPreviewResource;
 use App\Http\Resources\NotificationResource;
 use App\Models\Booking;
 use App\Notifications\BookingNotification;
@@ -249,5 +250,19 @@ class BookingController extends Controller
         $booking->notify(new BookingNotification($booking, $details));
         DB::commit();
         return new BookingResource($booking);
+    }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Itinerary  $itinerary
+     * @return \Illuminate\Http\Response
+     */
+    public function preview($itinerary_id)
+    {
+        $booking = Booking::findOrFail($itinerary_id);
+        $booking['travelers'] = $booking->no_of_persons;
+        $booking['days'] = $booking->itinerary->days;
+        return new ItineraryPreviewResource($booking);
     }
 }

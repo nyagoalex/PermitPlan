@@ -29,7 +29,7 @@ class Itinerary extends Model
      * @var array
      */
     protected $fillable = [
-        'ref_no', 'title', 'date', 'days'
+        'ref_no', 'title', 'date', 'days', 'total_cost'
     ];
 
     public function getDaysAttribute($value)

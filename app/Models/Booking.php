@@ -20,7 +20,7 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
-        'number','ref','user_id', 'agent_id', 'no_of_persons', 'arrival_date', 'departure_date', 'client_name', 'comment', 'itinerary'
+        'number','ref','user_id', 'agent_id', 'no_of_persons', 'arrival_date', 'departure_date', 'client_name', 'comment', 'itinerary', 'total_cost'
     ];
     protected $withCount = ['permits'];
 
