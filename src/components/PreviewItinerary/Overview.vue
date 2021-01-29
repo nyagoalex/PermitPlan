@@ -4,23 +4,25 @@
     <div class="pb-5">
         <b-carousel
             class="carousel-1"
-            v-model="slide"
             :interval="4000"
             controls
             background="#ababab"
             img-width="1024"
-            img-height="450"
+            img-height="480"
             style="text-shadow: 1px 1px 2px #333"
         >
-            <b-carousel-slide
-                img-src="https://picsum.photos/1024/480/?image=52"
-            ></b-carousel-slide>
-            <b-carousel-slide
-                img-src="https://picsum.photos/1024/480/?image=12"
-            ></b-carousel-slide>
-            <b-carousel-slide
-                img-src="https://picsum.photos/1024/480/?image=22"
-            ></b-carousel-slide>
+            <b-carousel-slide v-for="photo in itinerary.photos" v-bind:key="photo">
+                <template v-slot:img>
+                    <img
+                        class="d-block"
+                        height="610"
+                        width="100%"
+                        :src="getPhotoUrl(photo)"
+                        alt="image slot"
+                    />
+                </template>
+            </b-carousel-slide>
+
             <div class="carousel-div">
                 <div class="content text-left p-5">
                     <b-row class="mr-4">
@@ -28,15 +30,14 @@
                             <p class="mb-4">
                                 Uganda Gorilla Discovery - Gorilla Trekking
                             </p>
-                            <small
+                            <small v-if="itinerary.days"
                                 >Trip duration:<span>
                                     {{ itinerary.days.length }} days</span
                                 >
-                                <span class="mx-3">|</span> Itinerary ref. #:<span>
-                                    TC-QKS8GMAV</span
-                                >
+                                <span class="mx-3">|</span> Itinerary ref.
+                                <span> #{{ itinerary.ref }}</span>
                                 <span class="mx-3">|</span> Travelers:<span>
-                                    2 adults</span
+                                    {{ itinerary.travelers }} adults</span
                                 >
                             </small>
                         </b-col>

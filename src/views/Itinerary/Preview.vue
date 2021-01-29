@@ -12,11 +12,9 @@
                 />
             </div>
             <div class="col-md-3 text-left">
-                Brian Ahereza<br />
+                {{ company.company_name }}<br />
                 <small>
-                    <a href="mailto:hello@goexploresafaris.com"
-                        >hello@goexploresafaris.com</a
-                    ></small
+                    <a :href="`mailto:${company.email}`">{{ company.email }}</a></small
                 >
             </div>
             <div class="col-md-7 text-right pt-2" style="color: green">
@@ -47,7 +45,7 @@
             </b-tabs>
         </div>
         <hr style="width: 75%" />
-        <small>Premit plan 2018</small>
+        <small>Premit plan {{ this.$moment().format('YYYY') }}</small>
     </div>
 </template>
 
@@ -60,7 +58,8 @@ export default {
     data() {
         return {
             fixed: false,
-            itinerary: {}
+            itinerary: {},
+            company: {}
         }
     },
     components: {
@@ -83,6 +82,7 @@ export default {
     },
     mounted() {
         this.getItinerary()
+        this.company = JSON.parse(localStorage.getItem('settings'))
     }
 }
 </script>

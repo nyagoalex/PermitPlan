@@ -14,8 +14,8 @@
             </b-row>
             <b-row
                 class="item-details"
-                v-for="accomodation in day.items"
-                v-bind:key="accomodation.name"
+                v-for="(accomodation, index) in day.items"
+                v-bind:key="index"
             >
                 <b-col
                     ><img
@@ -51,7 +51,7 @@
                         <small>More images:</small>
                     </p>
                     <b-row class="images">
-                        <di style="max-width= 10px;">
+                        <div style="max-width= 10px;">
                             <img
                                 v-for="photo in accomodation.photos"
                                 v-bind:key="photo"
@@ -59,7 +59,7 @@
                                 class="rounded img-more mx-1"
                                 alt="ggg"
                             />
-                        </di>
+                        </div>
                     </b-row>
                 </b-col>
             </b-row>
