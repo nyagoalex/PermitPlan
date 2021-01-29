@@ -74,7 +74,7 @@ export default {
         },
         async getItinerary() {
             await this.$http
-                .get('/itineraries/a937b681-0441-4f5f-b9c0-0b701e125c1d/preview')
+                .get('/bookings/' + this.$route.params.id + '/preview')
                 .then((itinerary) => {
                     this.itinerary = itinerary.data.data
                 })

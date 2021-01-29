@@ -202,6 +202,10 @@ export default {
                     stickyColumn: true
                 },
                 {
+                    key: 'total_cost',
+                    sortable: true
+                },
+                {
                     key: 'title',
                     sortable: true
                 },
@@ -246,6 +250,7 @@ export default {
             return {
                 title: '',
                 date: '',
+                total_cost: 0,
                 days: JSON.stringify([])
             }
         },

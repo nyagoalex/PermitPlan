@@ -1102,7 +1102,7 @@ export default {
             const routeData = this.$router.resolve({
                 name: 'ItineraryPreview',
                 params: {
-                    id: 1
+                    id: this.$route.params.id
                 }
             })
             window.open(routeData.href, '_blank')
