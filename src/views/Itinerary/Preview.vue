@@ -73,11 +73,19 @@ export default {
             alert(6)
         },
         async getItinerary() {
-            await this.$http
-                .get('/bookings/' + this.$route.params.id + '/preview')
-                .then((itinerary) => {
-                    this.itinerary = itinerary.data.data
-                })
+            if (this.$route.params.type === 'bookings') {
+                await this.$http
+                    .get('/bookings/' + this.$route.params.id + '/preview')
+                    .then((itinerary) => {
+                        this.itinerary = itinerary.data.data
+                    })
+            } else {
+                await this.$http
+                    .get('/itineraries/' + this.$route.params.id + '/preview')
+                    .then((itinerary) => {
+                        this.itinerary = itinerary.data.data
+                    })
+            }
         }
     },
     mounted() {

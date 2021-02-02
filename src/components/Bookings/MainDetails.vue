@@ -1102,6 +1102,7 @@ export default {
             const routeData = this.$router.resolve({
                 name: 'ItineraryPreview',
                 params: {
+                    type: 'bookings',
                     id: this.$route.params.id
                 }
             })

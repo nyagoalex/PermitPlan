@@ -65,8 +65,18 @@
                     >Activate</b-button
                 >
             </b-col>
-            <b-col class="text-center" cols="6">
+            <b-col class="text-center" cols="7">
                 <h4 class="text-muted">{{ itinerary.title }}</h4>
+            </b-col>
+
+            <b-col>
+                <b-button
+                    pill
+                    size="sm"
+                    variant="outline-success"
+                    @click="previewItinerary"
+                    >Preview</b-button
+                >
             </b-col>
             <b-col class="text-right">
                 <b-button pill size="sm" variant="outline-dark" v-b-modal.edit-title-modal
@@ -232,6 +242,16 @@ export default {
                             })
                     }
                 })
+        },
+        previewItinerary() {
+            const routeData = this.$router.resolve({
+                name: 'ItineraryPreview',
+                params: {
+                    type: 'itineraries',
+                    id: this.$route.params.id
+                }
+            })
+            window.open(routeData.href, '_blank')
         }
     },
     computed: {

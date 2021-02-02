@@ -121,7 +121,7 @@ const routes = [
         component: OffTheSelfItineraryDetails
     },
     {
-        path: '/itineraries/:id/preview',
+        path: '/:type/:id/preview',
         name: 'ItineraryPreview',
         component: ItineraryPreview
     },
