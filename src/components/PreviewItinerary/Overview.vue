@@ -17,7 +17,7 @@
                         class="d-block"
                         height="610"
                         width="100%"
-                        :src="getPhotoUrl(photo)"
+                        v-lazy="getPhotoUrl(photo)"
                         alt="image slot"
                     />
                 </template>

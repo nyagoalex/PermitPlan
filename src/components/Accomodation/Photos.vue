@@ -24,7 +24,7 @@
                     :data-sub-html="`<h2>${photo.title}</h2><p>${photo.description}</p>`"
                 >
                     <div class="gallery-item">
-                        <img :src="getPhotoUrl(photo.name)" />
+                        <img v-lazy="getPhotoUrl(photo.name)" />
                     </div>
 
                     <div class="content-overlay"></div>

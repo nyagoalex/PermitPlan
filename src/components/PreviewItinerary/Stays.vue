@@ -19,7 +19,7 @@
             >
                 <b-col
                     ><img
-                        :src="getPhotoUrl(accomodation.photos[0])"
+                        v-lazy="getPhotoUrl(accomodation.photos[0])"
                         class="rounded img-details"
                         height="280"
                         alt="ggg"
@@ -55,9 +55,8 @@
                             <img
                                 v-for="photo in accomodation.photos"
                                 v-bind:key="photo"
-                                :src="getPhotoUrl(photo)"
                                 class="rounded img-more mx-1"
-                                alt="ggg"
+                                v-lazy="getPhotoUrl(photo)"
                             />
                         </div>
                     </b-row>

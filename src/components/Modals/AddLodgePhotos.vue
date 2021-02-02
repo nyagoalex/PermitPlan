@@ -1,8 +1,18 @@
+<!-- @format -->
+
 <template>
     <b-modal id="lodge-photo-modal" title="Add Photos" size="lg">
-        {{rowData}}
-        <input type="file" accept="image/*" id="files" ref="files" multiple v-on:change="filesChange()" v-show="false" />
-        <div class="row px-2" style="max-height:450px; overflow-y: auto;">
+        {{ rowData }}
+        <input
+            type="file"
+            accept="image/*"
+            id="files"
+            ref="files"
+            multiple
+            v-on:change="filesChange()"
+            v-show="false"
+        />
+        <div class="row px-2" style="max-height: 450px; overflow-y: auto">
             <b-table-simple>
                 <b-thead head-variant="dark">
                     <b-tr>
@@ -14,26 +24,67 @@
                     </b-tr>
                 </b-thead>
                 <b-tbody>
-                    <tr v-for="(data, index) in rowData" :key="index" :class="{uploaded:data.uploaded}">
-                        <td>{{index+1}}</td>
-                        <td><img :src="preview(data.photo)" width='70' height='70'></td>
-                        <td><input type='text' class='form-control' v-model="data.title" :disabled="data.uploaded" :class="{ 'is-invalid': data.errors.title}">
-                            <ul class="list-unstyled invalid-feedback" v-if="data.errors.title">
-                                <li v-for="(error) in data.errors.title" :key="error">{{ error }}</li>
-                            </ul>
+                    <tr
+                        v-for="(data, index) in rowData"
+                        :key="index"
+                        :class="{ uploaded: data.uploaded }"
+                    >
+                        <td>{{ index + 1 }}</td>
+                        <td>
+                            <img v-lazy="preview(data.photo)" width="70" height="70" />
                         </td>
-                        <td><textarea class='form-control' v-model="data.description" :disabled="data.uploaded" :class="{ 'is-invalid': data.errors.description}"></textarea>
-                            <ul class="list-unstyled invalid-feedback" v-if="data.errors.description">
-                                <li v-for="(error) in data.errors.description" :key="error">{{ error }}</li>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control"
+                                v-model="data.title"
+                                :disabled="data.uploaded"
+                                :class="{ 'is-invalid': data.errors.title }"
+                            />
+                            <ul
+                                class="list-unstyled invalid-feedback"
+                                v-if="data.errors.title"
+                            >
+                                <li v-for="error in data.errors.title" :key="error">
+                                    {{ error }}
+                                </li>
                             </ul>
                         </td>
                         <td>
-                            <b-button variant="success" pill title='Upload Photo' @click="uploadPhoto(index)" v-if="!data.uploaded">
+                            <textarea
+                                class="form-control"
+                                v-model="data.description"
+                                :disabled="data.uploaded"
+                                :class="{ 'is-invalid': data.errors.description }"
+                            ></textarea>
+                            <ul
+                                class="list-unstyled invalid-feedback"
+                                v-if="data.errors.description"
+                            >
+                                <li v-for="error in data.errors.description" :key="error">
+                                    {{ error }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <b-button
+                                variant="success"
+                                pill
+                                title="Upload Photo"
+                                @click="uploadPhoto(index)"
+                                v-if="!data.uploaded"
+                            >
                                 <b-icon icon="cloud-upload"></b-icon>
                             </b-button>
                         </td>
                         <td>
-                            <b-button variant="danger" title='Remove Photo' pill @click="rowData.splice(index, 1)" v-if="!data.uploaded">
+                            <b-button
+                                variant="danger"
+                                title="Remove Photo"
+                                pill
+                                @click="rowData.splice(index, 1)"
+                                v-if="!data.uploaded"
+                            >
                                 <b-icon icon="trash"></b-icon>
                             </b-button>
                         </td>
@@ -48,12 +99,20 @@
                         <li v-for="(error) in errors.email" :key="error">{{ error }}</li>
                     </ul>
                 </div> -->
-
         </div>
-        <template v-slot:modal-footer="{ cancel}">
-            <b-progress max="100" :value="uploadPercentage" class="w-50 mb-2" show-progress animated :variant="progressVariant"></b-progress>
+        <template v-slot:modal-footer="{ cancel }">
+            <b-progress
+                max="100"
+                :value="uploadPercentage"
+                class="w-50 mb-2"
+                show-progress
+                animated
+                :variant="progressVariant"
+            ></b-progress>
             <b-button size="sm" variant="secondary" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="primary" @click="$refs.files.click()">Add Photos</b-button>
+            <b-button size="sm" variant="primary" @click="$refs.files.click()"
+                >Add Photos</b-button
+            >
         </template>
     </b-modal>
 </template>
@@ -94,26 +153,32 @@ export default {
             formData.append('title', param.title)
             formData.append('description', param.description)
 
-            this.$http.post('/lodges/' + this.$route.params.id + '/photos', formData, {
-                onUploadProgress: function (progressEvent) {
-                    this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100))
-                }.bind(this)
-            }).then(photos => {
-                param.uploaded = true
-                param.errors = []
-                this.$set(this.rowData, index, param)
-                this.alertAddSuccess()
-            }).catch(errors => {
-                param.errors = errors.errors
-                param.uploaded = false
-                this.$set(this.rowData, index, param)
-                this.toastError(errors.message)
-                this.progressVariant = 'danger'
-            })
+            this.$http
+                .post('/lodges/' + this.$route.params.id + '/photos', formData, {
+                    onUploadProgress: function (progressEvent) {
+                        this.uploadPercentage = parseInt(
+                            Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                        )
+                    }.bind(this)
+                })
+                .then((photos) => {
+                    param.uploaded = true
+                    param.errors = []
+                    this.$set(this.rowData, index, param)
+                    this.alertAddSuccess()
+                })
+                .catch((errors) => {
+                    param.errors = errors.errors
+                    param.uploaded = false
+                    this.$set(this.rowData, index, param)
+                    this.toastError(errors.message)
+                    this.progressVariant = 'danger'
+                })
         }
     }
 }
-</script>>
+</script>
+>
 
 <style>
 .uploaded {

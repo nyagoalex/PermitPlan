@@ -17,6 +17,8 @@ import VueSweetalert2 from 'vue-sweetalert2'
 
 import myMixin from '@/mixins/mixin.js'
 
+import VueLazyload from 'vue-lazyload'
+
 Vue.use(VueSweetalert2)
 
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -27,6 +29,16 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuelidate)
 Vue.use(require('vue-moment'))
+
+const loadimage = require('@/assets/image/loading.gif')
+const errorimage = require('@/assets/image/error.png')
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    error: errorimage,
+    loading: loadimage,
+    attempt: 1
+})
+
 Vue.config.productionTip = false
 
 const subdir = () => {
