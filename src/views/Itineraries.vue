@@ -275,7 +275,6 @@ export default {
         changeDateRange(range) {
             this.filters.start_date = this.$moment(range.startDate).format('YYYY-MM-DD')
             this.filters.end_date = this.$moment(range.endDate).format('YYYY-MM-DD')
-            console.log()
             this.getItineraries()
         },
         clearFilters() {

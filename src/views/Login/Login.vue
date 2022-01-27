@@ -72,12 +72,11 @@ export default {
             loading: false,
             returnUrl: '',
             error: '',
-            registerUrl: process.env.VUE_APP_PROTOCOL + process.env.VUE_APP_DOMAIN + ':8081/register'
+            registerUrl: process.env.VUE_APP_PROTOCOL + process.env.VUE_APP_DOMAIN + ':8001/register'
         }
     },
     created() {
         // reset login status
-        console.log('login created')
         const loggedIn = localStorage.getItem('user')
         if (loggedIn) {
             const http = this.$http

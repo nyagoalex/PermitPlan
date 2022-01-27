@@ -91,14 +91,10 @@ export default {
             this.$http.get('/permit-types')
                 .then(permitCosts => {
                     this.permit_costs = permitCosts.data.data
-                    // console.log('after')
                     return this.permit_costs
                 })
                 .catch(function (error) {
                     console.log(error)
-                    // console.log(error.response.status)
-                    // this.error = error.response
-                    // this.loading = false
                 })
         }
     },

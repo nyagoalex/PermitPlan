@@ -102,7 +102,6 @@ export default {
             }
         },
         getPhotoUrl(filename) {
-            // console.log(1)
             return (
                 process.env.VUE_APP_PROTOCOL +
                 process.env.VUE_APP_APIURL +

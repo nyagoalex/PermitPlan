@@ -22,7 +22,6 @@ export default {
 }
 
 function logout(http) {
-    console.log('logout')
     http.post('/auth/logout')
         .finally(function () {
             localStorage.clear()

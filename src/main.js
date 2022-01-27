@@ -136,18 +136,6 @@ Vue.filter('moneyFormat', function (money) {
 })
 
 new Vue({
-    created() {
-        console.log('Component is created')
-        // var host = window.location.hostname
-        // host = host.replace('www.', '') // remove www
-        // var domain = 'localhost'
-        // var subdir = host.split('.')[0]
-        // subdir = (subdir === domain) ? null : subdir
-        // alert(subdir)
-    },
-    mounted() {
-        console.log('Component is mounted')
-    },
     router,
     render: h => h(App)
 }).$mount('#app')

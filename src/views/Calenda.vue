@@ -40,7 +40,6 @@ export default {
                     } else if (obj.status === 'cancelled') {
                         status = '<span class="badge badge-danger" style="font-size:12px;">Cancelled</span>'
                     }
-                    console.log(args)
                     new BPopover({
                         propsData: {
                             title: 'Booking Details',
