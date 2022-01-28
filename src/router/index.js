@@ -144,6 +144,7 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
+    base: '/dist/',
     routes: routes
 })
 
@@ -152,7 +153,7 @@ router.beforeEach((to, from, next) => {
     const publicPages = ['Login', 'Register']
     const authRequired = !publicPages.includes(to.name)
     const loggedIn = localStorage.getItem('user')
-
+    console.log(publicPages)
     if (authRequired && !loggedIn) {
         return next({
             path: '/login',
