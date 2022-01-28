@@ -150,16 +150,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
-    // const publicPages = ['Login', 'Register']
-    // const authRequired = !publicPages.includes(to.name)
-    // const loggedIn = localStorage.getItem('user')
-    // console.log(publicPages)
-    // if (authRequired && !loggedIn) {
-    //     return next({
-    //         path: '/login'
-    //         // query: { returnUrl: to.path }
-    //     })
-    // }
+    const publicPages = ['Login', 'Register']
+    const authRequired = !publicPages.includes(to.name)
+    const loggedIn = localStorage.getItem('user')
+    if (authRequired && !loggedIn) {
+        return next({
+            path: '/login',
+            query: { returnUrl: to.path }
+        })
+    }
 
     next()
 })
