@@ -47,7 +47,7 @@ const subdir = () => {
     var domain = process.env.VUE_APP_DOMAIN
     var subdir = host.split('.')[0]
     subdir = (subdir === domain) ? '' : subdir + '.'
-    return process.env.VUE_APP_PROTOCOL + subdir
+    return process.env.VUE_APP_PROTOCOL + 'api' + subdir
 }
 
 // axios.defaults.baseURL = process.env.VUE_APP_APIURL
