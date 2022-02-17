@@ -4,7 +4,7 @@
 
     namespace App\Jobs;
 
-    use App\Helpers\CPANEL;
+    use App\San\CPANEL;
     use Stancl\Tenancy\Database\DatabaseManager;
     use Stancl\Tenancy\Events\CreatingDatabase;
     use Stancl\Tenancy\Events\DatabaseCreated;
