@@ -16,11 +16,10 @@ return [
      *
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
-    'central_domains' => [
+    'central_domains' => array_merge([
         '127.0.0.1',
         'localhost',
-        'safariplan.lacel.tech',
-    ],
+    ], explode(',', env('MY_ARRAY_VALUE'))),
 
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.
@@ -51,8 +50,8 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant',
-        'suffix' => '',
+        'prefix' =>  env('DATABASE_PREFIX', 'tenant'),
+        'suffix' => '_safariplan',
 
         /**
          * TenantDatabaseManagers are classes that handle the creation & deletion of tenant databases.

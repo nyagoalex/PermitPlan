@@ -23,7 +23,7 @@ class RegisterTenantController extends Controller
     {
         DB::beginTransaction();
         $data = $request->validated();
-        // dd($data);
+
         $tenant = Tenant::create([
             'id' => $data['company_name'],
         ]);
@@ -39,11 +39,11 @@ class RegisterTenantController extends Controller
             'active' => true,
             'email' => $data['email']
         ];
-        
+
         $tenant->run(function () use ($user){
             User::create($user);
         });
-        Artisan::call("tenants:seed --tenants=".$data['company_name']);
+//        Artisan::call("tenants:seed --tenants=".$data['company_name']);
         DB::commit();
 
         return response()->json([ 'data' => $tenant->domains()->first('domain')]);

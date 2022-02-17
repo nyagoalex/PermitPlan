@@ -12,19 +12,23 @@ use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
+use App\Jobs\CreateDatabase as CustomCreateDatabase;
+
 
 class TenancyServiceProvider extends ServiceProvider
 {
     public function events()
     {
+        $creatDB = (app()->environment(['local', 'staging'])) ? Jobs\CreateDatabase::class :
+            CustomCreateDatabase::class;
         return [
             // Tenant events
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
                 JobPipeline::make([
-                    Jobs\CreateDatabase::class,
+                    $creatDB,
                     Jobs\MigrateDatabase::class,
-                    // Jobs\SeedDatabase::class,
+                     Jobs\SeedDatabase::class,
 
                     // Your own jobs to prepare the tenant.
                     // Provision API keys, create S3 buckets, anything you want!
