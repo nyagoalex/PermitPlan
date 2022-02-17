@@ -46,7 +46,7 @@ const subdir = () => {
     host = host.replace('www.', '') // remove www
     var domain = process.env.VUE_APP_DOMAIN
     var subdir = host.split('.')[0]
-    subdir = (subdir === domain) ? '' : subdir + '.'
+    subdir = (subdir === domain.split('.')[0]) ? '' : subdir + '.'
     return process.env.VUE_APP_PROTOCOL + subdir
 }
 

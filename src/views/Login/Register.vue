@@ -192,7 +192,7 @@ export default {
                         timer: 1500
                     }).then(() => {
                         const domain = response.data.data.domain
-                        window.location = process.env.VUE_APP_PROTOCOL + domain + '.' + process.env.VUE_APP_DOMAIN_PORT + '/login'
+                        window.location = process.env.VUE_APP_PROTOCOL + domain + '.' + process.env.VUE_APP_DOMAIN + '/login'
                     })
                 })
                 .catch(errors => {
