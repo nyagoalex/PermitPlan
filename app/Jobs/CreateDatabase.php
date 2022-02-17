@@ -4,7 +4,6 @@
 
     namespace App\Jobs;
 
-    use App\San\CPANEL;
     use Stancl\Tenancy\Database\DatabaseManager;
     use Stancl\Tenancy\Events\CreatingDatabase;
     use Stancl\Tenancy\Events\DatabaseCreated;
@@ -28,20 +27,10 @@
 
         protected function createDBWithCpanel()
         {
-            // Instantiate the CPANEL object.
-            $cpanel = new CPANEL();// Connect to cPanel - only do this once.
+            $createDB = "uapi Mysql create_database name=".$this->tenant;
+            $userPriv = "uapi Mysql set_privileges_on_database user=".config('database.connections.mysql.username')." database=".$this->tenant." privileges=ALL%20PRIVILEGES";
 
-            $cpanel->uapi('Mysql', 'create_database',  ['name' => $this->tenant]);
-
-             $cpanel->uapi(
-                'Mysql', 'set_privileges_on_database',
-                array(
-                    'user'       => config('database.connections.mysql.username'),
-                    'database'   => $this->tenant,
-                    'privileges' => 'ALL PRIVILEGES',
-                )
-            );
-
-            $cpanel->end(); // Disconnect from cPanel - only do this once.
+            shell_exec($createDB);
+            shell_exec($userPriv);
         }
     }
