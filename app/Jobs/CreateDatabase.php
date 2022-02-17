@@ -4,9 +4,7 @@
 
     namespace App\Jobs;
 
-    // Instantiate the CPANEL object.
-    require_once '/usr/local/cpanel/php/cpanel.php';
-
+    use App\Helpers\CPANEL;
     use Stancl\Tenancy\Database\DatabaseManager;
     use Stancl\Tenancy\Events\CreatingDatabase;
     use Stancl\Tenancy\Events\DatabaseCreated;
@@ -30,7 +28,7 @@
 
         protected function createDBWithCpanel()
         {
-
+            // Instantiate the CPANEL object.
             $cpanel = new CPANEL();// Connect to cPanel - only do this once.
 
             $cpanel->uapi('Mysql', 'create_database',  ['name' => $this->tenant]);
