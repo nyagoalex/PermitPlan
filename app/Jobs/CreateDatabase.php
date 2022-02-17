@@ -27,8 +27,9 @@
 
         protected function createDBWithCpanel()
         {
-            $createDB = "uapi Mysql create_database name=".$this->tenant;
-            $userPriv = "uapi Mysql set_privileges_on_database user=".config('database.connections.mysql.username')." database=".$this->tenant." privileges=ALL%20PRIVILEGES";
+            $database = config('tenancy.database.prefix').$this->tenant->id.config('tenancy.database.suffix');
+            $createDB = "uapi Mysql create_database name=".$database;
+            $userPriv = "uapi Mysql set_privileges_on_database user=".config('database.connections.mysql.username')." database=".$database." privileges=ALL%20PRIVILEGES";
 
             shell_exec($createDB);
             shell_exec($userPriv);
