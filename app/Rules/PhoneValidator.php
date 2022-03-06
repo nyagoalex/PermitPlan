@@ -26,7 +26,7 @@ class PhoneValidator implements Rule
     public function passes($attribute, $value)
     {
            // Validates Phone Number
-
+        return true;
            $pattern = '/^256[0-9]{9}+$/';
            if (!empty($value)) {
                if (preg_match($pattern, $value)) {

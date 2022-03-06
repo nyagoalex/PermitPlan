@@ -46,7 +46,6 @@ class SettingController extends Controller
         DB::beginTransaction();
         $this->validateData();
         $logo = $this->uploadFile();
-        
         $settings = Setting::first();
         $settings->update([
             'logo' => $logo
@@ -73,7 +72,7 @@ class SettingController extends Controller
                 function ($constraint) {
                     $constraint->aspectRatio();
                 }
-            )->encode('jpg', 80) // Encodes image to jpg with 80% quality
+            )->encode('png', 80) // Encodes image to jpg with 80% quality
             ->encode('data-url'); // encode image to base64
             return  $image->getEncoded(); // return string
         }
