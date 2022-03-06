@@ -2,6 +2,18 @@
 
 <template>
     <div class="bg-white text-left mt-3 mx-4">
+        <div v-if="loading" class="my-5 text-center"><b-icon icon="arrow-clockwise" animation="spin" font-scale="4"></b-icon>Loading ...</div>
+    <div v-else-if="!activities.length" class="my-5 text-center">
+        <b-button
+                    @click="newActivityModal"
+                    variant="btn btn-outline-success"
+                    size="lg"
+                    >+ Add an activity</b-button
+                >
+
+            <h2 class="text-muted mt-5">NO ACTIVITIES ADDED YET</h2>
+        </div>
+    <div v-else>
         <b-table
             class="acc-tb"
             :striped="true"
@@ -76,6 +88,7 @@
                 @input="getActivities(current_page)"
             ></b-pagination>
         </div>
+    </div>
         <AddActivity v-bind:activity="activity" v-bind:mode="mode" />
     </div>
 </template>
@@ -122,7 +135,9 @@ export default {
             mode: '',
             current_page: process.env.VUE_APP_CURRENTPAGE,
             per_page: process.env.VUE_APP_PERPAGE,
-            total: process.env.VUE_APP_TOTALROWS
+            total: process.env.VUE_APP_TOTALROWS,
+            loading: false
+
         }
     },
     components: {
@@ -130,6 +145,7 @@ export default {
     },
     methods: {
         getActivities(page = 1) {
+            this.loading = true
             const filters = this.filters
             filters.page = page
             this.$http
@@ -142,6 +158,7 @@ export default {
                     this.current_page = meta.current_page
                     this.per_page = meta.per_page
                     this.total = meta.total
+                    this.loading = false
                 })
         },
         deleteActivity(id) {

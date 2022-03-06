@@ -22,7 +22,7 @@
 
                 <div class="form-group">
                     <label>Contact</label>
-                    <input type="number" class="form-control" v-model="agent.phone" placeholder="256 ...." :class="{ 'is-invalid': errors.phone}">
+                    <input type="tel" v-maska="'+(###) ### ###-###'" class="form-control" v-model="agent.phone" placeholder="256 ...." :class="{ 'is-invalid': errors.phone}">
                     <ul class="list-unstyled invalid-feedback" v-if="errors.phone">
                         <li v-for="(error) in errors.phone" :key="error">{{ error }}</li>
                     </ul>

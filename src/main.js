@@ -18,7 +18,9 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import myMixin from '@/mixins/mixin.js'
 
 import VueLazyload from 'vue-lazyload'
+import Maska from 'maska'
 
+Vue.use(Maska)
 Vue.use(VueSweetalert2)
 
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

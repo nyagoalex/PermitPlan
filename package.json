@@ -38,6 +38,7 @@
     "lg-thumbnail": "^1.2.1",
     "lg-zoom": "^1.2.1",
     "lightgallery": "^1.8.2",
+    "maska": "^1.5.0",
     "tailwindcss": "^1.4.6",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",

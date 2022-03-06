@@ -10,7 +10,7 @@
                 </ul>
             </div>
             <div class="form-group col-md-6">
-                <label>Vehicle Reg.Number</label>
+                <label>vehicle identification</label>
                 <input type="text" class="form-control" v-model="vehicle.reg_no" :class="{ 'is-invalid': errors.reg_no}">
                 <ul class="list-unstyled invalid-feedback" v-if="errors.reg_no">
                     <li v-for="(error) in errors.reg_no" :key="error">{{ error }}</li>
@@ -77,7 +77,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Cost Per Day (USD)</label>
-                <input type="text" placeholder="300" class="form-control" v-model="vehicle.cost_per_day" :class="{ 'is-invalid': errors.cost_per_day}">
+                <input type="number" placeholder="300" class="form-control" v-model="vehicle.cost_per_day" :class="{ 'is-invalid': errors.cost_per_day}">
                 <ul class="list-unstyled invalid-feedback" v-if="errors.cost_per_day">
                     <li v-for="(error) in errors.cost_per_day" :key="error">{{ error }}</li>
                 </ul>

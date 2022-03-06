@@ -1,8 +1,7 @@
 <!-- @format -->
 
 <template>
-    <b-modal id="lodge-photo-modal" title="Add Photos" size="lg">
-        {{ rowData }}
+    <b-modal id="lodge-photo-modal" title="Add Photos" size="lg" @hide="hide()">
         <input
             type="file"
             accept="image/*"
@@ -124,10 +123,18 @@ export default {
             files: [],
             rowData: [],
             uploadPercentage: 0,
-            progressVariant: 'success'
+            progressVariant: 'success',
+            photo_added: false
         }
     },
+    props: {
+        hidingModal: Function
+    },
     methods: {
+        hide() {
+            this.hidingModal(this.photo_added)
+            this.photo_added = false
+        },
         preview(file) {
             return URL.createObjectURL(file)
         },
@@ -166,6 +173,7 @@ export default {
                     param.errors = []
                     this.$set(this.rowData, index, param)
                     this.alertAddSuccess()
+                    this.photo_added = true
                 })
                 .catch((errors) => {
                     param.errors = errors.errors

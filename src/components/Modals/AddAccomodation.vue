@@ -19,7 +19,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label>Phone Number</label>
-                <input type="text" class="form-control" v-model="lodge.phone" :class="{ 'is-invalid': errors.phone}">
+                <input type="tel" v-maska="'+(###) ### ###-###'" class="form-control" v-model="lodge.phone" :class="{ 'is-invalid': errors.phone}">
                 <ul class="list-unstyled invalid-feedback" v-if="errors.phone">
                     <li v-for="(error) in errors.phone" :key="error">{{ error }}</li>
                 </ul>
@@ -56,7 +56,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Contracted Rate (%)</label>
-                <input type="text" class="form-control" placeholder="20" min='0' max='100' v-model="lodge.contracted_rating" :class="{ 'is-invalid': errors.contracted_rating}">
+                <input type="number" class="form-control" placeholder="20" min='0' max='100' v-model="lodge.contracted_rating" :class="{ 'is-invalid': errors.contracted_rating}">
                 <ul class="list-unstyled invalid-feedback" v-if="errors.contracted_rating">
                     <li v-for="(error) in errors.contracted_rating" :key="error">{{ error }}</li>
                 </ul>

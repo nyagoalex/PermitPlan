@@ -385,7 +385,7 @@ export default {
 
 .form-control {
     color: #4a5568;
-    font-size: 8px;
+    font-size: 0.875rem;
     transition: all .2s ease;
 }
 </style>

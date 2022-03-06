@@ -242,6 +242,7 @@ export default {
 .signup-form .form-control {
     min-height: 48px;
     box-shadow: none !important;
+    font-size: 0.875rem;
 }
 
 .signup-form input[type="checkbox"] {

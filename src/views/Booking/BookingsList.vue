@@ -1,5 +1,17 @@
 <template>
     <b-container class="bg-white text-left mt-3" fluid>
+             <div v-if="loading" class="my-5 text-center"><b-icon icon="arrow-clockwise" animation="spin" font-scale="4"></b-icon>Loading ...</div>
+    <div v-else-if="!bookings.length" class="my-5 text-center">
+        <b-button
+                    v-b-modal.new-booking
+                    variant="btn btn-outline-success"
+                    size="lg"
+                    >+ Add a booking</b-button
+                >
+
+            <h2 class="text-muted mt-5">NO BOOKINGS ADDED YET</h2>
+        </div>
+    <div v-else>
         <b-table :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="bookings" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" @row-clicked="onRowClicked" class="acc-tb" sticky-header>
             <template v-slot:table-caption>
                 <b-row>
@@ -48,6 +60,7 @@
                 <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
             <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getBookings(current_page)"></b-pagination>
         </div>
+    </div>
     </b-container>
 </template>
 
@@ -112,7 +125,8 @@ export default {
             mode: '',
             current_page: process.env.VUE_APP_CURRENTPAGE,
             per_page: process.env.VUE_APP_PERPAGE,
-            total: process.env.VUE_APP_TOTALROWS
+            total: process.env.VUE_APP_TOTALROWS,
+            loading: false
         }
     },
     computed: {
@@ -122,6 +136,7 @@ export default {
     },
     methods: {
         getBookings(page = 1) {
+            this.loading = true
             const filters = this.filters
             filters.page = page
             this.$http.get('/bookings', {
@@ -132,6 +147,7 @@ export default {
                 this.current_page = meta.current_page
                 this.per_page = meta.per_page
                 this.total = meta.total
+                this.loading = false
             })
         },
         onRowClicked(item, index, event) {

@@ -1,5 +1,17 @@
 <template>
     <div class="bg-white text-left mt-3 mx-4">
+            <div v-if="loading" class="my-5 text-center"><b-icon icon="arrow-clockwise" animation="spin" font-scale="4"></b-icon>Loading ...</div>
+    <div v-else-if="!agents.length" class="my-5 text-center">
+        <b-button
+                    @click="newAgentModal"
+                    variant="btn btn-outline-success"
+                    size="lg"
+                    >+ Add an agent</b-button
+                >
+
+            <h2 class="text-muted mt-5">NO AGENTS ADDED YET</h2>
+        </div>
+    <div v-else>
         <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="agents" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)">
             <template v-slot:table-caption>
                 <b-row>
@@ -39,8 +51,8 @@
                     <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
                     <b-col class="small-time">Added on: {{row.item.created_at}}<br> Edited on: {{row.item.updated_at}}</b-col>
                     <b-col class="text-center">
-                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.id)" class="mr-4">Deactivate</b-button>
-                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.id)" class="mr-4">Activate</b-button>
+                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.item.id)" class="mr-4">Deactivate</b-button>
+                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.item.id)" class="mr-4">Activate</b-button>
                         <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
                         <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
                     </b-col>
@@ -52,6 +64,7 @@
                 <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
             <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getAgents(current_page)"></b-pagination>
         </div>
+    </div>
         <AddAgent v-bind:agent="agent" v-bind:mode="mode" />
     </div>
 </template>
@@ -105,7 +118,8 @@ export default {
             mode: '',
             current_page: process.env.VUE_APP_CURRENTPAGE,
             per_page: process.env.VUE_APP_PERPAGE,
-            total: process.env.VUE_APP_TOTALROWS
+            total: process.env.VUE_APP_TOTALROWS,
+            loading: false
         }
     },
     components: {
@@ -113,6 +127,7 @@ export default {
     },
     methods: {
         getAgents(page = 1) {
+            this.loading = true
             const filters = this.filters
             filters.page = page
             this.$http.get('/agents', {
@@ -123,6 +138,7 @@ export default {
                 this.current_page = meta.current_page
                 this.per_page = meta.per_page
                 this.total = meta.total
+                this.loading = false
             })
         },
         deleteAgent(id) {

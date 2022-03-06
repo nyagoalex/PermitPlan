@@ -1,5 +1,17 @@
 <template>
 <div class="bg-white text-left mt-3 mx-4">
+           <div v-if="loading" class="my-5 text-center"><b-icon icon="arrow-clockwise" animation="spin" font-scale="4"></b-icon>Loading ...</div>
+    <div v-else-if="!guides.length" class="my-5 text-center">
+        <b-button
+                    v-b-modal.new-guide
+                    variant="btn btn-outline-success"
+                    size="lg"
+                    >+ Add a guide</b-button
+                >
+
+            <h2 class="text-muted mt-5">NO GUIDES ADDED YET</h2>
+        </div>
+    <div v-else>
     <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="guides" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)">
         <template v-slot:table-caption>
             <b-row>
@@ -57,6 +69,7 @@
         <label>Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
             <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b></label>
         <b-pagination class="float-right" v-model="current_page" :total-rows="total" :per-page="per_page" last-number @input="getGuides(current_page)"></b-pagination>
+    </div>
     </div>
     <AddGuide />
     <GuideDetails v-if="guide" :guide="guide" />
@@ -116,7 +129,8 @@ export default {
             guide: false,
             current_page: process.env.VUE_APP_CURRENTPAGE,
             per_page: process.env.VUE_APP_PERPAGE,
-            total: process.env.VUE_APP_TOTALROWS
+            total: process.env.VUE_APP_TOTALROWS,
+            loading: false
         }
     },
     components: {
@@ -125,6 +139,7 @@ export default {
     },
     methods: {
         getGuides(page = 1) {
+            this.loading = true
             const filters = this.filters
             filters.page = page
             this.$http.get('/guides', {
@@ -135,6 +150,7 @@ export default {
                 this.current_page = meta.current_page
                 this.per_page = meta.per_page
                 this.total = meta.total
+                this.loading = false
             })
         },
         deleteGuides(id) {

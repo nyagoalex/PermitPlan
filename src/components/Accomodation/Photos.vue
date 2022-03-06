@@ -43,7 +43,7 @@
                 >
             </div>
         </div>
-        <AddLodgePhotos />
+        <AddLodgePhotos  :hidingModal="hidingModal"/>
     </b-container>
 </template>
 
@@ -67,7 +67,7 @@ export default {
             errors: {},
             photos: [],
             next_photo_link: 1,
-            photo_busy: false
+            photo_added: false
         }
     },
     components: {
@@ -77,9 +77,8 @@ export default {
         infiniteScroll
     },
     methods: {
-        async getphotos() {
-            if (this.next_photo_link) {
-                this.photo_busy = true
+        async getphotos(bypass = false) {
+            if (this.next_photo_link || bypass) {
                 const filters = {
                     page: this.next_photo_link
                 }
@@ -98,7 +97,6 @@ export default {
                     .then((response) => {
                         $('#lightgallery').lightGallery()
                     })
-                this.photo_busy = false
             }
         },
         getPhotoUrl(filename) {
@@ -109,10 +107,11 @@ export default {
                 filename
             )
         },
-        addPhoto() {
-            this.photos.push({
-                name: 'hhhhh'
-            })
+        hidingModal(photoAdded) {
+            if (photoAdded) {
+                this.photos = []
+                this.getphotos(true)
+            }
         }
     },
     mounted() {
