@@ -44,7 +44,7 @@
                 >
             </b-col>
         </b-row>
-        <GeneralDetails v-if="after_fetch" :itinerary="itinerary" />
+        <GeneralDetails v-if="after_fetch" :itinerary="itinerary" :bookingDate="booking.departure_date" />
 
         <b-row class="mt-2">
             <b-col>

@@ -233,7 +233,7 @@ export default {
         total_amount: function () {
             return (
                 this.sel_activity.cost_per_person *
-                ((this.sel_activity.adults ?? 0) + (this.sel_activity.children ?? 0))
+                (parseInt(this.sel_activity.adults ?? 0) + parseInt(this.sel_activity.children ?? 0))
             )
         }
     }

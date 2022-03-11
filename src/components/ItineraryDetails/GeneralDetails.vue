@@ -15,7 +15,7 @@
                     class="to-scroll"
                 >
                     <div
-                        class="my-1"
+                        class="my-1 d-flex"
                         v-for="(day, index) in itinerary.days"
                         :key="index"
                         :item="day"
@@ -24,14 +24,14 @@
                         <b-button
                             pill
                             size="sm"
-                            class="w-75"
+                            class="w-75 d-flex justify-content-between"
                             :variant="
                                 sel_day_index === index
                                     ? 'secondary'
                                     : 'outline-secondary'
                             "
                             @click="daySelect(index)"
-                            >Day {{ day.priority }}
+                            ><span>Day {{ day.priority }}</span> <span>{{$moment(bookingDate).add(day.priority, 'days').format('DD-MMM-YYYY')}}</span>
                         </b-button>
                         <b-button variant="link">
                             <b-icon
@@ -322,7 +322,8 @@ export default {
         }
     },
     props: {
-        itinerary: Object
+        itinerary: Object,
+        bookingDate: String
     },
     components: {
         draggable,
