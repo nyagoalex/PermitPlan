@@ -77,7 +77,7 @@ class BookingController extends Controller
         $order_column = $this->getOrderColumn("number");
         $query  = Booking::query();
         $query->whereIn('status', ['confirmed', 'tentative']);
-        
+
         $bookings = $query->orderBy($order_column, $sort)->get();
         return BookingResource::collection($bookings);
     }
@@ -108,7 +108,7 @@ class BookingController extends Controller
      */
     public function show($booking_id)
     {
-        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests')->findOrFail($booking_id);
+        $booking = Booking::with('permits', 'permits.permitType', 'permits.sector', 'user', 'agent', 'payments', 'payments.user', 'guests', 'guides')->findOrFail($booking_id);
         return new BookingSingleResource($booking);
     }
 

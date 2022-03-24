@@ -30,7 +30,7 @@ class VehicleController extends Controller
         });
         $query->search(request('search'));
         $vehicle = $query->orderBy($order_column, $sort)->paginate($per_page);
-        
+
         return VehicleResource::collection($vehicle);
     }
 
@@ -47,7 +47,6 @@ class VehicleController extends Controller
         $data = $this->validateData();
         $data['code'] =$this->nextNumber(Vehicle::query(), 'code', 'VH');
         $vehicle = Vehicle::create($data);
-        DB::commit();
         return new VehicleResource($vehicle);
     }
 
@@ -100,7 +99,7 @@ class VehicleController extends Controller
         $request = Request();
         // $unique_code = $request->isMethod('post') ? 'unique:vehicles' : "unique:vehicles,code,". $request->route('vehicle_id');
         $unique_reg_no = $request->isMethod('post') ? 'unique:vehicles' : "unique:vehicles,reg_no,". $request->route('vehicle_id');
-        
+
         return $request->validate([
             'reg_no' => "required|string|min:2|max:250|".$unique_reg_no,
             'color' => "required|string|min:2|max:250",

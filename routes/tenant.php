@@ -42,7 +42,7 @@ Route::middleware([
             Route::get('me', 'Auth\LoginController@profile')->name('auth.profile')->middleware(['auth:api']);
         }
     );
-    
+
     /**
      * all route that require user to be full authenticated
      */
@@ -52,7 +52,7 @@ Route::middleware([
             Route::post('logo', 'SettingController@logo')->name('settings.logo');
             Route::get('settings', 'SettingController@index')->name('settings.get');
             Route::patch('settings', 'SettingController@update')->name('settings.update');
-        
+
             Route::get('reports/permits-total', 'ReportController@permits')->name('reports.get');
             Route::group(
                 ['prefix' => 'users'],
@@ -67,7 +67,7 @@ Route::middleware([
                     Route::post('/changepassword', 'UserController@changePassword')->name('user.changePassword');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'sectors'],
                 function () {
@@ -78,7 +78,7 @@ Route::middleware([
                     Route::delete('/{sector_id}', 'SectorController@destroy')->name('sector.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'permit-types'],
                 function () {
@@ -87,7 +87,7 @@ Route::middleware([
                     Route::patch('/{permit_type_name}', 'PermitTypeController@update')->name('permit_type.update');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'agents'],
                 function () {
@@ -100,7 +100,7 @@ Route::middleware([
                     Route::post('/{agent_id}/activate', 'AgentController@activate')->name('agent.activate');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'guides'],
                 function () {
@@ -111,7 +111,7 @@ Route::middleware([
                     Route::delete('/{guide_id}', 'GuideController@destroy')->name('guide.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'vehicles'],
                 function () {
@@ -122,7 +122,7 @@ Route::middleware([
                     Route::delete('/{vehicle_id}', 'VehicleController@destroy')->name('vehicle.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'road-transfers'],
                 function () {
@@ -133,7 +133,7 @@ Route::middleware([
                     Route::delete('/{road_transfer_id}', 'RoadTransferController@destroy')->name('road_transfer.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'flight-transfers'],
                 function () {
@@ -144,7 +144,7 @@ Route::middleware([
                     Route::delete('/{flight_transfer_id}', 'FlightTransferController@destroy')->name('flight_transfer.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'activities'],
                 function () {
@@ -170,7 +170,7 @@ Route::middleware([
             );
 
             Route::get('/lodge-seasonal-prices', 'LodgeController@lodgeSeasonalPrices')->name('lodge.seasonal.prices');
-    
+
             Route::group(
                 ['prefix' => 'lodges/{lodge_id}/rooms'],
                 function () {
@@ -181,7 +181,7 @@ Route::middleware([
                     Route::delete('/{room_id}', 'Lodge\RoomController@destroy')->name('room.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'lodges/{lodge_id}/activities'],
                 function () {
@@ -192,7 +192,7 @@ Route::middleware([
                     Route::delete('/{activity_id}', 'Lodge\LodgeActivityController@destroy')->name('activity.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'lodges/{lodge_id}/facilities'],
                 function () {
@@ -203,7 +203,7 @@ Route::middleware([
                     Route::delete('/{facility_id}', 'Lodge\LodgeFacilityController@destroy')->name('facility.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'lodges/{lodge_id}/seasons'],
                 function () {
@@ -214,7 +214,7 @@ Route::middleware([
                     Route::delete('/{season_id}', 'Lodge\SeasonController@destroy')->name('season.delete');
                 }
             );
-    
+
             Route::group(
                 ['prefix' => 'rooms/{room_id}/costs'],
                 function () {
@@ -232,10 +232,8 @@ Route::middleware([
                     Route::delete('/{photo_id}', 'Lodge\LodgePhotoController@destroy')->name('lodge.photos.delete');
                 }
             );
-    
-            Route::group(
-                ['prefix' => 'bookings'],
-                function () {
+
+            Route::group(['prefix' => 'bookings'], function () {
                     Route::get('/', 'BookingController@index')->name('booking.all');
                     Route::get('/{booking_id}', 'BookingController@show')->name('booking.show');
                     Route::post('/', 'BookingController@store')->name('booking.create');
@@ -258,7 +256,7 @@ Route::middleware([
                             Route::delete('/{payment_id}', 'PaymentController@destroy')->name('booking.payment.delete');
                         }
                     );
-                    
+
                     Route::group(
                         ['prefix' => '{booking_id}/permits'],
                         function () {
@@ -269,7 +267,7 @@ Route::middleware([
                             Route::post('/{permit_id}/transfer', 'PermitController@transfer')->name('booking.permit.transfer');
                         }
                     );
-                    
+
                     Route::group(
                         ['prefix' => '{booking_id}/guests'],
                         function () {
@@ -279,7 +277,7 @@ Route::middleware([
                             Route::delete('/{guest_id}', 'Booking\GuestController@destroy')->name('booking.guest.delete');
                         }
                     );
-                    
+
                     Route::group(
                         ['prefix' => '{booking_id}/iteneraries'],
                         function () {
@@ -289,7 +287,7 @@ Route::middleware([
                             Route::delete('/{itenerary_id}', 'Booking\BookingIteneraryController@destroy')->name('booking.itenerary.delete');
                         }
                     );
-                    
+
                     Route::group(
                         ['prefix' => '{booking_id}/accomodations'],
                         function () {
@@ -299,7 +297,7 @@ Route::middleware([
                             Route::delete('/{itenerary_id}', 'Booking\BookingAccomodationController@destroy')->name('booking.accomodation.delete');
                         }
                     );
-                    
+
                     Route::group(
                         ['prefix' => '{booking_id}/activities'],
                         function () {
@@ -309,17 +307,23 @@ Route::middleware([
                             Route::delete('/{activity_id}', 'Booking\BookingActivityController@destroy')->name('booking.activity.delete');
                         }
                     );
-                    
+
                     Route::group(
-                        ['prefix' => '{booking_id}/guides'],
+                        ['prefix' => '{booking}/guides'],
                         function () {
-                            Route::get('/', 'Booking\BookingGuideController@index')->name('booking.guide.all');
-                            Route::post('/', 'Booking\BookingGuideController@store')->name('booking.guide.create');
-                            Route::patch('/{guide_id}', 'Booking\BookingGuideController@update')->name('booking.guide.update');
-                            Route::delete('/{guide_id}', 'Booking\BookingGuideController@destroy')->name('booking.guide.delete');
+                            Route::post('/{guide}', 'Booking\BookingGuideController@store')->name('booking.guide.create');
+                           Route::delete('/{guide}', 'Booking\BookingGuideController@destroy')->name('booking.guide.delete');
                         }
                     );
-                },
+
+                    Route::group(
+                        ['prefix' => '{booking}/vehicles'],
+                        function () {
+                            Route::post('/{vehicle}', 'Booking\BookingVehicleController@store')->name('booking.vehicle.create');
+                           Route::delete('/{vehicle}', 'Booking\BookingVehicleController@destroy')->name('booking.vehicle.delete');
+                        }
+                    );
+                });
                 # payments for items of booking
                 Route::group(
                     ['prefix' => 'item-payments/{type_model}/{id}'],
@@ -327,9 +331,9 @@ Route::middleware([
                         Route::post('/', 'ItemPaymentController@store')->name('booking.item.payment.create');
                         Route::get('/', 'ItemPaymentController@index')->name('booking.item.payment.all');
                     }
-                ),
-                Route::delete('/item-payments/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete'),
-                  
+                );
+                Route::delete('/item-payments/{payment_id}', 'ItemPaymentController@destroy')->name('booking.item.payment.delete');
+
                 Route::group(
                     ['prefix' => 'departure-tours'],
                     function () {
@@ -352,8 +356,8 @@ Route::middleware([
                             }
                         );
                     }
-                )
-            );
+                );
+
             Route::group(
                 ['prefix' => 'itineraries'],
                 function () {

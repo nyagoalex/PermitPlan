@@ -2,52 +2,37 @@
 
 namespace App\Http\Controllers\Booking;
 
+use App\Http\Resources\BookingGuideResource;
+use App\Http\Resources\GuideResource;
+use App\Models\Booking;
 use App\Models\BookingGuide;
+use App\Models\Guest;
+use App\Models\Guide;
+use App\Notifications\GuestNotification;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookingGuideController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Booking $booking, Guide $guide)
     {
-        //
+        #insert new user
+        $booking->guides()->syncWithoutDetaching($guide->id);
+        return GuideResource::collection($booking->guides);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BookingGuide  $bookingGuide
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, BookingGuide $bookingGuide)
+    public function destroy(Request $request, Booking $booking, Guide $guide)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\BookingGuide  $bookingGuide
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(BookingGuide $bookingGuide)
-    {
-        //
+        #insert new user
+        $booking->guides()->detach($guide->id);
+        return GuideResource::collection($booking->guides);
     }
 }

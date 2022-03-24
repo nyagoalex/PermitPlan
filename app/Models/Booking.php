@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Traits\Searchable;
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class Booking extends Model
 {
     use UsesUuid, Searchable, Notifiable;
-    
+
     public $searchable = [
         'number','ref','city', 'client_name'
     ];
@@ -47,6 +50,16 @@ class Booking extends Model
     public function guests()
     {
         return $this->hasMany(Guest::class);
+    }
+
+    public function guides(): BelongsToMany
+    {
+        return $this->belongsToMany(Guide::class);
+    }
+
+    public function vehicles(): BelongsToMany
+    {
+        return $this->belongsToMany(Vehicle::class);
     }
 
     public function agent()
