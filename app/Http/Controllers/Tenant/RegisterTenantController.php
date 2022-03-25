@@ -21,6 +21,7 @@ class RegisterTenantController extends Controller
      */
     public function __invoke(RegisterTenantRequest $request)
     {
+        ini_set('max_execution_time', 1000);
         DB::beginTransaction();
         $data = $request->validated();
 
