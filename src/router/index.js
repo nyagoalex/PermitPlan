@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import About from '@/views/About.vue'
 import Login from '@/views/Login/Login.vue'
-import Register from '@/views/Login/Register.vue'
 import Bookings from '@/views/Booking/BookingsList.vue'
 import BookingDetails from '@/views/Booking/Details.vue'
 import Settings from '@/views/Settings/Settings.vue'
@@ -44,11 +43,6 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
-    },
-    {
-        path: '/register',
-        name: 'Register',
-        component: Register
     },
     {
         path: '/bookings',
@@ -150,7 +144,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
-    const publicPages = ['Login', 'Register']
+    const publicPages = ['Login']
     const authRequired = !publicPages.includes(to.name)
     const loggedIn = localStorage.getItem('user')
     if (authRequired && !loggedIn) {

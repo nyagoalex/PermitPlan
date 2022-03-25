@@ -11,7 +11,7 @@ import navComponent from '@/components/nav.vue'
 export default {
     data() {
         return {
-            nav_allowed_routes: ['Login', 'Register', 'ItineraryPreview', 'NotFound', null]
+            nav_allowed_routes: ['Login', 'ItineraryPreview', 'NotFound', null]
         }
     },
     name: 'app',

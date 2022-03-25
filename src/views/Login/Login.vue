@@ -72,7 +72,7 @@ export default {
             loading: false,
             returnUrl: '',
             error: '',
-            registerUrl: process.env.VUE_APP_PROTOCOL + process.env.VUE_APP_DOMAIN + '/register'
+            registerUrl: 'https://safari-plan.com/register.php'
         }
     },
     created() {
