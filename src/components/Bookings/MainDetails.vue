@@ -367,7 +367,7 @@
                         </div>
                     </dd>
 
-                    <dt>Guide & Vehicle <i class="plus-icon"></i></dt>
+                    <dt>Guides <i class="plus-icon"></i></dt>
                     <dd>
                         <div class="contents">
                             <div class="mt-3 header-small pt-3 bg-white p-3">
@@ -380,8 +380,8 @@
                                     >+ Guide</b-button
                                 >
                                 <b-table
-                                    :items="booking_guide"
-                                    :fields="booking_guide_fields"
+                                    :items="booking.guides"
+                                    :fields="guide_fields"
                                     :striped="true"
                                     :responsive="true"
                                     no-border-collapse
@@ -397,7 +397,49 @@
                                             <b-button
                                                 size="sm"
                                                 class=""
-                                                @click="deleteGuest(row.item.id)"
+                                                @click="removeGuide(row.item.id)"
+                                                pill
+                                                variant="outline-danger"
+                                                >Remove</b-button
+                                            >
+                                        </div>
+                                    </template>
+                                </b-table>
+                            </div>
+                        </div>
+                    </dd>
+
+                    <dt>Vehicles <i class="plus-icon"></i></dt>
+                    <dd>
+                        <div class="contents">
+                            <div class="mt-3 header-small pt-3 bg-white p-3">
+                                <b-button
+                                    size="sm"
+                                    pill
+                                    variant="outline-dark"
+                                    class="float-right"
+                                    v-b-modal.allocate-vehicles-modal
+                                    >+ Vehicle</b-button
+                                >
+                                <b-table
+                                    :items="booking.vehicles"
+                                    :fields="vehicle_fields"
+                                    :striped="true"
+                                    :responsive="true"
+                                    no-border-collapse
+                                    sticky-header
+                                    sort-by="name"
+                                    sort-icon-left
+                                >
+                                    <template v-slot:cell(#)="data">
+                                        {{ data.index + 1 }}
+                                    </template>
+                                    <template v-slot:cell(action)="row">
+                                        <div>
+                                            <b-button
+                                                size="sm"
+                                                class=""
+                                                @click="removeVehicle(row.item.id)"
                                                 pill
                                                 variant="outline-danger"
                                                 >Remove</b-button
@@ -584,33 +626,6 @@
                 </template>
             </b-table>
         </b-modal>
-        <b-modal id="allocate-guides-modal" title="Allocate Guide" size="lg" hide-footer>
-            <b-table
-                :items="guides"
-                :fields="all_guides_fields"
-                :striped="true"
-                :responsive="true"
-                no-border-collapse
-                sticky-header
-                sort-icon-left
-            >
-                <template v-slot:cell(#)="data">
-                    {{ data.index + 1 }}
-                </template>
-                <template v-slot:cell(payment_date)="row"> {{ row.item.date }} </template>
-                <template v-slot:cell(paid_in_by)="row"> {{ row.item.user }} </template>
-                <template v-slot:cell(action)="row">
-                    <b-button
-                        size="sm"
-                        class=""
-                        @click="allocateGuide(row.item.id)"
-                        pill
-                        variant="outline-info"
-                        >Allocate</b-button
-                    >
-                </template>
-            </b-table>
-        </b-modal>
         <b-modal
             id="transfered-permits-modal"
             title="Transfered Permits"
@@ -677,6 +692,8 @@
             </b-table>
         </b-modal>
         <AddGuest :guest="guest" :mode="mode" />
+        <AllocateGuide v-if="booking.guides" :allocatedGuides="booking.guides.map(i => i.id)" />
+        <AllocateVehicle v-if="booking.vehicles" :allocatedVehicles="booking.vehicles.map(i => i.id)" />
         <ItemPayment :model_type="payment_type" :selected_modal="selected_modal" />
     </div>
 </template>
@@ -684,6 +701,8 @@
 <script>
 import $ from 'jquery'
 import AddGuest from '@/components/Bookings/Modals/AddGuest.vue'
+import AllocateGuide from '@/components/Bookings/Modals/AllocateGuide'
+import AllocateVehicle from '@/components/Bookings/Modals/AllocateVehicle'
 import ItemPayment from '@/components/Bookings/Modals/ItemPayment.vue'
 import infiniteScroll from 'vue-infinite-scroll'
 import { ModelSelect } from 'vue-search-select'
@@ -830,26 +849,7 @@ export default {
                     sortable: false
                 }
             ],
-            booking_guide_fields: [
-                // prettier-ignore
-                {
-                    key: '#',
-                    sortable: false
-                },
-                {
-                    key: 'name',
-                    sortable: true
-                },
-                {
-                    key: 'vehicle',
-                    sortable: true
-                },
-                {
-                    key: 'action',
-                    sortable: false
-                }
-            ],
-            all_guides_fields: [
+            guide_fields: [
                 // prettier-ignore
                 {
                     key: '#',
@@ -864,6 +864,14 @@ export default {
                     sortable: true
                 },
                 {
+                    key: 'cost_per_day',
+                    sortable: true
+                },
+                {
+                    key: 'status',
+                    sortable: true
+                },
+                {
                     key: 'experience',
                     sortable: true
                 },
@@ -872,18 +880,41 @@ export default {
                     sortable: false
                 }
             ],
-            booking_guide: [
+            vehicle_fields: [
                 // prettier-ignore
                 {
-                    name: 'name',
-                    vehicle: 'fgbjgf'
+                    key: '#',
+                    sortable: false
+                },
+                {
+                    key: 'full_name',
+                    sortable: true
+                },
+                {
+                    key: 'code',
+                    sortable: true
+                },
+                {
+                    key: 'cost_per_day',
+                    sortable: true
+                },
+                {
+                    key: 'status',
+                    sortable: true
+                },
+                {
+                    key: 'experience',
+                    sortable: true
+                },
+                {
+                    key: 'action',
+                    sortable: false
                 }
             ],
             guest: this.resetGuestModal(),
             guest_items: [],
             selected_permit: {},
             payment_types: [],
-            guides: [],
             payment_type: '',
             selected_modal: {},
             errors: {},
@@ -899,7 +930,9 @@ export default {
     components: {
         AddGuest,
         ItemPayment,
-        ModelSelect
+        ModelSelect,
+        AllocateGuide,
+        AllocateVehicle
     },
     props: {
         booking: Object
@@ -925,6 +958,20 @@ export default {
                 .get('/bookings/' + this.$route.params.id + '/guests')
                 .then((guest) => {
                     this.booking.guests = guest.data.data
+                })
+        },
+        getGuides() {
+            this.$http
+                .get('/bookings/' + this.$route.params.id + '/guides')
+                .then((guides) => {
+                    this.booking.guides = guides.data.data
+                })
+        },
+        getVehicles() {
+            this.$http
+                .get('/bookings/' + this.$route.params.id + '/vehicles')
+                .then((vehicles) => {
+                    this.booking.vehicles = vehicles.data.data
                 })
         },
         reschedule() {
@@ -1116,11 +1163,6 @@ export default {
                 }
             })
         },
-        getGuides() {
-            this.$http.get('/guides').then((guides) => {
-                this.guides = guides.data.data
-            })
-        },
         getBookingsExcept() {
             this.$http
                 .get('/bookings', {
@@ -1136,10 +1178,39 @@ export default {
                         }
                     })
                 })
+        },
+        removeGuide(guideId) {
+            this.ConfirmDelete().then((result) => {
+                if (result.value) {
+                    this.$http.delete('/bookings/' + this.$route.params.id + '/guides/' + guideId)
+                        .then(response => {
+                            this.alertAddSuccess()
+                            this.booking.guides = response.data.data
+                        })
+                        .catch(errors => {
+                            this.errors = errors.errors
+                            this.toastError(errors.message)
+                        })
+                }
+            })
+        },
+        removeVehicle(vehicleId) {
+            this.ConfirmDelete().then((result) => {
+                if (result.value) {
+                    this.$http.delete('/bookings/' + this.$route.params.id + '/vehicles/' + vehicleId)
+                        .then(response => {
+                            this.alertAddSuccess()
+                            this.booking.vehicles = response.data.data
+                        })
+                        .catch(errors => {
+                            this.errors = errors.errors
+                            this.toastError(errors.message)
+                        })
+                }
+            })
         }
     },
     mounted() {
-        this.getGuides()
         this.getBookingsExcept()
         $(document).ready(function () {
             var bodyEl = $('body')
