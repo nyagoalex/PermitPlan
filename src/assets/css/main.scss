@@ -1,0 +1,70 @@
+@import 'mixins';
+@import 'variables';
+@import 'typography';
+
+.card {
+    // @include shadow();
+    background-color: $light;
+    border: none !important;
+}
+
+.alink {
+    color: $primary !important;
+    margin: 16px 0;
+
+    &:hover {
+        text-decoration: underline !important;
+        cursor: pointer;
+        opacity: 1;
+    }
+}
+
+*.btn {
+    &.rounded {
+        border-radius: 40px !important;
+    }
+
+    &.btn-primary {
+        background-color: $primary !important;
+        color: #fff !important;
+        border-color: $primary !important;
+
+        &:hover {
+            background-color: $primary-dark;
+            color: #fff;
+            border-color: $primary-dark;
+        }
+    }
+
+    &.btn-outline-primary {
+        color: $primary !important;
+        border-color: $primary !important;
+        background: none;
+
+        &:hover {
+            background-color: $primary !important;
+            color: #fff !important;
+            border-color: $primary !important;
+        }
+    }
+
+
+}
+
+.top-nav {
+    border-bottom: 1px solid #eee;
+}
+
+
+
+
+.page-header {
+    padding: 16px;
+    // @include shadow;
+
+    .head-text {
+        font-size: 24px;
+        color: $dark;
+        font-weight: 700;
+    }
+}

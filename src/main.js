@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import Vuelidate from 'vuelidate'
+import './assets/css/main.scss'
 import axios from 'axios'
 import { authHeader } from '@/services'
 
@@ -40,7 +41,6 @@ Vue.use(VueLazyload, {
     loading: loadimage,
     attempt: 1
 })
-
 Vue.config.productionTip = false
 
 const subdir = () => {

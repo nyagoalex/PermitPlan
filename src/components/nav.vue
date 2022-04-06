@@ -6,7 +6,7 @@
             toggleable="lg"
             variant="faded"
             type="light"
-            class="bg-white shadow-lg"
+            class="bg-white shadow-lg- top-nav"
             style="max-height: 60px"
         >
             <b-navbar-brand
@@ -74,7 +74,8 @@
                 </b-nav-form>
                 <b-button
                     v-b-modal.new-booking
-                    variant="success"
+                    variant="primary"
+                    class="rounded"
                     style="max-height: 40px; padding: 0px 30px; font-size: 15px"
                     >+ Add Booking</b-button
                 >

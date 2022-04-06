@@ -1,6 +1,33 @@
 <template>
-    <div class="bg-light m-3 pt-5">
-        <b-row class="mx-0" align-v="end">
+    <div class="">
+        <div class="breadcrumbs bg-light py-1">
+              <b-breadcrumb class="py-0 px-3 mb-0" style="background-color:inherit;" :items="breadcrumb_items"></b-breadcrumb>
+        </div>
+        <div class="page-header">
+            <b-row class="mx-0 bg-white"  >
+            <b-col>
+                <div class="head-text text-left">
+                     <span >{{booking.client_name}}</span>
+                </div>
+                <span class="d-block text-left">{{booking.number}} | {{booking.ref}}</span>
+            </b-col>
+            <b-col col lg="auto text-left">
+                <label for="" class="m-0">Total Trip Cost</label>
+                <h5>${{booking.total_cost}}</h5>
+            </b-col>
+            <b-col col lg="auto">
+                <b-button size="md" disabled class="btn btn-outline-primary rounded mx-2" >
+                    <b-icon icon="reply"></b-icon>
+                    Share
+                </b-button>
+                <b-button size="md" class="btn btn-outline-primary rounded" v-b-modal.invoice-preview active>
+                    <b-icon icon="eye"></b-icon>
+                    Preview Invoice
+                </b-button>
+            </b-col>
+        </b-row>
+        </div>
+        <b-row class="mx-0 d-none" >
             <b-col>
                 <b-breadcrumb class="py-0 px-3 mb-0" style="background-color:inherit;" :items="breadcrumb_items"></b-breadcrumb>
             </b-col>
@@ -16,19 +43,6 @@
             <b-col v-if="booking.status == 'tentative'" class="text-right">
                 <b-button size="sm" pill variant="secondary" @click="cancel">Cancel</b-button>
                 <b-button size="sm" pill variant="success" class="mx-3" @click="confirm">Confirm</b-button>
-            </b-col>
-        </b-row>
-        <b-row class="mx-0" style="background-color:#e9ecef;" align-v="end">
-            <b-col>
-                <div class="pl-3 head-t p-2 text-left">
-                    {{booking.number}}<small>({{booking.ref}})</small> - <span style="font-size:26px;color:#666;">{{booking.client_name}}</span>
-                </div>
-            </b-col>
-            <b-col col lg="2">
-                <b-button size="md" pill variant="success" class="m-md-2" v-b-modal.invoice-preview active>
-                    <b-icon icon="eye"></b-icon>
-                    Preview Invoice
-                </b-button>
             </b-col>
         </b-row>
         <b-row class="mt-3 mx-0">
@@ -145,8 +159,5 @@ export default {
 </script>
 
 <style>
-.head-t {
-    font-size: 30px;
-    color: #687B6D;
-}
+
 </style>

@@ -1,0 +1,22 @@
+label {
+    font-weight: bold;
+    color: $dark;
+    font-size: 14px;
+
+}
+
+h5,
+h4,
+h3,
+h1,
+h2 {
+    margin: 0;
+}
+
+.text-primary {
+    color: $primary !important;
+}
+
+.text-accent {
+    color: $accent !important;
+}

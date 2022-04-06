@@ -3,37 +3,44 @@
 <template>
     <div class="col-md-3 pr-3 col-sm-12">
         <div class="pl-3">
-        <div class="card p-4">
-            <div class="row">
-                <div class="col">
-                    <label>Amount Paid</label>
-                    <h4>${{ booking.total_paid }}</h4>
+            <div
+                class="card mb-0 bg-b"
+                style="background-color: #f4f6f6; border: 1px solid #007a5a"
+            >
+                <div class="card-header" style="border-bottom: 1px solid #007a5a">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="h6" style="color: #007a5a; font-size: 18px"
+                                ><b>Trip Balance </b> </span
+                            ><span class="pl-2 text-danger" style="font-size: 25px"
+                                ><b>${{ booking.balance }}</b></span
+                            >
+                        </div>
+                    </div>
                 </div>
-                <div class="col border-left">
-                    <label>Balance</label>
-                    <h4>${{ booking.balance }}</h4>
-                </div>
-            </div>
+                <div class="card-body px-5">
+                    <div class="row align-items-center">
+                        <div class="col-sm-12">
                             <div
-                                class="progress-circle progress-lg mx-auto my-3"
+                                class="progress-circle progress-lg"
                                 id="progress-performance-1"
                                 data-progress="72"
                                 data-trailwidth="4"
                                 data-text="72%"
                                 data-textclass="h3"
-                                data-color="#2059AD;"
-                                style="position: relative; width:60%"
+                                data-color="#007a5a"
+                                style="position: relative"
                             >
                                 <svg viewBox="0 0 100 100" style="display: block">
                                     <path
                                         d="M 50,50 m 0,-46.5 a 46.5,46.5 0 1 1 0,93 a 46.5,46.5 0 1 1 0,-93"
-                                        stroke="#d8d8d8"
+                                        stroke="#dc3545"
                                         stroke-width="1"
                                         fill-opacity="0"
                                     ></path>
                                     <path
                                         d="M 50,50 m 0,-46.5 a 46.5,46.5 0 1 1 0,93 a 46.5,46.5 0 1 1 0,-93"
-                                        stroke="#2059AD;"
+                                        stroke="#007a5a"
                                         stroke-width="3"
                                         fill-opacity="0"
                                         style="
@@ -43,7 +50,7 @@
                                     ></path>
                                 </svg>
                                 <div
-                                    class="text-accent"
+                                    class=""
                                     style="
                                         position: absolute;
                                         left: 50%;
@@ -52,16 +59,35 @@
                                         margin: 0px;
                                         transform: translate(-50%, -50%);
                                         color: rgb(185, 119, 14);
-                                        font-size: 45px;
+                                        font-size: 55px;
                                     "
                                 >
                                     {{ perc_paid }}%
                                 </div>
                             </div>
-            <button class="btn btn-outline-primary w-auto rounded"><i class="uil uil-pen"></i> Add Payment</button>
-            <a class="alink">View Payment History</a>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" style="border-top: 1px solid #007a5a">
+                        <div class="col-6 text-center pt-3 px-0">
+                            <span class="mb-0 text-detail-bold"
+                                >${{ booking.total_cost }}</span
+                            >
+                            <br /><span class="text-sm">Total Cost</span>
+                        </div>
+                        <div
+                            class="col-6 text-center pt-3 px-0"
+                            style="border-left: 1px solid #007a5a"
+                        >
+                            <span class="mb-0 text-detail-bold"
+                                >${{ booking.total_paid }}</span
+                            >
+                            <br /><span class="text-sm">Total Paid</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-       </div>
 
         <div class="pl-3 pt-5">
             <div class="card">
