@@ -1,27 +1,32 @@
 <template>
+
 <div class="pt-3" style="background-color:#f6f9fc;">
 
 <div class="container-fluid">
 
-<div class="col-md-12 col-12 text-left" >
-    <div class="p-3" style="background-color:#e5edfc;border-radius:6px;">
-    <h4 style="font-weight:700;color: #676153;">
-   Good afternoon Edgar!</h4>
-    </div>
+<div class="col-md-12 col-12" style="background-color:#e5edfc;border-radius:6px;">
+    <div class="row" >
+        <div class="col-md-9 p-3 text-left" >
+        <h4 style="font-weight:700;color: #676153;">
+       Good afternoon Edgar!</h4>
+        </div>
+       <div class="col-md-3 p-3 pull-right">
+<h5>Date range picker</h5>
+  </div>
+       </div>
 </div>
 
 <div class="pt-3">
 <div class="container-fluid">
 
 <div class="row">
-
 <div  class="col-md-3 col-12">
     <div class="py-4 dash-item" style="">
     <div class="row">
         <div class="col-md-4 col-12">
             <div class="text-right pt-2">
             <b-icon icon="bookmark-check" font-scale="3" style="color:#456332;"></b-icon>
-            </div>    
+        </div>
         </div>
         <div class="col-md-8 col-12 text-left">
             <div class="">
@@ -39,7 +44,7 @@
         <div class="col-md-4 col-12">
             <div class="text-right pt-2">
              <b-icon icon="exclamation-diamond" font-scale="3" style="color:#456332;"></b-icon>
-            </div>    
+            </div>
         </div>
         <div class="col-md-8 col-12 text-left">
             <div class="">
@@ -56,7 +61,7 @@
         <div class="col-md-4 col-12">
             <div class="text-right pt-2">
              <b-icon icon="emoji-frown" font-scale="3" style="color:#c70039;"></b-icon>
-            </div>    
+            </div>
         </div>
         <div class="col-md-8 col-12 text-left">
             <div class="">
@@ -74,7 +79,7 @@
         <div class="col-md-4 col-12">
             <div class="text-right pt-2">
               <b-icon icon="people" animation="" font-scale="3" style="color:#456332;"></b-icon>
-            </div>    
+            </div>
         </div>
         <div class="col-md-8 col-12 text-left">
             <div class="">
@@ -125,5 +130,7 @@ export default {
     mounted() {
         this.getTotalPermits()
     }
+
 }
+
 </script>
