@@ -1,20 +1,34 @@
 <template>
-    <div class="row">
-        <div class="col-md-7 col-sm-12 p-5">
-            <div class="pt-5 ">
-                <h2 style="font-size:45px;color:#B03A2E;"><small class="float-left" style="font-size:28px;color:#7E5109;">Halo,</small><br> Tukwaniriza ku Safariplan</h2>
 
-                <hr>
+<div class="container-fluid " style="background-color:#001E2B;height:100vh;">
 
-                <span class="p-2 float-left" style="color:#7E5109;font-family:none;font-size:23px;"><i>simpliefied safari planning</i></span>
+<div class="">
+<div class="text-left" style="">
+<img alt="safari plan" style="width:200px;" src="@/assets/image/pplanw.png">
+</div>
+</div>
+<div class="container">
+    <div class="row py-0">
+        <div class="col-md-7 col-sm-12 p-5 text-left">
+            <div class="float-left py-5">
+                <br>
+                <h2 class="display-5" style="font-weight:800;color:#fff;">Halo,</h2>
+                <h2 class="pt-4" style="color:yellow;font-weight:800;font-size:40px;">Welcome to Destination Jungle Safari Planner</h2>
+                <div class="" style="border-top:2px solid #fff;"></div>
+                <span class="p-2 float-left" style="color:tomato;font-family:none;font-size:23px;"><i>simpliefied safari planning</i></span>
+
+                <br>
+
+                <div class="">
                 <p class="pt-5"><a href="http://www.lacel.tech" target="_blank" style="color:#95A5A6;">&copy;
-
                         {{ new Date().getFullYear() }} Lacel Techologies</a></p>
+                </div>
+
             </div>
 
         </div>
 
-        <div class="col-md-5 col-sm-12 text-center signup-form">
+        <div class="col-md-5 col-sm-12 text-center signup-form pt-3">
             <form @submit.prevent="handleSubmit" class="inner-form">
                 <img class="" src="@/assets/image/pplanw.png" alt="" width="150" height="55">
                 <h2 class="">sign in to your Account</h2>
@@ -30,7 +44,7 @@
                 <b-input-group class="mt-5">
                     <template v-slot:prepend>
                         <b-input-group-text>
-                            <b-icon class="text-success" icon="person-fill"></b-icon>
+                            <b-icon class="text-success" icon="lock"></b-icon>
                         </b-input-group-text>
                     </template>
                     <b-form-input type="password" v-model="password" name="password" :class="{ 'is-invalid': submitted && !password }" placeholder="password"></b-form-input>
@@ -42,16 +56,25 @@
                     </label>
                 </div>
                 <hr>
-                <div class="form-group">
+                <div class="form-group float-left">
                     <b-overlay :show="loading" rounded opacity="0.6" spinner-small class="d-inline-block">
-                        <button class="btn btn-success" style="padding:10px 45px;font-size:20px;" :disabled="loading">SignIn <b-icon icon="arrow-right"></b-icon></button>
+                        <button class="btn btn-success" style="padding:10px 45px;font-size:20px;border-radius:2px;" :disabled="loading">Sign in <b-icon icon="arrow-right"></b-icon></button>
                     </b-overlay>
                     <div v-if="error" class="alert alert-danger">{{error}}</div>
                 </div>
-                <div class="text-center">Create new Company? <a :href="registerUrl">Sign Up</a></div>
+                <br>
+                <br>
+                <br>
+                <div class="text-left">
+                    Create new Company?
+                     <a :href="registerUrl">Sign Up</a>
+                </div>
             </form>
         </div>
     </div>
+</div>
+</div>
+
 </template>
 
 <script>
@@ -153,9 +176,14 @@ export default {
 }
 
 .signup-form .form-control {
-    min-height: 48px;
     box-shadow: none !important;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    font-weight: 800;
+    border:1px solid #b5b0a1;
+    border-radius: 0.3125rem;
+    font-size: 1.125rem;
+    min-height: calc(1.3em + 1.625rem);
+    padding: 0.75rem 1rem;
 }
 
 .signup-form input[type="checkbox"] {
@@ -174,5 +202,11 @@ export default {
 .signup-form .inner-form a {
     color: #19aa8d;
     text-decoration: none;
+}
+
+.btn-oranges{
+    background-color:#E36049 ;
+    color: #fff;
+
 }
 </style>

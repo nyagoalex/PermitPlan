@@ -5,11 +5,25 @@
         <b-button
                     @click="newAgentModal"
                     variant="btn btn-outline-success"
-                    size="lg"
+                    size="md"
                     >+ Add an agent</b-button
                 >
+            <!-- <h2 class="text-muted mt-5">NO AGENTS ADDED YET</h2> -->
+<div class="container py-5" style="padding-left:100px;padding-right:100px;">
+                <div class="">
+                <div class="d-flex align-items-center rounded py-3 px-5 bg-info-light">
+                    <span class="svg-icon svg-icon svg-icon-3x svg-icon-warning me-5" style="">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mh-50px"><rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="orange"></rect><rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="orange"></rect><rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="orange"></rect>
+                </svg>
+                </span>
+                <div class="" style="font-size:20px;padding-left:10px;color: #8e887a;">
+                     No Agents have been added to your system. Please add Agents
+                </div>
 
-            <h2 class="text-muted mt-5">NO AGENTS ADDED YET</h2>
+                </div>
+                </div>
+                </div>
+
         </div>
     <div v-else>
         <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="agents" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="agent=>$set(agent, '_showDetails', !agent._showDetails)">

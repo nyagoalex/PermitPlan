@@ -1,8 +1,8 @@
 <template>
 <b-container fluid="md">
     <b-row>
-        <b-col><label class="float-left"> <strong> USERS </strong></label></b-col>
-        <b-col class='text-center mb-2'>
+        <b-col><label class="float-left"> <strong> Users </strong></label></b-col>
+        <b-col class='text-left mb-2'>
             <b-button pill variant="outline-success" v-b-modal.new-user>
                 <b-icon icon="person-plus-fill"></b-icon> add user
             </b-button>
@@ -30,15 +30,15 @@
         </b-col>
     </b-row>
     <div class="row pl-3">
-        <b-col v-for="(userItem, index) in users" :key="index" md='3' v-b-modal.user-details @click="user=userItem" class="m-4 user_card" style="background-color:#F5F9F7;">
+        <b-col v-for="(userItem, index) in users" :key="index" md='3' v-b-modal.user-details @click="user=userItem" class="m-4 user_card p-3" style="background-color: rgba(248,246,242,.3);border: 1px dashed #e8e5dd;border-radius:5px;">
             <b-row class="mb-2">
-                <b-col md='4' class="usericon">
-                    <b-icon icon="person-circle"></b-icon>
+                <b-col md='4' class="usericon pt-2 text-center" style="font-size:65px;opacity:.7;">
+                    <b-icon icon="person-check" ></b-icon>
                 </b-col>
                 <b-col class="pt-3 px-0">
-                    <label class="user-name">{{userItem.full_name}}</label><br>
-                    <small> {{userItem.role}}</small><br>
-                    <b-badge pill variant="success" v-if="userItem.active">Active</b-badge>
+                    <label class="user-name" style="font-weight:800;font-size:20px;">{{userItem.full_name}}</label><br>
+                    <small style="font-weight:600;"> {{userItem.role}}</small><br>
+                    <b-badge pill variant="success" v-if="userItem.active" style="padding:5px 20px;">Active</b-badge>
                     <b-badge pill variant="danger" v-else>Inactive</b-badge>
                 </b-col>
             </b-row>

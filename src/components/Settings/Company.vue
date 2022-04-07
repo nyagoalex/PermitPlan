@@ -3,7 +3,7 @@
 
         <!-- <img class="m1" src="@/assets/image/avatar.jpg" rounded="circle" width="90" height="90" alt="Logo"> -->
 
-        <b-row class="float-left"> <strong> COMPANY DETAILS </strong></b-row><br>
+        <b-row class="float-left pl-3"> <strong> Company Details </strong></b-row><br>
         <div class="row">
             <div class="col-md-7 col-sm-12 text-left signup-form ">
                 <b-form @submit.prevent="updateCompany" class="inner-form">
