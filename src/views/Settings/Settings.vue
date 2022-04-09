@@ -120,6 +120,7 @@ export default {
 
 #setting-nav .card-header {
     padding: 0.75rem 0rem !important;
+    background-color: #f8f6f2;
 }
 
 .user_card {
@@ -142,5 +143,9 @@ export default {
     font-size: 1rem;
     font-weight: 400;
     color: black;
+}
+
+a{
+    color:#716d66 !important;
 }
 </style>

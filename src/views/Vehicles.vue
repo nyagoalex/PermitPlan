@@ -1,15 +1,28 @@
 <template>
 <div class="bg-white text-left mt-3 mx-4">
-       <div v-if="loading" class="my-5 text-center"><b-icon icon="arrow-clockwise" animation="spin" font-scale="4"></b-icon>Loading ...</div>
+       <div v-if="loading" class="my-5 text-center"><b-icon icon="sun" animation="spin" font-scale="1"></b-icon><span style="font-size:15px;font-weight:800;"> Loading ...</span></div>
     <div v-else-if="!vehicles.length" class="my-5 text-center">
         <b-button
                     @click="newVehicleModal"
                     variant="btn btn-outline-success"
-                    size="lg"
+                    size="md"
                     >+ Add a vehicle</b-button
                 >
+<div class="container py-5" style="padding-left:100px;padding-right:100px;">
 
-            <h2 class="text-muted mt-5">NO VEHICLES ADDED YET</h2>
+                <div class="">
+                <div class="d-flex align-items-center rounded py-3 px-5 bg-info-light">
+                    <span class="svg-icon svg-icon svg-icon-3x svg-icon-warning me-5" style="">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mh-50px"><rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="orange"></rect><rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="orange"></rect><rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="orange"></rect>
+                </svg>
+                </span>
+                <div class="" style="font-size:20px;padding-left:10px;color: #8e887a;">
+                     No vehicles have been added to your system. Please add some vehicles
+                </div>
+
+                </div>
+                </div>
+                </div>
         </div>
     <div v-else>
     <b-table class="acc-tb" :striped="true" :outlined="true" :hover="true" :no-border-collapse="true" :items="vehicles" :fields="fields" caption-top :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sort-icon-left responsive="sm" sticky-header @row-clicked="item=>$set(item, '_showDetails', !item._showDetails)">

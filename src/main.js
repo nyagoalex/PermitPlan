@@ -1,4 +1,3 @@
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import App from './App.vue'
@@ -136,7 +135,6 @@ Vue.filter('moneyFormat', function (money) {
     var nf = new Intl.NumberFormat()
     return '$' + nf.format(money)
 })
-
 new Vue({
     router,
     render: h => h(App)

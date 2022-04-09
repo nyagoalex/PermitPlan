@@ -26,17 +26,17 @@
                     >Dashbord</b-nav-item
                 >
                 <b-nav-item @click="$router.push({ name: 'Bookings' })"
-                    >All Bookings</b-nav-item
+                    >Bookings</b-nav-item
                 >
                 <b-nav-item @click="$router.push({ name: 'Calenda' })"
-                    >Safari Calenda</b-nav-item
+                    >Safari Calendar</b-nav-item
                 >
                 <b-nav-item-dropdown text="+ More" right>
                     <b-dropdown-item @click="$router.push({ name: 'Agents' })"
                         >Agents</b-dropdown-item
                     >
                     <b-dropdown-item @click="$router.push({ name: 'GroupPermits' })"
-                        >Departures Permits</b-dropdown-item
+                        >Group Departure Permits</b-dropdown-item
                     >
                     <b-dropdown-divider></b-dropdown-divider>
                     <b-dropdown-item @click="$router.push({ name: 'Accommodations' })"
