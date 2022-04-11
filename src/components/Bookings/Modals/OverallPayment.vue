@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-    <b-modal id="overall_payment_modal" title="Register Overall Payment" size="sm">
+    <b-modal id="overall_payment_modal" centered title="Register Overall Payment" size="sm">
         <form>
             <div class="row">
                 <div class="col-12">

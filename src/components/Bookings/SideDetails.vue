@@ -3,7 +3,7 @@
 <template>
     <div class="col-md-3 pr-3 col-sm-12">
         <div class="pl-3">
-        <div class="card p-4">
+        <div class="card p-4 bg-gray">
             <div class="row">
                 <div class="col">
                     <label>Amount Paid</label>
@@ -58,16 +58,18 @@
                                     {{ perc_paid }}%
                                 </div>
                             </div>
-            <button class="btn btn-outline-primary w-auto rounded"><i class="uil uil-pen"></i> Add Payment</button>
+            <button class="btn btn-outline-primary w-auto rounded"   v-b-modal.overall_payment_modal ><i class="uil uil-pen"></i> Add Payment</button>
             <a class="alink">View Payment History</a>
         </div>
        </div>
 
         <div class="pl-3 pt-5">
-            <div class="card">
+            <div class="card p-4 bg-white shadow">
                 <div class="card-body p-0">
                     <!-- List group -->
-                    <div class="list-group list-group-flush mt-n3">
+                    <h4>Trip Details</h4>
+                    <div class="tag tag-green"><i class="uil uil-check"></i> Booking Confirmed</div>
+                    <div class="list-group list-group-flush ">
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col">

@@ -8,6 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import Vuelidate from 'vuelidate'
 import './assets/css/main.scss'
+import './assets/unicons/css/line.css'
 import axios from 'axios'
 import { authHeader } from '@/services'
 

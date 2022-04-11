@@ -75,7 +75,6 @@
                 <b-button
                     v-b-modal.new-booking
                     variant="primary"
-                    class="rounded"
                     style="max-height: 40px; padding: 0px 30px; font-size: 15px"
                     >+ Add Booking</b-button
                 >

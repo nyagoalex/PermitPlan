@@ -1,6 +1,7 @@
 @import 'mixins';
 @import 'variables';
 @import 'typography';
+
 .card {
     // @include shadow();
     // background-color: $light;
@@ -10,6 +11,7 @@
 .alink {
     // color: $primary !important;
     margin: 16px 0;
+
     &:hover {
         text-decoration: underline !important;
         cursor: pointer;
@@ -21,25 +23,45 @@
     &.rounded {
         border-radius: 40px !important;
     }
+
     &.btn-primary {
         background-color: $primary !important;
         color: #fff !important;
         border-color: $primary !important;
+
         &:hover {
             background-color: $primary-dark;
             color: #fff;
             border-color: $primary-dark;
         }
     }
+
     &.btn-outline-primary {
         color: $primary !important;
         border-color: $primary !important;
         background: none;
+
         &:hover {
             background-color: $primary !important;
             color: #fff !important;
             border-color: $primary !important;
         }
+    }
+}
+
+.icon-btn {
+    border: 1px solid $primary;
+    color: $primary !important;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    border-radius: 40px;
+    display: inline-block;
+    text-align: center;
+
+    &:hover {
+        background-color: $primary;
+        color: #fff !important;
     }
 }
 
@@ -49,6 +71,7 @@
 
 .page-header {
     padding: 16px;
+
     // @include shadow;
     .head-text {
         font-size: 24px;
@@ -75,6 +98,14 @@
     background-color: #fdf4d6;
 }
 
+.bg-primary {
+    background-color: $primary !important;
+}
+
+.bg-gray {
+    background-color: $gray !important;
+}
+
 .bg-info-light {
     background-color: #D4E6F1;
     // opacity: 0.1;
@@ -89,4 +120,59 @@
     border: 0.0625rem solid rgba(231, 234, 243, .7);
     background-color: #fff;
     border-radius: 0.75rem;
+}
+
+.tag {
+    display: inline-block;
+    border-radius: 80px;
+    padding: 0 8px;
+    font-weight: 700;
+    font-size: 13px;
+    ;
+
+    &.tag-green {
+        background-color: $green;
+        color: #fff;
+    }
+}
+
+.modal {
+    .modal-dialog {
+        border-radius: 16px !important;
+        overflow: hidden;
+
+        .modal-header,
+        .modal-footer {
+            border: none;
+            border-radius: 0 !important;
+        }
+    }
+}
+
+.collapse-item {
+    border-radius: 8px;
+    @include shadow;
+    padding: 16px;
+    background-color: #fff;
+    margin-bottom: 24px;
+
+    h4 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    p {
+        margin: 0;
+        color: $light-text;
+        size: 14px;
+    }
+
+    .price {
+        font-size: 18px;
+        font-weight: 700;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 24px;
+    }
 }
