@@ -33,7 +33,7 @@
             <b-row>
                 <b-col><span class='font-weight-bold'>Lodges + Hotels</span></b-col>
                 <b-col>
-                    <b-button v-b-modal.new-lodge class='float-right' size="sm" variant="success">
+                    <b-button v-b-modal.new-lodge class='float-right' size="lg" variant="success">
                         <b-icon icon="plus"></b-icon> Add Lodges / Hotels
                     </b-button>
                 </b-col>

@@ -30,7 +30,7 @@
             <b-row>
                 <b-col><span class='font-weight-bold'>Tour Guide</span></b-col>
                 <b-col class='text-center'>
-                    <b-button v-b-modal.new-guide size="sm" variant="success">
+                    <b-button v-b-modal.new-guide size="lg" variant="success">
                         <b-icon icon="plus"></b-icon> Add Tour Guide
                     </b-button>
                 </b-col>
@@ -68,10 +68,10 @@
                 <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
                 <b-col><strong>Contract Basis: </strong>{{row.item.contract_basis.replace("_", " ")}} </b-col>
                 <b-col class="text-center">
-                    <b-button pill size="sm" variant="info" class="mr-4" v-b-modal.guide-details @click="guide = row.item">
+                    <b-button pill size="lg" variant="info" class="mr-4" v-b-modal.guide-details @click="guide = row.item">
                         <b-icon icon="info-circle-fill"> </b-icon> View
                     </b-button>
-                    <b-button pill size="sm" variant="danger" @click="deleteGuides(row.item.id)">
+                    <b-button pill size="lg" variant="danger" @click="deleteGuides(row.item.id)">
                         <b-icon icon="trash-fill"> </b-icon> Delete
                     </b-button>
                 </b-col>

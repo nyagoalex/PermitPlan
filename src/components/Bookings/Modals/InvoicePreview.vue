@@ -4,11 +4,11 @@
     <b-modal id="invoice-preview" hide-header size="xl">
         <InvoiceGist :company="company" :booking="booking" />
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" type="submit" variant="info" @click="print"
+            <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+            <b-button size="lg" type="submit" variant="info" @click="print"
                 >Print Invoice</b-button
             >
-            <b-button size="sm" type="submit" variant="success" @click="generateReport"
+            <b-button size="lg" type="submit" variant="success" @click="generateReport"
                 >Save Invoice To PDF</b-button
             >
         </template>

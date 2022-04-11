@@ -175,7 +175,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.signup-form .form-control {
+/* .signup-form .form-control {
     box-shadow: none !important;
     font-size: 1rem;
     font-weight: 800;
@@ -184,7 +184,7 @@ export default {
     font-size: 1.125rem;
     min-height: calc(1.3em + 1.625rem);
     padding: 0.75rem 1rem;
-}
+} */
 
 .signup-form input[type="checkbox"] {
     margin-top: 2px;

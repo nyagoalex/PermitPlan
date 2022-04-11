@@ -57,9 +57,9 @@
         </div>
     </form>
     <template v-slot:modal-footer="{ cancel}">
-        <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
+        <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
         <b-overlay :show="loading" rounded opacity="0.6" spinner-small class="d-inline-block">
-            <b-button size="sm" variant="success" :disabled="loading" @click="(`${mode}` == 'create') ? addAgent() : updateAgent()">{{(`${mode}` == 'create') ? 'Add' : 'Update' }} Agent</b-button>
+            <b-button size="lg" variant="success" :disabled="loading" @click="(`${mode}` == 'create') ? addAgent() : updateAgent()">{{(`${mode}` == 'create') ? 'Add' : 'Update' }} Agent</b-button>
         </b-overlay>
     </template>
 </b-modal>

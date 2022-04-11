@@ -1,8 +1,8 @@
 <template>
-    <div class="col-md-8 col-sm-12 pl-5">
+    <div class="col-md-9 col-sm-12 pl-5">
         <div class=" bg-white p-3" style="border-radius: 0.5rem;">
             <div class="text-right">
-                <b-form-select size="sm" style="width: 8rem;" v-model=" period" :options="periods"></b-form-select>
+                <b-form-select size="lg" style="width: 8rem;" v-model=" period" :options="periods"></b-form-select>
             </div>
             <line-chart v-if="loaded" :chart-data="chartData" :chart-labels="labels"></line-chart>
         </div>

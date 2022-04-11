@@ -22,7 +22,7 @@
                     >Allocated</span
                 >
                 <b-button v-else
-                    size="sm"
+                    size="lg"
                     class=""
                     @click="allocateGuide(row.item.id)"
                     pill

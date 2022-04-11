@@ -120,11 +120,11 @@
             </div>
         </form>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                 >Cancel</b-button
             >
             <b-button
-                size="sm"
+                size="lg"
                 variant="success"
                 :disabled="loading"
                 ref="button"

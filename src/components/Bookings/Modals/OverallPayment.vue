@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-    <b-modal id="overall_payment_modal" centered title="Register Overall Payment" size="sm">
+    <b-modal id="overall_payment_modal" centered title="Register Overall Payment" size="md">
         <form>
             <div class="row">
                 <div class="col-12">
@@ -104,10 +104,10 @@
             </div>
         </form>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                 >Cancel</b-button
             >
-            <b-button size="sm" variant="success" :disabled="loading" @click="addPayment"
+            <b-button size="lg" variant="success" :disabled="loading" @click="addPayment"
                 >Register Payment</b-button
             >
         </template>

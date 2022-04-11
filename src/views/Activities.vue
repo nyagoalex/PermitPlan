@@ -51,7 +51,7 @@
                 <b-row>
                     <b-col><span class="font-weight-bold">Activities</span></b-col>
                     <b-col class="text-right">
-                        <b-button @click="newActivityModal" size="sm" variant="success">
+                        <b-button @click="newActivityModal" size="lg" variant="success">
                             <b-icon icon="plus"></b-icon> Add Activity
                         </b-button>
                     </b-col>
@@ -70,7 +70,7 @@
                     <b-col class="text-center">
                         <b-button
                             pill
-                            size="sm"
+                            size="lg"
                             variant="outline-primary"
                             @click="editActivityModal(row.item)"
                             class="mr-4"
@@ -78,7 +78,7 @@
                         >
                         <b-button
                             pill
-                            size="sm"
+                            size="lg"
                             variant="outline-danger"
                             @click="deleteActivity(row.item.id)"
                         >

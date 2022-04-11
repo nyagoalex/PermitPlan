@@ -65,7 +65,7 @@
             <b-col>
                 <b-icon
                     icon="x-circle"
-                    size="sm"
+                    size="lg"
                     variant="danger"
                     class="float-right"
                     @click="close()"
@@ -281,7 +281,7 @@
                                         <div class="col-md-3 pl-0 text-right">
                                             <b-button
                                                 pill
-                                                size="sm"
+                                                size="lg"
                                                 variant="outline-success"
                                                 ><small>
                                                     {{ calculateAge(park.since) }}
@@ -363,7 +363,7 @@
                                         <div class="col-md-3 pl-0 text-right">
                                             <b-button
                                                 pill
-                                                size="sm"
+                                                size="lg"
                                                 variant="outline-success"
                                                 ><small>
                                                     {{ calculateAge(park.since) }}
@@ -400,11 +400,11 @@
             </b-overlay>
         </div>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                 >Cancel</b-button
             >
             <b-button
-                size="sm"
+                size="lg"
                 variant="success"
                 :disabled="loading"
                 @click="updateGuide()"
@@ -441,9 +441,9 @@
                 </div>
             </form>
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
                 <b-button
-                    size="sm"
+                    size="lg"
                     type="submit"
                     variant="success"
                     :disabled="!experience_form.since || !experience_form.name"

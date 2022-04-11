@@ -65,12 +65,12 @@
             <b-navbar-nav class="ml-auto">
                 <b-nav-form>
                     <b-form-input
-                        size="sm"
+                        size="lg"
                         class="mr-sm-2"
                         placeholder="Search"
                         v-model="search"
                     ></b-form-input>
-                    <!--<b-button size="sm" class="my-2 my-sm-0" @click="search(8)">Search</b-button> -->
+                    <!--<b-button size="lg" class="my-2 my-sm-0" @click="search(8)">Search</b-button> -->
                 </b-nav-form>
                 <b-button
                     v-b-modal.new-booking

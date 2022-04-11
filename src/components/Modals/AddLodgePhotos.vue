@@ -108,8 +108,8 @@
                 animated
                 :variant="progressVariant"
             ></b-progress>
-            <b-button size="sm" variant="secondary" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="primary" @click="$refs.files.click()"
+            <b-button size="lg" variant="secondary" @click="cancel()">Cancel</b-button>
+            <b-button size="lg" variant="primary" @click="$refs.files.click()"
                 >Add Photos</b-button
             >
         </template>

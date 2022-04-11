@@ -34,8 +34,8 @@
                 <!-- </form> -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="save_permit" onclick="addPayment(this)">Save</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" id="produce_dismiss">Cancel</button>
+                <button type="button" class="btn  btn-lg btn-success" id="save_permit" onclick="addPayment(this)">Save</button>
+                <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" id="produce_dismiss">Cancel</button>
             </div>
         </div>
     </div>

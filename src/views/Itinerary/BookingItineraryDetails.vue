@@ -32,7 +32,7 @@
 
             <b-col class="text-right">
                 <b-button
-                    size="sm"
+                    size="lg"
                     pill
                     variant="primary"
                     class="glow mx-3"
@@ -48,12 +48,12 @@
 
         <b-row class="mt-2">
             <b-col>
-                <b-button size="sm" pill variant="outline-success" @click="useAsTemplate"
+                <b-button size="lg" pill variant="outline-success" @click="useAsTemplate"
                     >use itinerary as template</b-button
                 >
             </b-col>
             <b-col>
-                <b-button size="sm" pill variant="outline-dark"
+                <b-button size="lg" pill variant="outline-dark"
                     >fill itinerary from template</b-button
                 >
             </b-col>

@@ -11,7 +11,7 @@
                         <div class="media align-items-center">
                             <b-img class="m1 bg-secondary text-center" v-bind:src="company.logo" rounded="circle" width="90" height="90" alt="Logo"></b-img>
                             <div class="media-body pl-3">
-                                <b-button pill size="sm" @click="$refs.logo.click()" variant="outline-dark">Change Logo</b-button>
+                                <b-button pill size="lg" @click="$refs.logo.click()" variant="outline-dark">Change Logo</b-button>
                                 <input type="file" ref="logo" @change="uploadLogo" accept="image/*" hidden>
                                 <div class="mb-0  text-muted"><small>Upload JPG, GIF or PNG image. 300 x 300 required.</small></div>
                             </div>

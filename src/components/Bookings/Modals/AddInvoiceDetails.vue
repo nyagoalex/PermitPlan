@@ -14,8 +14,8 @@
         </div>
     </form>
     <template v-slot:modal-footer="{ cancel, ok }">
-        <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-        <b-button size="sm" variant="success" @click="ok()">Save Details</b-button>
+        <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+        <b-button size="lg" variant="success" @click="ok()">Save Details</b-button>
     </template>
 </b-modal>
 </template>

@@ -39,16 +39,16 @@
                     </div>
                     <div class="row user-actions">
                         <div class="col-lg-12 col-sm-12 col-12">
-                            <b-button pill size="sm" :disabled="loading" class="m-2" variant="outline-success" v-if="!user.active" @click="activate">
+                            <b-button pill size="lg" :disabled="loading" class="m-2" variant="outline-success" v-if="!user.active" @click="activate">
                                 <b-icon icon="check-circle"></b-icon> activate
                             </b-button>
-                            <b-button pill size="sm" :disabled="loading" class="m-2" variant="outline-danger" v-else @click="deactivate">
+                            <b-button pill size="lg" :disabled="loading" class="m-2" variant="outline-danger" v-else @click="deactivate">
                                 <b-icon icon="slash-circle"></b-icon> deactivate
                             </b-button>
-                            <b-button pill size="sm" :disabled="loading" class="m-2" variant="outline-warning">
+                            <b-button pill size="lg" :disabled="loading" class="m-2" variant="outline-warning">
                                 <b-icon icon="shield-slash"></b-icon> unblock
                             </b-button>
-                            <b-button pill size="sm" :disabled="loading" class="m-2" variant="danger" @click="deleteUser">
+                            <b-button pill size="lg" :disabled="loading" class="m-2" variant="danger" @click="deleteUser">
                                 <b-icon icon="trash"></b-icon> Delete
                             </b-button>
                         </div>

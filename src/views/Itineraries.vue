@@ -22,7 +22,7 @@
                     <b-col><span class="font-weight-bold">Itineraries</span></b-col>
                     <b-col class="text-center">
                         <b-button
-                            size="sm"
+                            size="lg"
                             variant="success"
                             v-b-modal.add-itinerary-modal
                             @click="resetModal"
@@ -146,7 +146,7 @@
             </form>
 
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                     >Cancel</b-button
                 >
                 <b-overlay
@@ -157,7 +157,7 @@
                     class="d-inline-block"
                 >
                     <b-button
-                        size="sm"
+                        size="lg"
                         variant="success"
                         :disabled="loading"
                         @click="addIntinerary"

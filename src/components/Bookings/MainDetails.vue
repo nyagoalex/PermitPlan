@@ -165,8 +165,8 @@
                 </ul>
             </div>
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="reschedule">Reshedule Permit</b-button>
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="success" @click="reschedule">Reshedule Permit</b-button>
             </template>
         </b-modal>
         <b-modal id="transfer-permit" :title="`Transfer Permit: ${selected_permit.number}`">
@@ -181,8 +181,8 @@
                 </ul>
             </div>
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="transferPermit">Transfer Permit</b-button>
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="success" @click="transferPermit">Transfer Permit</b-button>
             </template>
         </b-modal>
         <b-modal id="item-payments-modal" :title="`Payments For ${payment_type}`" size="lg" hide-footer>
@@ -193,7 +193,7 @@
                 <template v-slot:cell(payment_date)="row"> {{ row.item.date }} </template>
                 <template v-slot:cell(paid_in_by)="row"> {{ row.item.user }} </template>
                 <template v-slot:cell(action)="row">
-                    <b-button size="sm" class="" @click="deleteItemPayment(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                    <b-button size="lg" class="" @click="deleteItemPayment(row.item.id)" pill variant="outline-danger">Delete</b-button>
                 </template>
             </b-table>
         </b-modal>

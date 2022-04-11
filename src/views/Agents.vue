@@ -31,7 +31,7 @@
                 <b-row>
                     <b-col><span class='font-weight-bold'>Agents</span></b-col>
                     <b-col class='text-center'>
-                        <b-button @click="newAgentModal" size="sm" variant="success">
+                        <b-button @click="newAgentModal" size="lg" variant="success">
                             <b-icon icon="plus"></b-icon> Add Agent
                         </b-button>
                     </b-col>
@@ -65,10 +65,10 @@
                     <b-col><strong>Email: </strong> {{row.item.email}}</b-col>
                     <b-col class="small-time">Added on: {{row.item.created_at}}<br> Edited on: {{row.item.updated_at}}</b-col>
                     <b-col class="text-center">
-                        <b-button pill size="sm" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.item.id)" class="mr-4">Deactivate</b-button>
-                        <b-button pill size="sm" variant="outline-success" v-else @click="activateAgent(row.item.id)" class="mr-4">Activate</b-button>
-                        <b-button pill size="sm" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
-                        <b-button pill size="sm" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
+                        <b-button pill size="lg" variant="outline-warning" v-if="row.item.active" @click="deactivateAgent(row.item.id)" class="mr-4">Deactivate</b-button>
+                        <b-button pill size="lg" variant="outline-success" v-else @click="activateAgent(row.item.id)" class="mr-4">Activate</b-button>
+                        <b-button pill size="lg" variant="outline-primary" @click="editAgentModal(row.item)" class="mr-4">Edit</b-button>
+                        <b-button pill size="lg" variant="outline-danger" @click="deleteAgent(row.item.id)"> Delete</b-button>
                     </b-col>
                 </b-row>
             </template>

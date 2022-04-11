@@ -198,11 +198,11 @@
                         </div> -->
                     </div>
                     <div class="p-2">
-                        <b-button size="sm" pill variant="danger" class="float-left"
+                        <b-button size="lg" pill variant="danger" class="float-left"
                             >Delete</b-button
                         >
                         <b-button
-                            size="sm"
+                            size="lg"
                             pill
                             variant="info"
                             class="float-right"
@@ -228,7 +228,7 @@
                 <li v-for="error in errors.comment" :key="error">{{ error }}</li>
             </ul>
             <b-button
-                size="sm"
+                size="lg"
                 pill
                 variant="outline-success"
                 class="float-right my-1"

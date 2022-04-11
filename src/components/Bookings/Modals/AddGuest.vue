@@ -49,8 +49,8 @@
             </div>
         </form>
         <template v-slot:modal-footer="{ cancel}">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="success" :disabled="loading" @click="(`${mode}` == 'create') ? addGuest() : updateGuest()">{{(`${mode}` == 'create') ? 'Add' : 'Update' }} Guest</b-button>
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
+            <b-button size="lg" variant="success" :disabled="loading" @click="(`${mode}` == 'create') ? addGuest() : updateGuest()">{{(`${mode}` == 'create') ? 'Add' : 'Update' }} Guest</b-button>
         </template>
         <b-overlay :show="loading" opacity="0.6" no-wrap></b-overlay>
     </b-modal>

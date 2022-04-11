@@ -5,7 +5,7 @@
             <b-row>
                 <b-col><span class='font-weight-bold'>Road Transfers</span></b-col>
                 <b-col>
-                    <b-button @click="newTransferModal" class='float-right' size="sm" variant="success">
+                    <b-button @click="newTransferModal" class='float-right' size="lg" variant="success">
                         <b-icon icon="plus"></b-icon> Add Road Transfer
                     </b-button>
                 </b-col>
@@ -17,10 +17,10 @@
             <b-row>
                 <b-col><strong>Cost Per Person: </strong>{{row.item.cost_per_person}} </b-col>
                 <b-col class="text-right">
-                    <b-button pill size="sm" variant="info" class="mr-4" v-b-modal.new-road-transfer @click="transfer = row.item, mode = 'update'">
+                    <b-button pill size="lg" variant="info" class="mr-4" v-b-modal.new-road-transfer @click="transfer = row.item, mode = 'update'">
                         <b-icon icon="info-circle-fill"> </b-icon> View
                     </b-button>
-                    <b-button pill size="sm" variant="danger" @click="deleteGuides(row.item.id)">
+                    <b-button pill size="lg" variant="danger" @click="deleteGuides(row.item.id)">
                         <b-icon icon="trash-fill"> </b-icon> Delete
                     </b-button>
                 </b-col>

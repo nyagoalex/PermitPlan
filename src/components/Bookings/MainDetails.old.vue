@@ -16,7 +16,7 @@
                         <div class="contents">
                             <div class="mt-3 header-small pt-3 bg-white p-3">
                                 <b-button
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-dark"
                                     class="float-left"
@@ -28,7 +28,7 @@
                                     >View Transferd Permits</b-button
                                 >
                                 <b-button
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-dark"
                                     class="float-right"
@@ -100,7 +100,7 @@
                                     <template v-slot:row-details="row">
                                         <b-row>
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-dark"
@@ -109,7 +109,7 @@
                                                 >Transfer</b-button
                                             >
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-dark"
@@ -118,7 +118,7 @@
                                                 >Reschedule</b-button
                                             >
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-secondary"
@@ -131,7 +131,7 @@
                                                 >Show Payments</b-button
                                             >
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-secondary"
@@ -148,7 +148,7 @@
                                                 tabindex="0"
                                             >
                                                 <b-button
-                                                    size="sm"
+                                                    size="lg"
                                                     class="mx-3"
                                                     pill
                                                     variant="outline-danger"
@@ -185,7 +185,7 @@
                             <div class="mt-3 pt-3 header-small bg-white p-3">
                                 <b-button
                                     v-b-modal.overall_payment_modal
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-secondary"
                                     class="float-right"
@@ -230,7 +230,7 @@
                                     </template>
                                     <template v-slot:cell(action)="row">
                                         <b-button
-                                            size="sm"
+                                            size="lg"
                                             class=""
                                             @click="deletePayment(row.item.id)"
                                             pill
@@ -249,7 +249,7 @@
                         <div class="contents">
                             <div class="mt-3 header-small pt-3 bg-white p-3">
                                 <b-button
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-dark"
                                     class="float-right"
@@ -284,7 +284,7 @@
                                     <template v-slot:cell(action)="row">
                                         <div>
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class="mx-3"
                                                 pill
                                                 variant="outline-secondary"
@@ -297,7 +297,7 @@
                                                 tabindex="0"
                                             >
                                                 <b-button
-                                                    size="sm"
+                                                    size="lg"
                                                     class=""
                                                     @click="deleteGuest(row.item.id)"
                                                     pill
@@ -372,7 +372,7 @@
                         <div class="contents">
                             <div class="mt-3 header-small pt-3 bg-white p-3">
                                 <b-button
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-dark"
                                     class="float-right"
@@ -395,7 +395,7 @@
                                     <template v-slot:cell(action)="row">
                                         <div>
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class=""
                                                 @click="removeGuide(row.item.id)"
                                                 pill
@@ -414,7 +414,7 @@
                         <div class="contents">
                             <div class="mt-3 header-small pt-3 bg-white p-3">
                                 <b-button
-                                    size="sm"
+                                    size="lg"
                                     pill
                                     variant="outline-dark"
                                     class="float-right"
@@ -437,7 +437,7 @@
                                     <template v-slot:cell(action)="row">
                                         <div>
                                             <b-button
-                                                size="sm"
+                                                size="lg"
                                                 class=""
                                                 @click="removeVehicle(row.item.id)"
                                                 pill
@@ -580,8 +580,8 @@
                 </ul>
             </div>
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="reschedule"
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="success" @click="reschedule"
                     >Reshedule Permit</b-button
                 >
             </template>
@@ -607,8 +607,8 @@
                 </ul>
             </div>
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="transferPermit"
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="success" @click="transferPermit"
                     >Transfer Permit</b-button
                 >
             </template>
@@ -635,7 +635,7 @@
                 <template v-slot:cell(paid_in_by)="row"> {{ row.item.user }} </template>
                 <template v-slot:cell(action)="row">
                     <b-button
-                        size="sm"
+                        size="lg"
                         class=""
                         @click="deleteItemPayment(row.item.id)"
                         pill

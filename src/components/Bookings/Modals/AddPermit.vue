@@ -137,10 +137,10 @@
             </div>
         </form>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                 >Cancel</b-button
             >
-            <b-button size="sm" variant="success" :disabled="loading" @click="addPermit"
+            <b-button size="lg" variant="success" :disabled="loading" @click="addPermit"
                 >Add Permit</b-button
             >
         </template>

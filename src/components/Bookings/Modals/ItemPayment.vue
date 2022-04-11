@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="item-payment-modal" :title="`Register Payment For ${model_type}`" size="sm">
+    <b-modal id="item-payment-modal" :title="`Register Payment For ${model_type}`" size="lg">
         <form>
             <div class="row">
                 <div class="col-12">
@@ -33,8 +33,8 @@
 
         </form>
         <template v-slot:modal-footer="{ cancel }">
-            <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
-            <b-button size="sm" variant="success" :disabled="loading" @click="addPayment">Register Payment</b-button>
+            <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()">Cancel</b-button>
+            <b-button size="lg" variant="success" :disabled="loading" @click="addPayment">Register Payment</b-button>
         </template>
         <b-overlay :show="loading" opacity="0.6" no-wrap></b-overlay>
     </b-modal>

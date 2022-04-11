@@ -17,10 +17,10 @@
                 <template v-slot:cell(action)="row">
                     <div v-if="!row.item.allocated" class="text-right">
                         <span :id="`tooltip-button-tour-active-${row.item.id}`" class="d-inline-block" tabindex="0">
-                            <b-button size="sm" class="mr-1" v-b-modal.bookings-modal @click="reschedule_permit = row.item" pill variant="outline-info" :disabled="!tour.active">Allocate</b-button>
+                            <b-button size="lg" class="mr-1" v-b-modal.bookings-modal @click="reschedule_permit = row.item" pill variant="outline-info" :disabled="!tour.active">Allocate</b-button>
                         </span>
-                        <b-button size="sm" class="mr-1" v-b-modal.reschedule @click="reschedule_permit = row.item" pill variant="outline-dark">Reschedule</b-button>
-                        <b-button size="sm" class="" @click="deletePermit(row.item.id)" pill variant="outline-danger">Delete</b-button>
+                        <b-button size="lg" class="mr-1" v-b-modal.reschedule @click="reschedule_permit = row.item" pill variant="outline-dark">Reschedule</b-button>
+                        <b-button size="lg" class="" @click="deletePermit(row.item.id)" pill variant="outline-danger">Delete</b-button>
                         <b-tooltip v-if="!tour.active" :target="`tooltip-button-tour-active-${row.item.id}`" triggers="hover" variant="info">Can't Allocate Permit, Tour Is Inactive </b-tooltip>
                     </div>
                 </template>
@@ -34,8 +34,8 @@
                 </ul>
             </div>
             <template v-slot:modal-footer="{ cancel}">
-                <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
-                <b-button size="sm" variant="success" @click="reschedule">Reshedule Permit</b-button>
+                <b-button size="lg" variant="danger" @click="cancel()">Cancel</b-button>
+                <b-button size="lg" variant="success" @click="reschedule">Reshedule Permit</b-button>
             </template>
         </b-modal>
         <b-modal id="bookings-modal" :title="`Allocate For Permit: ${reschedule_permit.number}`" size="lg" hide-footer>
@@ -52,7 +52,7 @@
                 </template>
                 <template v-slot:cell(action)="row">
                     <div v-if="!row.item.allocated" class="text-right">
-                        <b-button size="sm" pill variant="outline-success" @click="allocatePermit(row.item.id)">Choose <b-icon icon="check2-circle"></b-icon>
+                        <b-button size="lg" pill variant="outline-success" @click="allocatePermit(row.item.id)">Choose <b-icon icon="check2-circle"></b-icon>
                         </b-button>
                     </div>
                 </template>

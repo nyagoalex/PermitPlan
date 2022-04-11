@@ -139,16 +139,6 @@ h2 {
     background-color: #27AE60;
     color: #fff; }
 
-/* line 140, /Applications/XAMPP/xamppfiles/htdocs/PermitPlan/src/assets/css/main.scss */
-.modal .modal-dialog {
-  border-radius: 16px !important;
-  overflow: hidden; }
-  /* line 144, /Applications/XAMPP/xamppfiles/htdocs/PermitPlan/src/assets/css/main.scss */
-  .modal .modal-dialog .modal-header,
-  .modal .modal-dialog .modal-footer {
-    border: none;
-    border-radius: 0 !important; }
-
 /* line 152, /Applications/XAMPP/xamppfiles/htdocs/PermitPlan/src/assets/css/main.scss */
 .collapse-item {
   border-radius: 8px;

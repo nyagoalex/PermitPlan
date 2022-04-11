@@ -5,7 +5,7 @@
                 <b-row>
                     <b-col><span class='font-weight-bold'>Departure Tours</span></b-col>
                     <b-col class='text-center'>
-                        <b-button size="sm" variant="success" @click="newTourModal">
+                        <b-button size="lg" variant="success" @click="newTourModal">
                             <b-icon icon="plus"></b-icon> Add Departure Tour
                         </b-button>
                     </b-col>
@@ -33,15 +33,15 @@
             </template>
             <template v-slot:row-details="row">
                 <div class="text-center">
-                    <b-button size="sm" class="mx-3" pill variant="outline-dark" v-b-modal.new-permit @click="selected_tour=row.item">Add Permits</b-button>
+                    <b-button size="lg" class="mx-3" pill variant="outline-dark" v-b-modal.new-permit @click="selected_tour=row.item">Add Permits</b-button>
                     <span :id="`tooltip-button-show-permits-${row.item.id}`" class="d-inline-block" tabindex="0">
-                        <b-button size="sm" class="mx-3" pill variant="outline-secondary" v-b-modal.view-departure-permits @click="selected_tour=row.item" :disabled="row.item.permits_count == 0">Show Permits</b-button>
+                        <b-button size="lg" class="mx-3" pill variant="outline-secondary" v-b-modal.view-departure-permits @click="selected_tour=row.item" :disabled="row.item.permits_count == 0">Show Permits</b-button>
                     </span>
-                    <b-button pill size="sm" class="mx-3" variant="outline-warning" v-if="row.item.active" @click="deactivateTour(row.item.id)">Deactivate</b-button>
-                    <b-button pill size="sm" class="mx-3" variant="outline-success" v-else @click="activateTour(row.item.id)">Activate</b-button>
-                    <b-button size="sm" class="mx-3" pill variant="outline-info" @click="editTourModal(row.item)">Edit</b-button>
+                    <b-button pill size="lg" class="mx-3" variant="outline-warning" v-if="row.item.active" @click="deactivateTour(row.item.id)">Deactivate</b-button>
+                    <b-button pill size="lg" class="mx-3" variant="outline-success" v-else @click="activateTour(row.item.id)">Activate</b-button>
+                    <b-button size="lg" class="mx-3" pill variant="outline-info" @click="editTourModal(row.item)">Edit</b-button>
                     <span :id="`tooltip-button-remove-group-${row.item.id}`" class="d-inline-block" tabindex="0">
-                        <b-button size="sm" class="mx-3" pill variant="outline-danger" :disabled="!row.item.deletable" @click="deleteTour(row.item.id)">Remove</b-button>
+                        <b-button size="lg" class="mx-3" pill variant="outline-danger" :disabled="!row.item.deletable" @click="deleteTour(row.item.id)">Remove</b-button>
                     </span>
                     <b-tooltip v-if="!row.item.deletable" :target="`tooltip-button-remove-group-${row.item.id}`" triggers="hover" variant="danger">Tour Has Allocated Pemits</b-tooltip>
                     <b-tooltip v-if="row.item.permits_count == 0" :target="`tooltip-button-show-permits-${row.item.id}`" triggers="hover" variant="dark">Tour Has No Pemits</b-tooltip>

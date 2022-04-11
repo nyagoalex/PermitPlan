@@ -32,7 +32,7 @@
 
             <b-col class="text-right">
                 <b-button
-                    size="sm"
+                    size="lg"
                     pill
                     variant="primary"
                     class="glow mx-3"
@@ -48,7 +48,7 @@
             <b-col class="text-left">
                 <b-button
                     pill
-                    size="sm"
+                    size="lg"
                     variant="outline-warning"
                     v-b-popover.hover.bottomleft="'Click to activate itinerary'"
                     v-if="itinerary.active"
@@ -57,7 +57,7 @@
                 >
                 <b-button
                     pill
-                    size="sm"
+                    size="lg"
                     variant="outline-success"
                     v-b-popover.hover.bottomleft="'Click to deactivate itinerary'"
                     v-else
@@ -72,14 +72,14 @@
             <b-col>
                 <b-button
                     pill
-                    size="sm"
+                    size="lg"
                     variant="outline-success"
                     @click="previewItinerary"
                     >Preview</b-button
                 >
             </b-col>
             <b-col class="text-right">
-                <b-button pill size="sm" variant="outline-dark" v-b-modal.edit-title-modal
+                <b-button pill size="lg" variant="outline-dark" v-b-modal.edit-title-modal
                     >Edit Start Date</b-button
                 >
             </b-col>
@@ -109,7 +109,7 @@
             </form>
 
             <template v-slot:modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" :disabled="loading" @click="cancel()"
+                <b-button size="lg" variant="danger" :disabled="loading" @click="cancel()"
                     >Cancel</b-button
                 >
                 <b-overlay
@@ -120,7 +120,7 @@
                     class="d-inline-block"
                 >
                     <b-button
-                        size="sm"
+                        size="lg"
                         variant="success"
                         :disabled="loading"
                         @click="saveAll"

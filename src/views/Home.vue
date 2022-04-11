@@ -94,19 +94,34 @@
 </div>
 </div>
 </div>
+
+<section class="">
+
+<div class="">
+
+</div>
+
+</section>
+
         <Summary :permits="permits_totals" />
         <b-row class="mt-2">
             <PemitGraph />
             <Notifications />
         </b-row>
     </div>
+
+<div class="">
+
+</div>
+
 </div>
 </template>
 
 <script>
-import Summary from '@/components/Dashboard/TotalSummary.vue'
+
 import PemitGraph from '@/components/Dashboard/PemitGraph.vue'
 import Notifications from '@/components/Dashboard/Notifications.vue'
+import Summary from '@/components/Dashboard/TotalSummary.vue'
 export default {
     name: 'Dashboard',
     data() {

@@ -30,7 +30,7 @@
             <b-row>
                 <b-col><span class='font-weight-bold'>Vehicles</span></b-col>
                 <b-col class='text-center'>
-                    <b-button @click="newVehicleModal" size="sm" variant="success">
+                    <b-button @click="newVehicleModal" size="lg" variant="success">
                         <b-icon icon="plus"></b-icon> Add Vehicle
                     </b-button>
                 </b-col>
@@ -71,11 +71,11 @@
                 <b-col><strong>Ownership: </strong> {{row.item.ownership}}</b-col>
                 <b-col><strong>Registration Number: </strong> {{row.item.reg_no}}</b-col>
                 <b-col><strong>Color: </strong>
-                    <b-badge pill size="sm" variant="success"> {{row.item.color}} </b-badge>
+                    <b-badge pill size="lg" variant="success"> {{row.item.color}} </b-badge>
                 </b-col>
                 <b-col class="text-center">
-                    <b-button pill size="sm" variant="warning" @click="editVehicleModal(row.item)" class="mr-4">Edit</b-button>
-                    <b-button pill size="sm" variant="danger" @click="deleteVehicle(row.item.id)"> Delete</b-button>
+                    <b-button pill size="lg" variant="warning" @click="editVehicleModal(row.item)" class="mr-4">Edit</b-button>
+                    <b-button pill size="lg" variant="danger" @click="deleteVehicle(row.item.id)"> Delete</b-button>
                 </b-col>
             </b-row>
         </template>

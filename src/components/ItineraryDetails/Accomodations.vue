@@ -132,7 +132,7 @@
 
                 <template v-slot:modal-footer="{ cancel }">
                     <b-button
-                        size="sm"
+                        size="lg"
                         variant="danger"
                         :disabled="busy"
                         @click="cancel()"
@@ -146,7 +146,7 @@
                         class="d-inline-block"
                     >
                         <b-button
-                            size="sm"
+                            size="lg"
                             variant="success"
                             :disabled="busy"
                             @click="addDayActivity()"
