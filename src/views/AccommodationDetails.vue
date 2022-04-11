@@ -287,6 +287,7 @@ export default {
 .nav-tabs .nav-item.show .nav-link {
     color: greenyellow !important;
     background-color: rgba(79, 201, 218, 0.85) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
     /* border-color: #dee2e6 #dee2e6 #fff; */
 }
 

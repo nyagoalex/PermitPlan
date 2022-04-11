@@ -81,7 +81,7 @@ export default {
 }
 
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
-    border: none !important;
+    /* border: none !important; */
     border-radius: 8px !important;
 }
 
