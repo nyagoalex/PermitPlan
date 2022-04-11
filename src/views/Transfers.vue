@@ -1,5 +1,5 @@
 <template>
-<b-container class="bg-white text-left mt-3 fluid">
+<b-container-fluid class="bg-white text-left mt-3 fluid">
     <div class="pt-3">
         <b-tabs fill>
             <b-tab class="nav-item" title="Road Transfers">
@@ -10,7 +10,7 @@
             </b-tab>
         </b-tabs>
     </div>
-</b-container>
+</b-container-fluid>
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
 }
 
 .nav-tabs {
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #39bdc8;
 }
 
 .nav-tabs .nav-item {
@@ -51,20 +51,20 @@ export default {
 
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-    border-color: #e9ecef #e9ecef #dee2e6;
+    /* border-color: #e9ecef #e9ecef #dee2e6; */
 }
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-    color: #495057;
-    background-color: #fff;
-    border-color: #dee2e6 #dee2e6 #fff;
+    color: #fff;
+    background-color: #39bdc8;
+    /* border-color: #dee2e6 #dee2e6 #fff; */
 }
 
 /*  impproved   tabs*/
 .nav-tabs {
-    border-radius: 0.5rem;
-    background: #e9ecef;
+    border-radius: 0px !important;
+    background-color: #39bdc8;
 }
 
 .nav-tabs {
@@ -76,12 +76,18 @@ export default {
 }
 
 .nav-tabs .nav-link:not(.active) {
-    color: rgba(33, 37, 41, 0.5);
+    color:#fff !important;
+    font-weight: 700;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+    border: none !important;
+    border-radius: 8px !important;
 }
 
 .nav-tabs .nav-link {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 700;
     border-radius: .5rem !important;
     padding: .5rem;
     transition: color .35s ease-out;

@@ -1,5 +1,6 @@
 <template>
-    <b-container class="bg-white text-left mt-3 fluid">
+<div  class="container-fluid">
+    <div class="bg-white text-left mt-3 fluid" style="">
         <div class="">
             <!-- <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="accommodation">Lodges + Hotels</a></li>
@@ -10,7 +11,7 @@
       </ol> -->
             <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
             <div class="">
-                <div class="bg-grey2 p-2" style="border-radius:4px;">
+                <div class="bg-green p-2" style="border-radius:3px;">
 
                     <span class="pl-2 hotel-name border-right pr-3"><span class="mr-3"><a href="#" @click="$router.push({name: 'Accommodations'})">
                                 <b-icon icon="arrow-left"></b-icon>
@@ -44,7 +45,8 @@
                 </b-tabs>
             </div>
         </div>
-    </b-container>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -178,14 +180,12 @@ export default {
 }
 
 .bg-grey2 {
-    /*        background: #DCDBDB;*/
-    /*        background: #FAF7F0;*/
     border: 1px solid #F1F0EE;
 }
 
 .hotel-name {
     font-size: 25px;
-    color: #666;
+    color: teal;
     /*        text-shadow: 1px 0px #000;*/
 }
 
@@ -285,9 +285,9 @@ export default {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-    color: #495057;
-    background-color: #fff;
-    border-color: #dee2e6 #dee2e6 #fff;
+    color: greenyellow !important;
+    background-color: rgba(79, 201, 218, 0.85) !important;
+    /* border-color: #dee2e6 #dee2e6 #fff; */
 }
 
 .tab-content>.tab-pane {
@@ -300,8 +300,8 @@ export default {
 
 /*  impproved   tabs*/
 .nav-tabs {
-    border-radius: 0.5rem;
-    background: #e9ecef;
+    /* border-radius: 0.5rem; */
+    background-color: rgba(0,189,142,.2);
 }
 
 .nav-tabs {
@@ -313,7 +313,7 @@ export default {
 }
 
 .nav-tabs .nav-link:not(.active) {
-    color: rgba(33, 37, 41, 0.5);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .nav-tabs .nav-link {

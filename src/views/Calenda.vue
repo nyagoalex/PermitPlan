@@ -11,12 +11,51 @@
 <div class="col-md-3 col-12">
 <div class="" style="background-color: rgba(0,189,142,.3);border-radius:6px;">
 <div class="pt-3">
-    
     <h5 class="b-700">Booking Details</h5>
     <hr>
 <div class="text-left p-4">
-<h6>Booking  Ref: <span class="b-700">Alex X8</span></h6>
-<h6>Booking  Name:  <span  class="b-700">Alex Naygo</span></h6>
+<h6 class="b-700">6 Days Bwindi safari with the family vacation</h6>
+
+<table style="width:100%">
+  <tr>
+    <th>Booking Ref:</th>
+    <td>Bill Gates</td>
+  </tr>
+  <tr>
+    <th>Booking Name:</th>
+    <td>555 77 854</td>
+  </tr>
+  <tr>
+    <th>Email:</th>
+    <td>555 77 855</td>
+  </tr>
+   <tr>
+    <th>Tour start Date:</th>
+    <td>Bill Gates</td>
+  </tr>
+  <tr>
+    <th>Tour End date:</th>
+    <td>555 77 854</td>
+  </tr>
+  <tr>
+    <th>No.of Days:</th>
+    <td>7</td>
+  </tr>
+<hr>
+  <tr>
+    <th>Tour Cost:</th>
+    <td>USD $7,000</td>
+  </tr>
+
+   <tr>
+    <th>Payments Made:</th>
+    <td>USD $4,000</td>
+  </tr>
+
+  <br>
+  <a href="#" class="btn btn-lg btn-success text-white">View More Tour Details <i class="bi bi-arrow-right"></i></a>
+
+</table>
 </div>
 </div>
 </div>
